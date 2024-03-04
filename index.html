@@ -197,13 +197,38 @@
     }
 
 
-        /* Pour les écrans de taille moyenne comme les tablettes */
-        @media only screen and (min-width: 769px) and (max-width: 1024px) {
-            .container {
-                width: 80%;
-                padding-top: 30px;
-            }
+    /* Pour les écrans de taille moyenne comme les tablettes */
+    @media only screen and (min-width: 769px) and (max-width: 1024px) {
+        .container {
+            width: 90%; /* Réduire un peu la largeur */
+            padding-top: 30px;
         }
+        .header {
+            margin-bottom: 40px; /* Ajustement de la marge du titre */
+        }
+        h1 {
+            font-size: 42px; /* Ajustement de la taille de la police du titre */
+        }
+        p {
+            font-size: 20px; /* Ajustement de la taille de la police du paragraphe */
+            margin-bottom: 15px; /* Ajustement de la marge du paragraphe */
+        }
+        .logo {
+            width: 120px; /* Ajustement de la taille du logo */
+            margin-bottom: 15px; /* Ajustement de la marge du logo */
+        }
+        input[type="text"] {
+            padding: 12px; /* Ajustement du rembourrage du champ de texte */
+            font-size: 14px; /* Ajustement de la taille de la police du champ de texte */
+        }
+        input[type="submit"],
+        .button {
+            padding: 12px 0; /* Ajustement du rembourrage du bouton */
+            margin-top: 15px; /* Ajustement de la marge du bouton */
+            font-size: 14px; /* Ajustement de la taille de la police du bouton */
+        }
+    }
+
 
         /* Pour les écrans de grande taille comme les ordinateurs de bureau */
         @media only screen and (min-width: 1025px) {
