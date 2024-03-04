@@ -210,9 +210,6 @@
     <audio id="audio" src="images_Animes/PresentDay.mp3"></audio>
 
     <script>
-fetch('animes.json')
-    .then(response => response.json())
-    .then(data => {
         var animeList = [
     {
         "name": "Serial Experiments Lain",
@@ -307,8 +304,7 @@ fetch('animes.json')
             autocompleteItems.style.display = input ? "block" : "none"; 
             
         });
-    })
-    .catch(error => console.error('Error fetching anime data:', error));
+
 
 document.getElementById("searchForm").addEventListener("submit", function(event) {
     event.preventDefault();
