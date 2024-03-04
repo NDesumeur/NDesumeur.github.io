@@ -132,10 +132,44 @@
     </div>
 
     <script>
-        fetch('animes.json')
-            .then(response => response.json())
-            .then(data => generateAnimeList(data, document.getElementById("animeList")))
-            .catch(error => console.error('Erreur lors du chargement des données :', error));
+        var animeList = [
+            {
+                "name": "Serial Experiments Lain",
+                "image": "SERIAL EXPERIMENTS LAIN.jpg",
+                "rating": "7.525",
+                "genre": "Drame, Horreur, Science-fiction"
+            },
+            {
+                "name": "Paranoia Agent",
+                "image": "PARANOIA AGENT.jpg",
+                "rating": "8.1",
+                "genre": "Drame, Psychologique, Surnaturel"
+            },
+            {
+                "name": "Love Flops",
+                "image": "LOVE FLOPS.jpg",
+                "rating": "3.25",
+                "genre": "Mystère, Romance, Ecchi"
+            },
+            {
+                "name": "Orange",
+                "image": "ORANGE.jpg",
+                "rating": "8.9",
+                "genre": "Shōjo, Slice-of-Life, Surnaturel"
+            },
+            {
+                "name": "Fireworks",
+                "image": "FIREWORKS.jpg",
+                "rating": "5.125",
+                "genre": "Drame, Romance, Surnaturel"
+            },
+            {
+                "name": "King's Game",
+                "image": "KING'S GAME.jpg",
+                "rating": "1.325",
+                "genre": "Drame, Horreur, Mystère"
+            }
+        ];
 
         function generateAnimeList(animeList, element) {
             var sortBy = document.getElementById('sort-selector').value;
@@ -222,12 +256,10 @@
                 });
             }
         }
+        generateAnimeList(animeList, document.getElementById("animeList"));
         document.getElementById('sort-selector').addEventListener('change', function() {
             var animeListDiv = document.getElementById("animeList");
-            fetch('animes.json')
-                .then(response => response.json())
-                .then(data => generateAnimeList(data, animeListDiv))
-                .catch(error => console.error('Erreur lors du chargement des données :', error));
+            generateAnimeList(animeList, animeListDiv);
         });
         document.getElementById('search-bar').addEventListener('input', function() {
             var searchValue = this.value.trim().toLowerCase();
