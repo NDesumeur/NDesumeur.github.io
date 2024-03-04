@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Critiques d'animes</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #111;
+            color: #f4f4f4;
+            line-height: 1.6; 
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding-top: 50px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .logo {
+            width: 120px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 48px;
+            margin-bottom: 1px;
+            color: #ffa500;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            margin-top: 1px;
+            font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+        }
+
+        p {
+            font-size: 20px; 
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 14px;
+            margin-top: 10px; 
+            border: none;
+            border-radius: 25px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+            font-size: 16px;
+            outline: none;
+            background-color: #222;
+            color: #f4f4f4;
+        }
+
+        input[type="text"]::placeholder {
+            color: #999;
+        }
+
+        input[type="submit"],
+        .button {
+            width: 100%;
+            padding: 14px 0;
+            background-color: #ffa500;
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px; 
+        }
+
+        input[type="submit"]:hover,
+        .button:hover {
+            background-color: #ff8200;
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
+
+        .autocomplete {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin: 20px auto;
+        }
+
+        .autocomplete-items {
+            position: absolute;
+            border: 1px solid #d4d4d4;
+            border-radius: 10px;
+            background-color: #222;
+            z-index: 99;
+            width: calc(105% - 2px);
+            max-height: 150px;
+            box-shadow: 0 0 30px #ffa500;
+            overflow-y: auto;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+
+        }
+
+        .autocomplete-items.show {
+            opacity: 1;
+        }
+
+        .autocomplete-item {
+            padding: 10px;
+            cursor: pointer;
+            color: #f4f4f4;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #333;
+            transition: box-shadow 0.3s, transform 0.3s;
+        }
+
+        .autocomplete-item:hover {
+            background-color: #383333;
+            color: #ffa500;
+            box-shadow: 0 0 10px rgba(255, 165, 0, 0.6);
+        }
+
+        .autocomplete-item:last-child {
+            border-bottom: none;
+        }
+
+        .autocomplete-item img {
+            width: 80px;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .anime-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .anime-title {
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            color: #ffa500;
+            padding-left: 10px;
+            font-weight: bold;
+        }
+
+        .rating,
+        .genre {
+            font-size: 18px;
+            color: #00ff00;
+            display: flex;
+            align-items: center;
+            padding-left: 10px;
+            font-weight: bold;
+        }
+
+        @media only screen and (max-width: 768px) {
+            .container {
+                width: 100%;
+            }
+        }
+
+        @media only screen and (min-width: 769px) and (max-width: 1024px) {
+            .container {
+                width: 80%;
+            }
+        }
+
+        @media only screen and (min-width: 1025px) {
+            .container {
+                width: 70%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="#" onclick="playAudioAndRedirect()">
+                <img src="logo.png" alt="Logo" class="logo">
+            </a>
+            <h1> <strong> Critiques d'animes</strong></h1>
+            <p>Sur ce site vous trouverez des avis sur plein d'animes ainsi que des informations sur ces animes, chaque animé obtient une note que vous pouvez consulter, ici
+                pas de <strong>divulgâchage</strong> et beaucoup <strong>d'objectivité</strong>  !
+            </p>
+        </div>
+        <form id="searchForm">
+            <div class="autocomplete">
+                <input type="text" id="animeInput" placeholder="Rechercher un anime...">
+                <div class="autocomplete-items" id="autocompleteItems"></div>
+            </div>
+            <input type="submit" value="Rechercher">
+        </form>
+        <div id="errorMessage" class="error-message" style="display: none;">Aucun résultat trouvé pour cet anime.</div>
+        <button class="button" onclick="window.location.href='liste_animes.html'">Liste de tous les animes</button>
+        <br>
+    </div>
+    
+    <audio id="audio" src="images_Animes/PresentDay.mp3"></audio>
+
+    <script>
+fetch('animes.json')
+    .then(response => response.json())
+    .then(data => {
+        var animeList = data; 
+        
+        var animeInput = document.getElementById("animeInput");
+        var autocompleteItems = document.getElementById("autocompleteItems");
+
+        animeInput.addEventListener("input", function() {
+            var input = this.value.trim().toLowerCase();
+            var suggestions = animeList.filter(function(anime) {
+                return anime.name.toLowerCase().startsWith(input);
+            });
+            if (input) {
+                autocompleteItems.innerHTML = "";
+                suggestions.slice(0, 5).forEach(function(anime) {
+                    var item = document.createElement("div");
+                    item.classList.add("autocomplete-item");
+
+                    var image = document.createElement("img");
+                    image.src = "images_animes/" + anime.image;
+                    image.alt = "Image de " + anime.name;
+
+                    var animeInfo = document.createElement("div");
+                    animeInfo.classList.add("anime-info");
+
+                    var animeTitle = document.createElement("div");
+                    animeTitle.classList.add("anime-title");
+                    animeTitle.textContent = anime.name;
+
+                    var rating = document.createElement("div");
+                    rating.classList.add("rating");
+                    rating.textContent = "Note: " + anime.rating;
+
+                    var genre = document.createElement("div");
+                    genre.classList.add("genre");
+                    genre.textContent = anime.genre;
+
+                    animeInfo.appendChild(animeTitle);
+                    animeInfo.appendChild(rating);
+                    animeInfo.appendChild(genre);
+
+                    item.appendChild(image);
+                    item.appendChild(animeInfo);
+
+                    item.addEventListener("click", function() {
+                        animeInput.value = anime.name;
+                        autocompleteItems.style.display = "none";
+                    });
+
+                    autocompleteItems.appendChild(item);
+                });
+                autocompleteItems.classList.add("show"); 
+            } else {
+                autocompleteItems.innerHTML = ""; 
+                autocompleteItems.classList.remove("show");
+            }
+            autocompleteItems.style.display = input ? "block" : "none"; 
+            
+        });
+    })
+    .catch(error => console.error('Error fetching anime data:', error));
+
+document.getElementById("searchForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    var animeName = document.getElementById("animeInput").value.trim();
+    if (animeName) {
+        var url = animeName.toLowerCase().replace(/\s+/g, '-') + ".html";
+        var http = new XMLHttpRequest();
+        http.open('HEAD', url, true);
+        http.onreadystatechange = function() {
+            if (http.readyState === 4) {
+                if (http.status === 200) {
+                    window.location.href = url;
+                } else {
+                    window.location.href = "notfound.html";
+                }
+            }
+        };
+        http.send();
+    } else {
+        document.getElementById("errorMessage").style.display = "block";
+    }
+});
+
+function playAudioAndRedirect() {
+    var audio = document.getElementById("audio");
+    audio.play();
+    
+    setTimeout(function() {
+        window.location.href = "pagecachee.html";
+    }, 4500);
+}
+</script>
+    
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des Animes</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0;
+            padding: 0;
+            background-color: #111; 
+            color: #f4f4f4; 
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding-top: 50px;
+        }
+
+        h1 {
+            font-size: 48px; 
+            margin-bottom: 20px;
+            color: #ffa500;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); 
+            text-align: center;
+            margin-top: 50px; 
+            font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif; 
+        }
+
+        .category {
+            margin-bottom: 30px;
+            background-color: #222; 
+            padding: 10px;
+            border-radius: 5px; 
+            box-shadow: 0 0 10px ; 
+        }
+
+        .category-title {
+            font-size: 24px;
+            color: #ffa500; 
+        }
+
+        .anime-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .anime-item {
+            font-size: 20px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            border: 2px solid #b1aa9c;
+            border-radius: 5px; 
+            padding: 10px; 
+            transition: border-color 0.3s ease, box-shadow 0.3s ease; 
+        }
+
+        .anime-item:hover {
+            border-color: #ff8200; 
+            box-shadow: 0 0 20px rgba(255, 165, 0, 0.8); 
+        }
+
+        .anime-image {
+            width: 50px;
+            height: auto;
+            margin-right: 10px;
+            border-radius: 5px;
+        }
+
+        .anime-info {
+            font-size: 16px;
+            color: #00ff00;
+            margin-left: auto; 
+        }
+
+        a {
+            color: #00ff00; 
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            text-decoration: underline;
+            color: #ffa500;
+        }
+
+        #sort-selector {
+            margin-top: 30px;
+            margin-bottom: 20px;
+            padding: 10px;
+            width: 100%;
+            font-size: 18px; 
+            border-radius: 5px; 
+            background-color: #222; 
+            color: #ffa500; 
+            border: 2px solid #b1aa9c;    
+            box-shadow: 0 0 10px #b1aa9c; 
+        }
+
+        #search-bar {
+            margin-bottom: 40px;
+            padding: 10px;
+            width: 97%;
+            font-size: 18px;
+            border-radius: 5px;
+            background-color: #222;
+            color: #ffa500;
+            border: 2px solid #b1aa9c;
+            box-shadow: 0 0 10px #b1aa9c;
+        }
+
+        .bold {
+            font-weight: bold; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Liste des Animes</h1>
+
+        <select id="sort-selector">
+            <option value="name">Trier par nom</option>
+            <option value="genre">Trier par genre</option>
+        </select>
+
+        <input type="text" id="search-bar" placeholder="Rechercher...">
+
+        <div id="animeList"></div>
+    </div>
+
+    <script>
+        fetch('animes.json')
+            .then(response => response.json())
+            .then(data => generateAnimeList(data, document.getElementById("animeList")))
+            .catch(error => console.error('Erreur lors du chargement des données :', error));
+
+        function generateAnimeList(animeList, element) {
+            var sortBy = document.getElementById('sort-selector').value;
+
+            if (sortBy === 'name') {
+                var letters = {};
+                animeList.forEach(function(anime) {
+                    var firstLetter = anime.name.charAt(0).toUpperCase();
+                    if (!letters[firstLetter]) {
+                        letters[firstLetter] = [];
+                    }
+                    letters[firstLetter].push(anime);
+                });
+
+                element.innerHTML = '';
+
+                Object.keys(letters).sort().forEach(function(letter) {
+                    var categoryTitle = document.createElement("div");
+                    categoryTitle.classList.add("category");
+                    categoryTitle.innerHTML = "<h2 class='category-title' data-genre='" + letter + "'>" + letter + "</h2>";
+                    var animeListForLetter = document.createElement("ul");
+                    animeListForLetter.classList.add("anime-list");
+                    letters[letter].forEach(function(anime) {
+                        var listItem = document.createElement("li");
+                        listItem.classList.add("anime-item");
+                        var link = document.createElement("a");
+                        link.innerHTML = "<strong>" + anime.name + "</strong>"; 
+                        link.href = anime.name.toLowerCase().replace(/\s+/g, '-') + ".html";
+                        var image = document.createElement("img");
+                        image.classList.add("anime-image");
+                        image.src = "images_animes/" + anime.image;
+                        image.alt = "Image de " + anime.name;
+                        var info = document.createElement("span");
+                        info.classList.add("anime-info");
+                        info.innerHTML = "Note : " + "<span class='bold'>" + anime.rating + "</span> | Genres : " + "<span class='bold'>" + anime.genre + "</span>";
+                        listItem.appendChild(image);
+                        listItem.appendChild(link);
+                        listItem.appendChild(info);
+                        animeListForLetter.appendChild(listItem);
+                    });
+                    categoryTitle.appendChild(animeListForLetter);
+                    element.appendChild(categoryTitle);
+                });
+            } else if (sortBy === 'genre') {
+                var categories = {};
+                animeList.forEach(function(anime) {
+                    var animeGenres = anime.genre.split(',').map(genre => genre.trim());
+                    animeGenres.forEach(function(genre) {
+                        if (!categories[genre]) {
+                            categories[genre] = [];
+                        }
+                        categories[genre].push(anime);
+                    });
+                });
+
+                element.innerHTML = '';
+
+                Object.keys(categories).sort().forEach(function(genre) {
+                    var categoryTitle = document.createElement("div");
+                    categoryTitle.classList.add("category");
+                    categoryTitle.innerHTML = "<h2 class='category-title' data-genre='" + genre + "'>" + genre + "</h2>";
+                    var animeListForGenre = document.createElement("ul");
+                    animeListForGenre.classList.add("anime-list");
+                    categories[genre].forEach(function(anime) {
+                        var listItem = document.createElement("li");
+                        listItem.classList.add("anime-item");
+                        var link = document.createElement("a");
+                        link.innerHTML = "<strong>" + anime.name + "</strong>"; 
+                        link.href = anime.name.toLowerCase().replace(/\s+/g, '-') + ".html";
+                        var image = document.createElement("img");
+                        image.classList.add("anime-image");
+                        image.src = "images_animes/" + anime.image;
+                        image.alt = "Image de " + anime.name;
+                        var info = document.createElement("span");
+                        info.classList.add("anime-info");
+                        info.innerHTML = "Note : " + "<span class='bold'>" + anime.rating + "</span> | Genres : " + "<span class='bold'>" + anime.genre + "</span>";
+                        listItem.appendChild(image);
+                        listItem.appendChild(link);
+                        listItem.appendChild(info);
+                        animeListForGenre.appendChild(listItem);
+                    });
+                    categoryTitle.appendChild(animeListForGenre);
+                    element.appendChild(categoryTitle);
+                });
+            }
+        }
+        document.getElementById('sort-selector').addEventListener('change', function() {
+            var animeListDiv = document.getElementById("animeList");
+            fetch('animes.json')
+                .then(response => response.json())
+                .then(data => generateAnimeList(data, animeListDiv))
+                .catch(error => console.error('Erreur lors du chargement des données :', error));
+        });
+        document.getElementById('search-bar').addEventListener('input', function() {
+            var searchValue = this.value.trim().toLowerCase();
+            var categoryTitles = document.querySelectorAll('.category-title');
+            categoryTitles.forEach(function(title) {
+                var genre = title.getAttribute('data-genre').toLowerCase();
+                if (genre.includes(searchValue)) {
+                    title.parentElement.style.display = 'block';
+                } else {
+                    title.parentElement.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
