@@ -47,6 +47,39 @@
             font-size: 32px;
             color: #00ff00;
         }
+        /* Pour les écrans de petite taille comme les téléphones */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding-top: 20px; /* Ajustement de l'espace en haut */
+        padding: 20px; /* Ajustement du rembourrage */
+        border-radius: 0; /* Supprimer la bordure arrondie */
+        border: none; /* Supprimer la bordure */
+    }
+    h1 {
+        font-size: 36px; /* Ajustement de la taille de la police du titre */
+    }
+    p {
+        font-size: 18px; /* Ajustement de la taille de la police du paragraphe */
+    }
+}
+
+/* Pour les écrans de taille moyenne comme les tablettes */
+@media only screen and (min-width: 769px) and (max-width: 1024px) {
+    .container {
+        width: 80%;
+        padding-top: 30px;
+    }
+}
+
+/* Pour les écrans de grande taille comme les ordinateurs de bureau */
+@media only screen and (min-width: 1025px) {
+    .container {
+        width: 70%;
+        padding-top: 50px;
+    }
+}
+
     </style>
 </head>
 <body>
