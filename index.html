@@ -2,7 +2,8 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
     <title>Critiques d'animes</title>
     <style>
         body {
@@ -165,69 +166,71 @@
             font-weight: bold;
         }
 
-    /* Pour les écrans de petite taille comme les téléphones */
-    @media only screen and (max-width: 768px) {
-        .container {
-            width: 120%;
-            padding-top: 20px; /* Ajustement de l'espace en haut */
-            padding: 20px; /* Ajustement du rembourrage */
-        }
-        .header {
-            margin-bottom: 30px; /* Ajustement de la marge du titre */
-        }
-        h1 {
-            font-size: 36px; /* Ajustement de la taille de la police du titre */
-        }
-        .logo {
-            width: 100px; /* Ajustement de la taille du logo */
-            margin-bottom: 10px; /* Ajustement de la marge du logo */
-        }
-        p {
-            font-size: 18px; /* Ajustement de la taille de la police du paragraphe */
-            margin-bottom: 10px; /* Ajustement de la marge du paragraphe */
-        }
-        input[type="text"] {
-            padding: 10px; /* Ajustement du rembourrage du champ de texte */
-        }
-        input[type="submit"],
-        .button {
-            padding: 12px 0; /* Ajustement du rembourrage du bouton */
-            margin-top: 10px; /* Ajustement de la marge du bouton */
-        }
+/* Pour les écrans de petite taille comme les téléphones */
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding-top: 20px; /* Ajustement de l'espace en haut */
+        padding: 20px; /* Ajustement du rembourrage */
     }
-
-
-    /* Pour les écrans de taille moyenne comme les tablettes */
-    @media only screen and (min-width: 769px) and (max-width: 1024px) {
-        .container {
-            width: 90%; /* Réduire un peu la largeur */
-            padding-top: 30px;
-        }
-        .header {
-            margin-bottom: 40px; /* Ajustement de la marge du titre */
-        }
-        h1 {
-            font-size: 42px; /* Ajustement de la taille de la police du titre */
-        }
-        p {
-            font-size: 20px; /* Ajustement de la taille de la police du paragraphe */
-            margin-bottom: 15px; /* Ajustement de la marge du paragraphe */
-        }
-        .logo {
-            width: 120px; /* Ajustement de la taille du logo */
-            margin-bottom: 15px; /* Ajustement de la marge du logo */
-        }
-        input[type="text"] {
-            padding: 12px; /* Ajustement du rembourrage du champ de texte */
-            font-size: 14px; /* Ajustement de la taille de la police du champ de texte */
-        }
-        input[type="submit"],
-        .button {
-            padding: 12px 0; /* Ajustement du rembourrage du bouton */
-            margin-top: 15px; /* Ajustement de la marge du bouton */
-            font-size: 14px; /* Ajustement de la taille de la police du bouton */
-        }
+    .header {
+        margin-bottom: 30px; /* Ajustement de la marge du titre */
     }
+    h1 {
+        font-size: 36px; /* Ajustement de la taille de la police du titre */
+    }
+    .logo {
+        width: 80px; /* Ajustement de la taille du logo */
+        margin-bottom: 10px; /* Ajustement de la marge du logo */
+    }
+    p {
+        font-size: 16px; /* Ajustement de la taille de la police du paragraphe */
+        margin-bottom: 10px; /* Ajustement de la marge du paragraphe */
+    }
+    input[type="text"] {
+        padding: 10px; /* Ajustement du rembourrage du champ de texte */
+        font-size: 14px; /* Ajustement de la taille de la police du champ de texte */
+    }
+    input[type="submit"],
+    .button {
+        padding: 12px 0; /* Ajustement du rembourrage du bouton */
+        margin-top: 10px; /* Ajustement de la marge du bouton */
+        font-size: 14px; /* Ajustement de la taille de la police du bouton */
+    }
+}
+
+/* Pour les écrans de taille moyenne comme les tablettes */
+@media only screen and (min-width: 769px) and (max-width: 1024px) {
+    .container {
+        width: 90%; /* Réduire un peu la largeur */
+        padding-top: 30px;
+    }
+    .header {
+        margin-bottom: 40px; /* Ajustement de la marge du titre */
+    }
+    h1 {
+        font-size: 42px; /* Ajustement de la taille de la police du titre */
+    }
+    p {
+        font-size: 18px; /* Ajustement de la taille de la police du paragraphe */
+        margin-bottom: 15px; /* Ajustement de la marge du paragraphe */
+    }
+    .logo {
+        width: 100px; /* Ajustement de la taille du logo */
+        margin-bottom: 15px; /* Ajustement de la marge du logo */
+    }
+    input[type="text"] {
+        padding: 12px; /* Ajustement du rembourrage du champ de texte */
+        font-size: 14px; /* Ajustement de la taille de la police du champ de texte */
+    }
+    input[type="submit"],
+    .button {
+        padding: 12px 0; /* Ajustement du rembourrage du bouton */
+        margin-top: 15px; /* Ajustement de la marge du bouton */
+        font-size: 14px; /* Ajustement de la taille de la police du bouton */
+    }
+}
+
 
 
         /* Pour les écrans de grande taille comme les ordinateurs de bureau */
