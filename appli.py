@@ -84,7 +84,7 @@ def generate_anime_html_page(title, image_name, note_finale, anime_link, genres,
             <p class="title">Synopsis</p>
             <p>{synopsis}</p>
         </div>
-        <p><a href="accueil.html">Revenir à la page d'accueil</a></p>
+        <p><a href="index.html">Revenir à la page d'accueil</a></p>
 
     </div>
 </body>
@@ -120,7 +120,7 @@ def generate_film_html_page(title, image_name, critique, synopsis, review_date, 
             <p class="title">Synopsis</p>
             <p>{synopsis}</p>
         </div>
-        <p><a href="accueil.html">Revenir à la page d'accueil</a></p>
+        <p><a href="index.html">Revenir à la page d'accueil</a></p>
 
     </div>
 </body>
