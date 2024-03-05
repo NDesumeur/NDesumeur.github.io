@@ -169,8 +169,18 @@
         }
 /* Pour les écrans de petite taille comme les téléphones */
 @media only screen and (max-width: 768px) {
+    body {
+        overflow-x: hidden; /* Empêcher le défilement horizontal */
+    }
+    html, body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
     .container {
-        width: 90%; /* Par exemple, vous pouvez ajuster cette valeur selon vos besoins */
+        width: 100%;
+        max-width: 600px; /* Par exemple, vous pouvez ajuster cette valeur selon vos besoins */
         margin: 0 auto; /* Centrer horizontalement la container */
         padding: 20px; /* Ajustement du rembourrage */
     }
