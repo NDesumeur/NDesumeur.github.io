@@ -34,5 +34,11 @@
         "image": "KING'S GAME.jpg",
         "rating": "1.325",
         "genre": "Drame, Horreur, Myst\u00e8re"
+    },
+    {
+        "name": "happy sugar life",
+        "image": "HAPPY SUGAR LIFE.jpg",
+        "rating": "7.33",
+        "genre": "Drame, Horreur, Myst\u00e8re"
     }
 ]

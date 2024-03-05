@@ -67,7 +67,7 @@ def generate_anime_html_page(title, image_name, note_finale, anime_link, genres,
 <body>
     <div class="container">
         <h2>{title}</h2>
-        <img src="images_Animes/{title.upper()}.JPG" alt="Image de l'anime">
+        <img src="images_Animes/{title.upper()}.jpg" alt="Image de l'anime">
         <div class="info-box">
             <div class="rating">
                 {note_finale}/10
