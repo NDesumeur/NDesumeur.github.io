@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title></title>
+  <title>site de ND</title>
   <style>
     body, html {
       height: 100%;
@@ -54,6 +54,26 @@
     .info-box ul {
       font-size: 14px;
       text-align: left;
+    }
+
+    @media only screen and (max-width: 600px) {
+      .info-box {
+        padding: 10px; /* Réduire le rembourrage */
+        max-width: 90%; /* Ajuster la largeur maximale */
+      }
+
+      .info-box h2 {
+        font-size: 20px; /* Ajuster la taille de la police */
+        margin-bottom: 15px; /* Réduire la marge inférieure */
+      }
+
+      .info-box p {
+        font-size: 16px; /* Ajuster la taille de la police */
+      }
+
+      .info-box ul {
+        font-size: 12px; /* Ajuster la taille de la police */
+      }
     }
 
     @keyframes changeBorder {
