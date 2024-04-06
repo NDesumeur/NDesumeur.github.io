@@ -16,11 +16,14 @@
         }
 
         .container {
-            width: 80%;
+            width: 90%; 
             margin: 0 auto;
             padding-top: 50px;
+            padding: 20px; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center; 
         }
-
         .header {
             text-align: center;
             margin-bottom: 50px;
@@ -90,18 +93,19 @@
 
         .autocomplete {
             position: relative;
-            width: 100%;
-            max-width: 400px;
-            margin: 20px auto;
+            width: 75%;
+            margin: 0% 10% 120px 10%;
         }
 
         .autocomplete-items {
+            margin-top: 20px;
+            margin-left: 15px;
             position: absolute;
             border: 1px solid #d4d4d4;
             border-radius: 10px;
             background-color: #222;
             z-index: 99;
-            width: calc(105% - 2px);
+            width: 100% ;
             max-height: 150px;
             box-shadow: 0 0 30px #ffa500;
             overflow-y: auto;
@@ -116,12 +120,12 @@
         }
 
         .autocomplete-item {
-            padding: 10px;
             cursor: pointer;
             color: #f4f4f4;
             display: flex;
             align-items: center;
-            border-bottom: 1px solid #333;
+            justify-content: center;
+            border-bottom: 1px solid #423c3c;
             transition: box-shadow 0.3s, transform 0.3s;
         }
 
@@ -136,7 +140,8 @@
         }
 
         .autocomplete-item img {
-            width: 80px;
+            background-color: cyan;
+            width: 120px;
             height: auto;
             border-radius: 5px;
         }
@@ -156,82 +161,44 @@
             font-weight: bold;
         }
 
-        .rating,
-        .genre {
+        .rating,.genre {
             font-size: 18px;
             color: #00ff00;
             display: flex;
             align-items: center;
             padding-left: 10px;
             font-weight: bold;
+            text-align: center;
         }
 
-                /* Pour les écrans de petite taille comme   les téléphones */
-        @media only screen and (max-width: 768px) {
+
+
+        @media (max-width: 768px) {
             .container {
-                width: 100%;
-                padding-top: 20px; /* Ajustement de l'espace en haut */
+                max-width: 90%;
             }
-            .header {
-                margin-bottom: 30px; /* Ajustement de la marge du titre */
-            }
+
             h1 {
-                font-size: 36px; /* Ajustement de la taille de la police du titre */
+                font-size: 36px;
             }
+
             .logo {
-                width: 100px; /* Ajustement de la taille du logo */
-                margin-bottom: 10px; /* Ajustement de la marge du logo */
+                width: 80px;
             }
-            p {
-                font-size: 18px; /* Ajustement de la taille de la police du paragraphe */
-                margin-bottom: 10px; /* Ajustement de la marge du paragraphe */
+            .rating, .genre {
+                font-size: 14px;
             }
-            input[type="text"] {
-                padding: 10px; /* Ajustement du rembourrage du champ de texte */
-            }
-            input[type="submit"],
-            .button {
-                padding: 12px 0; /* Ajustement du rembourrage du bouton */
-                margin-top: 10px; /* Ajustement de la marge du bouton */
+
+            .anime-title {
+                font-size: 18px;
             }
         }
 
-        /* Pour les écrans de taille moyenne comme les tablettes */
-        @media only screen and (min-width: 769px) and (max-width: 1024px) {
-            .container {
-                width: 80%;
-                padding-top: 30px;
-            }
-        }
-
-        /* Pour les écrans de grande taille comme les ordinateurs de bureau */
-        @media only screen and (min-width: 1025px) {
-            .container {
-                width: 70%;
-                padding-top: 50px;
-            }
-        }
-
-
-        @media only screen and (max-width: 768px) {
-            .container {
-                width: 100%;
-            }
-        }
-
-        @media only screen and (min-width: 769px) and (max-width: 1024px) {
-            .container {
-                width: 80%;
-            }
-        }
-
-        @media only screen and (min-width: 1025px) {
-            .container {
-                width: 70%;
-            }
-        }
     </style>
 </head>
+
+
+
 <body>
     <div class="container">
         <div class="header">
@@ -258,7 +225,7 @@
     <audio id="audio" src="images_Animes/PresentDay.mp3"></audio>
 
     <script>
-        var animeList = [
+    var animeList = [
     {
         "name": "Serial Experiments Lain",
         "image": "SERIAL EXPERIMENTS LAIN.jpg",
@@ -286,7 +253,7 @@
     {
         "name": "Fireworks",
         "image": "FIREWORKS.jpg",
-        "rating": "5.125",
+        "rating": "5,125",
         "genre": "Drame, Romance, Surnaturel"
     },
     {
@@ -294,8 +261,14 @@
         "image": "KINGS GAME.jpg",
         "rating": "1.325",
         "genre": "Drame, Horreur, Myst\u00e8re"
+    },
+    {
+        "name": "Happy Sugar Life",
+        "image": "HAPPY SUGAR LIFE.jpg",
+        "rating": "7.33",
+        "genre": "Romance, Horreur, Myst\u00e8re"
     }
-]; 
+];
         
         var animeInput = document.getElementById("animeInput");
         var autocompleteItems = document.getElementById("autocompleteItems");
@@ -354,38 +327,38 @@
         });
 
 
-document.getElementById("searchForm").addEventListener("submit", function(event) {
-    event.preventDefault();
+        document.getElementById("searchForm").addEventListener("submit", function(event) {
+            event.preventDefault();
 
-    var animeName = document.getElementById("animeInput").value.trim();
-    if (animeName) {
-        var url = animeName.toLowerCase().replace(/\s+/g, '-') + ".html";
-        var http = new XMLHttpRequest();
-        http.open('HEAD', url, true);
-        http.onreadystatechange = function() {
-            if (http.readyState === 4) {
-                if (http.status === 200) {
-                    window.location.href = url;
-                } else {
-                    window.location.href = "notfound.html";
-                }
+            var animeName = document.getElementById("animeInput").value.trim();
+            if (animeName) {
+                var url = animeName.toLowerCase().replace(/\s+/g, '-') + ".html";
+                var http = new XMLHttpRequest();
+                http.open('HEAD', url, true);
+                http.onreadystatechange = function() {
+                    if (http.readyState === 4) {
+                        if (http.status === 200) {
+                            window.location.href = url;
+                        } else {
+                            window.location.href = "notfound.html";
+                        }
+                    }
+                };
+                http.send();
+            } else {
+                document.getElementById("errorMessage").style.display = "block";
             }
-        };
-        http.send();
-    } else {
-        document.getElementById("errorMessage").style.display = "block";
-    }
-});
+        });
 
-function playAudioAndRedirect() {
-    var audio = document.getElementById("audio");
-    audio.play();
-    
-    setTimeout(function() {
-        window.location.href = "pagecachee.html";
-    }, 4500);
-}
-</script>
+        function playAudioAndRedirect() {
+            var audio = document.getElementById("audio");
+            audio.play();
+            
+            setTimeout(function() {
+                window.location.href = "pagecachee.html";
+            }, 4500);
+        }       
+    </script>
     
 </body>
 </html>
