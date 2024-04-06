@@ -92,9 +92,9 @@
 
 </head>
 <body>
-  <audio autoplay loop>
+  <audio id="background-music" loop>
     <source src="musique_de_fond.mp3" type="audio/mpeg">
-
+    Your browser does not support the audio element.
   </audio>
   
   <div class="background">
@@ -525,6 +525,18 @@
     </div>
   </div>
   <script>
+    window.addEventListener('load', function() {
+        // Attachez un gestionnaire d'événements de clic à la fenêtre
+        window.addEventListener('click', function() {
+            // L'utilisateur a interagi avec la page, commencez la lecture de la musique
+            var audio = document.getElementById('background-music');
+            audio.volume = 0.2; // Réglez le volume à 50% (0.5)
+            audio.play();
+            
+            // Une fois que la musique commence à jouer, supprimez cet écouteur d'événements de clic
+            window.removeEventListener('click', arguments.callee);
+        });
+    });
     document.addEventListener("DOMContentLoaded", function(event) {
       const images = document.querySelectorAll('.moving-image');
 
