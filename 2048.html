@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2048</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: center;
+            background-color: #222;
+            color: #fff;
+        }
+
+        hr {
+            width: 500px;
+        }
+
+        #board {
+            width: 400px;
+            height: 400px;
+            background-color: #cdc1b5;
+            border: 6px solid #bbada0;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .tile {
+            width: 90px;
+            height: 90px;
+            border: 5px solid #bbada0;
+            font-size: 40px;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .x2 {
+            background-color: #8bc34a; 
+            color: #fff;
+        }
+
+        .x4 {
+            background-color: #7cb342;
+            color: #fff;
+        }
+
+        .x8 {
+            background-color: #689f38; 
+            color: #fff; 
+        }
+
+        .x16 {
+            background-color: #558b2f; 
+            color: #fff; 
+        }
+
+        .x32 {
+            background-color: #4caf50; 
+            color: #fff;
+        }
+
+        .x64 {
+            background-color: #43a047; 
+            color: #fff;
+        }
+
+        .x128 {
+            background-color: #388e3c; 
+            color: #fff; 
+        }
+
+        .x256 {
+            background-color: #2e7d32; 
+            color: #fff;
+        }
+
+        .x512 {
+            background-color: #1b5e20; 
+            color: #fff; 
+        }
+
+        .x1024 {
+            background-color: #388e3c; 
+            color: #fff; 
+        }
+
+        .x2048 {
+            background-color: #1b5e20;
+            color: #fff; 
+        }
+
+        .x4096 {
+            background-color: #388e3c;
+            color: #fff; 
+        }
+
+        .x8192 {
+            background-color: #1b5e20; 
+            color: #fff; 
+        }
+
+        #score {
+            font-size: 24px;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+
+        .button {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: #fff; 
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            outline: none;
+            margin: 0 10px;
+        }
+
+        .button:hover {
+            background-color: #45a049;
+        }
+
+        .home-button {
+            background-color: #f44336; 
+            margin-top: 10px;
+        }
+
+        .home-button:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>2048</h1>
+    <div id="board"></div>
+    <h2>Score: <span id="score">0</span></h2>
+    <div id="buttons">
+        <button class="button" onclick="startGame()">Commencer le jeu</button>
+    </div>
+    <div id="buttons">
+        <button class="button home-button" onclick="window.location.href = 'accueil4.html';">Page d'Accueil</button>
+    </div>
+
+    <script>
+        var board;
+        var score = 0;
+        var rows = 4;
+        var columns = 4;
+
+        var startX, startY, endX, endY;
+
+        window.onload = function () {
+            setGame();
+            addTouchListeners();
+        }
+
+        function setGame() {
+            score = 0;
+            document.getElementById("score").innerText = score;
+
+            document.getElementById("board").innerHTML = '';
+
+            board = [
+                [0, 0, 0, 0],
+                [0, 0, 0, 0],
+                [0, 0, 0, 0],
+                [0, 0, 0, 0]
+            ];
+
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < columns; c++) {
+                    let tile = document.createElement("div");
+                    tile.id = r.toString() + "-" + c.toString();
+                    let num = board[r][c];
+                    updateTile(tile, num);
+                    document.getElementById("board").append(tile);
+                }
+            }
+            setTwo();
+            setTwo();
+        }
+
+        function updateTile(tile, num) {
+            tile.innerText = "";
+            tile.classList.value = ""; 
+            tile.classList.add("tile");
+            if (num > 0) {
+                tile.innerText = num.toString();
+                if (num <= 4096) {
+                    tile.classList.add("x" + num.toString());
+                } else {
+                    tile.classList.add("x8192");
+                }
+            }
+        }
+
+        document.addEventListener('keyup', (e) => {
+            if (e.code == "ArrowLeft") {
+                slideLeft();
+                setTwo();
+            } else if (e.code == "ArrowRight") {
+                slideRight();
+                setTwo();
+            } else if (e.code == "ArrowUp") {
+                slideUp();
+                setTwo();
+            } else if (e.code == "ArrowDown") {
+                slideDown();
+                setTwo();
+            }
+            document.getElementById("score").innerText = score;
+        })
+
+        function addTouchListeners() {
+            var boardDiv = document.getElementById("board");
+            boardDiv.addEventListener('touchstart', handleTouchStart, false);
+            boardDiv.addEventListener('touchmove', handleTouchMove, false);
+        }
+
+        function handleTouchStart(event) {
+            startX = event.touches[0].clientX;
+            startY = event.touches[0].clientY;
+        }
+
+        function handleTouchMove(event) {
+            event.preventDefault();
+            endX = event.touches[0].clientX;
+            endY = event.touches[0].clientY;
+            var diffX = startX - endX;
+            var diffY = startY - endY;
+
+            if (Math.abs(diffX) > Math.abs(diffY)) {
+                if (diffX > 0) {
+                    /* swipe left */
+                    slideLeft();
+                    setTwo();
+                } else {
+                    /* swipe right */
+                    slideRight();
+                    setTwo();
+                }
+            } else {
+                if (diffY > 0) {
+                    /* swipe up */
+                    slideUp();
+                    setTwo();
+                } else {
+                    /* swipe down */
+                    slideDown();
+                    setTwo();
+                }
+            }
+        }
+
+        function filterZero(row) {
+            return row.filter(num => num != 0); 
+         }
+
+        function slide(row) {
+            row = filterZero(row);
+            for (let i = 0; i < row.length - 1; i++) {
+                if (row[i] == row[i + 1]) {
+                    row[i] *= 2;
+                    row[i + 1] = 0;
+                    score += row[i];
+                }
+            } 
+            row = filterZero(row);
+            while (row.length < columns) {
+                row.push(0);
+            } 
+            return row;
+        }
+
+        function slideLeft() {
+            for (let r = 0; r < rows; r++) {
+                let row = board[r];
+                row = slide(row);
+                board[r] = row;
+                for (let c = 0; c < columns; c++) {
+                    let tile = document.getElementById(r.toString() + "-" + c.toString());
+                    let num = board[r][c];
+                    updateTile(tile, num);
+                }
+            }
+        }
+
+        function slideRight() {
+            for (let r = 0; r < rows; r++) {
+                let row = board[r]; 
+                row.reverse(); 
+                row = slide(row) 
+                board[r] = row.reverse(); 
+                for (let c = 0; c < columns; c++) {
+                    let tile = document.getElementById(r.toString() + "-" + c.toString());
+                    let num = board[r][c];
+                    updateTile(tile, num);
+                }
+            }
+        }
+
+        function slideUp() {
+            for (let c = 0; c < columns; c++) {
+                let row = [board[0][c], board[1][c], board[2][c], board[3][c]];
+                row = slide(row);
+                for (let r = 0; r < rows; r++) {
+                    board[r][c] = row[r];
+                    let tile = document.getElementById(r.toString() + "-" + c.toString());
+                    let num = board[r][c];
+                    updateTile(tile, num);
+                }
+            }
+        }
+
+        function slideDown() {
+            for (let c = 0; c < columns; c++) {
+                let row = [board[0][c], board[1][c], board[2][c], board[3][c]];
+                row.reverse();
+                row = slide(row);
+                row.reverse();
+                for (let r = 0; r < rows; r++) {
+                    board[r][c] = row[r];
+                    let tile = document.getElementById(r.toString() + "-" + c.toString());
+                    let num = board[r][c];
+                    updateTile(tile, num);
+                }
+            }
+        }
+
+        function setTwo() {
+            if (!hasEmptyTile()) {
+                return;
+            }
+            let found = false;
+            while (!found) {
+                let r = Math.floor(Math.random() * rows);
+                let c = Math.floor(Math.random() * columns);
+                if (board[r][c] == 0) {
+                    board[r][c] = 2;
+                    let tile = document.getElementById(r.toString() + "-" + c.toString());
+                    tile.innerText = "2";
+                    tile.classList.add("x2");
+                    found = true;
+                }
+            }
+        }
+
+        function hasEmptyTile() {
+            let count = 0;
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < columns; c++) {
+                    if (board[r][c] == 0) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        function startGame() {
+            setGame();
+        }
+    </script>
+</body>
+</html>
