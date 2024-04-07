@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page de Jeux</title>
+    <link rel="icon" type="image/png" href="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #111;
+            color: #f4f4f4;
+            line-height: 1.6; 
+        }
+
+        .container {
+            width: 90%; 
+            margin: 0 auto;
+            padding-top: 50px;
+            padding: 20px; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center; 
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .logo {
+            width: 120px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 48px;
+            margin-bottom: 1px;
+            color: #52f552; /* Vert */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            margin-top: 1px;
+            font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+        }
+
+        p {
+            font-size: 20px; 
+            margin-bottom: 20px;
+        }
+
+        .game-section {
+            background-color: #222;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .game-link {
+            color: #52f552; /* Orange */
+            text-decoration: none;
+            font-size: 18px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .game-link:hover {
+            text-decoration: underline;
+        }
+
+        .game-description {
+            color: #999;
+        }
+        .button {
+            width: 100%;
+            padding: 14px 0;
+            background-color: #4CAF50; /* Vert */
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px; 
+        }
+
+        .button:hover {
+            background-color: #45a049; /* Darker Vert */
+        }
+        @media (max-width: 768px) {
+            .container {
+                max-width: 90%;
+            }
+
+            h1 {
+                font-size: 36px;
+            }
+
+            .logo {
+                width: 80px;
+            }
+
+            .game-section {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" alt="Logo" class="logo">
+            <h1>Page de Jeux</h1>
+            <p>Bienvenue sur la page de jeux. Vous pouvez trouver ci-dessous une liste de jeux disponibles.</p>
+        </div>
+        
+        <div class="game-section">
+            <a href="Snake.html" class="game-link">Snake</a>
+            <p class="game-description">Snake est un jeu classique dans lequel vous contrôlez un serpent qui se déplace sur un plateau. Le serpent peut traverser les murs et réapparaît de l'autre côté. Le but est de manger la nourriture et de devenir le plus long possible sans heurter vous-même. Plus vous mangez de la nourriture, plus le serpent devient long et le jeu s'accélère.</p>
+        </div>
+    </div>
+    <button class="button" onclick="window.location.href='index.html'">Retourner à la page principale</button>
+</body>
+</html>
