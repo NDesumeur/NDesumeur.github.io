@@ -18,11 +18,14 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
+            overflow: hidden; /* Empêcher le défilement */
         }
 
         #gameContainer {
-            width: 400px;
-            height: 400px;
+            width: 90vw; /* Utiliser 90% de la largeur de l'écran */
+            height: 90vw; /* Utiliser 90% de la largeur de l'écran */
+            max-width: 400px; /* Taille maximale de 400px */
+            max-height: 400px; /* Taille maximale de 400px */
             position: relative;
             background-color: #333;
             border: 2px solid #fff;
