@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -131,11 +131,10 @@
         }
 
         .home-button:hover {
-            background-color: #d32f2f;
+            background-color: #d32f2f;    
         }
     </style>
 </head>
-
 <body>
     <h1>2048</h1>
     <div id="board"></div>
@@ -152,12 +151,11 @@
         var score = 0;
         var rows = 4;
         var columns = 4;
-
-        var startX, startY, endX, endY;
+        var moveDelay = 500; // Temps en millisecondes entre chaque input pris en compte
+        var touchStartX, touchStartY, touchEndX, touchEndY;
 
         window.onload = function () {
             setGame();
-            addTouchListeners();
         }
 
         function setGame() {
@@ -215,52 +213,11 @@
                 setTwo();
             }
             document.getElementById("score").innerText = score;
-        })
-
-        function addTouchListeners() {
-            var boardDiv = document.getElementById("board");
-            boardDiv.addEventListener('touchstart', handleTouchStart, false);
-            boardDiv.addEventListener('touchmove', handleTouchMove, false);
-        }
-
-        function handleTouchStart(event) {
-            startX = event.touches[0].clientX;
-            startY = event.touches[0].clientY;
-        }
-
-        function handleTouchMove(event) {
-            event.preventDefault();
-            endX = event.touches[0].clientX;
-            endY = event.touches[0].clientY;
-            var diffX = startX - endX;
-            var diffY = startY - endY;
-
-            if (Math.abs(diffX) > Math.abs(diffY)) {
-                if (diffX > 0) {
-                    /* swipe left */
-                    slideLeft();
-                    setTwo();
-                } else {
-                    /* swipe right */
-                    slideRight();
-                    setTwo();
-                }
-            } else {
-                if (diffY > 0) {
-                    /* swipe up */
-                    slideUp();
-                    setTwo();
-                } else {
-                    /* swipe down */
-                    slideDown();
-                    setTwo();
-                }
-            }
-        }
+        });
 
         function filterZero(row) {
             return row.filter(num => num != 0); 
-         }
+        }
 
         function slide(row) {
             row = filterZero(row);
@@ -365,6 +322,47 @@
 
         function startGame() {
             setGame();
+        }
+
+        // Gestion des événements tactiles
+        document.addEventListener('touchstart', function(e) {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+        }, false);
+
+        document.addEventListener('touchend', function(e) {
+            touchEndX = e.changedTouches[0].clientX;
+            touchEndY = e.changedTouches[0].clientY;
+            handleGesture();
+        }, false);
+
+        function handleGesture() {
+            let deltaX = touchEndX - touchStartX;
+            let deltaY = touchEndY - touchStartY;
+
+            // Seuil pour considérer un swipe comme valide
+            const threshold = 50;
+
+            if (Math.abs(deltaX) > threshold || Math.abs(deltaY) > threshold) {
+                // Swipe horizontal
+                if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                    if (deltaX > 0) {
+                        slideRight();
+                    } else {
+                        slideLeft();
+                    }
+                } 
+                // Swipe vertical
+                else {
+                    if (deltaY > 0) {
+                        slideDown();
+                    } else {
+                        slideUp();
+                    }
+                }
+                setTimeout(setTwo, moveDelay);
+                document.getElementById("score").innerText = score;
+            }
         }
     </script>
 </body>
