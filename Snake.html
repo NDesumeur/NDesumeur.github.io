@@ -30,6 +30,7 @@
             grid-template-columns: repeat(20, 1fr);
             grid-template-rows: repeat(20, 1fr);
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            touch-action: manipulation; /* Pour les événements de toucher */
         }
 
         .cell {
@@ -112,9 +113,9 @@
     <h1>Bienvenue dans le Jeu Snake</h1>
     <div id="gameContainer" class="game-container"></div>
     <div id="score">Score : <span id="scoreValue">0</span></div>
-    <div id="rules">Utilisez les touches fléchées pour contrôler le serpent</div>
+    <div id="rules">Utilisez les touches fléchées ou glissez sur l'écran pour contrôler le serpent</div>
     <div id="description">
-        <p>Contrôlez le serpent à l'aide des touches fléchées et mangez autant de nourriture que possible sans vous toucher vous-même.</p>
+        <p>Contrôlez le serpent à l'aide des touches fléchées ou en glissant sur l'écran et mangez autant de nourriture que possible sans vous toucher vous-même.</p>
         <p>Chaque fois que vous mangez de la nourriture, le serpent devient plus long et le jeu s'accélère. Soyez prudent et amusez-vous bien !</p>
     </div>
     <button id="startButton">Commencer le jeu</button>
@@ -235,6 +236,57 @@
             }
         }
 
+        // Fonction pour gérer les événements de toucher
+        function handleTouchStart(event) {
+            const touch = event.touches[0];
+            const startX = touch.clientX;
+            const startY = touch.clientY;
+
+            // Événement pour suivre le mouvement du toucher
+            function handleTouchMove(event) {
+                const touch = event.touches[0];
+                const deltaX = touch.clientX - startX;
+                const deltaY = touch.clientY - startY;
+
+                // Déterminer la direction basée sur le mouvement
+                if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                    // Déplacement horizontal
+                    if (deltaX > 0) {
+                        // Droite
+                        dx = 1;
+                        dy = 0;
+                    } else {
+                        // Gauche
+                        dx = -1;
+                        dy = 0;
+                    }
+                } else {
+                    // Déplacement vertical
+                    if (deltaY > 0) {
+                        // Bas
+                        dx = 0;
+                        dy = 1;
+                    } else {
+                        // Haut
+                        dx = 0;
+                        dy = -1;
+                    }
+                }
+            }
+
+            // Ajouter des écouteurs d'événements pour suivre le mouvement du toucher
+            document.addEventListener('touchmove', handleTouchMove);
+
+            // Événement pour arrêter de suivre le mouvement du toucher
+            function handleTouchEnd() {
+                // Supprimer les écouteurs d'événements
+                document.removeEventListener('touchmove', handleTouchMove);
+            }
+
+            // Ajouter un écouteur d'événement pour détecter quand le toucher se termine
+            document.addEventListener('touchend', handleTouchEnd, { once: true });
+        }
+
         function startGame() {
             snake = [{ x: 10, y: 10 }];
             dx = 0;
@@ -248,6 +300,8 @@
             window.addEventListener('keydown', changeDirection);
             startButton.textContent = "Arrêter le jeu";
             startButton.disabled = false;
+            // Ajouter un écouteur d'événement pour les touches sur le conteneur du jeu
+            gameContainer.addEventListener('touchstart', handleTouchStart);
         }
 
         function endGame() {
@@ -255,6 +309,8 @@
             window.removeEventListener('keydown', changeDirection);
             startButton.textContent = "Commencer le jeu";
             startButton.disabled = false;
+            // Supprimer l'écouteur d'événement pour les touches sur le conteneur du jeu
+            gameContainer.removeEventListener('touchstart', handleTouchStart);
             gameInterval = null;
         }
 
