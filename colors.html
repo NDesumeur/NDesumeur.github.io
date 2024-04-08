@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simon Game</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+      body {
+        background-color: #2f70ff;
+      }
+      .wrapper {
+        background-color: #52f552;
+        height: 37.5em;
+        width: 37.5em;
+        position: absolute;
+        transform: translate(-50%, -50%);
+        top: 50%;
+        left: 50%;
+        border-radius: 0.5em;
+      }
+      .simon {
+        height: 31.25em;
+        width: 31.25em;
+        background-color: #101010;
+        border-radius: 50%;
+        position: absolute;
+        transform: translate(-50%, -50%);
+        top: 50%;
+        left: 50%;
+      }
+      .color-part {
+        height: 13.12em;
+        width: 13.12em;
+        position: absolute;
+        cursor: pointer;
+      }
+      .color1 {
+        background-color: #027802;
+        border-radius: 13em 0 0 0;
+        top: 1.87em;
+        left: 1.87em;
+      }
+      .color2 {
+        background-color: #950303;
+        border-radius: 0 13em 0 0;
+        top: 1.87em;
+        right: 1.87em;
+      }
+      .color3 {
+        background-color: #01018a;
+        bottom: 1.87em;
+        right: 1.87em;
+        border-radius: 0 0 13em 0;
+      }
+      .color4 {
+        background-color: #919102;
+        bottom: 1.87em;
+        left: 1.87em;
+        border-radius: 0 0 0 13em;
+      }
+      .simon:before {
+        position: absolute;
+        content: "";
+        background-color: #101010;
+        height: 13.75em;
+        width: 13.75em;
+        z-index: 1;
+        transform: translate(-50%, -50%);
+        top: 50%;
+        left: 50%;
+        border-radius: 50%;
+      }
+      #count {
+        background-color: #ffffff;
+        font-size: 2.5em;
+        position: absolute;
+        transform: translate(-50%, -50%);
+        top: 50%;
+        left: 50%;
+        z-index: 1;
+        height: 2em;
+        width: 3em;
+        display: grid;
+        place-items: center;
+        border-radius: 0.3em;
+      }
+      .hide {
+        display: none;
+      }
+      .container {
+        background-color: #52f552;
+        position: absolute;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      .container button {
+        background-color: darkgreen;
+        color: #fff;
+        font-size: 1.2em;
+        border: none;
+        outline: none;
+        padding: 1em 2em;
+        border-radius: 0.3em;
+        cursor: pointer;
+      }
+      .container p {
+        font-size: 2em;
+        color: #52f552;
+        margin-bottom: 1em;
+      }
+      .container span {
+        font-weight: 600;
+      }
+      .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background-color: #52f552;
+        text-align: center;
+        padding: 1em 0;
+      }
+      .bottom-nav button {
+        background-color: red;
+        color: #fff;
+        font-size: 1.2em;
+        border: none;
+        outline: none;
+        padding: 0.5em 1em;
+        border-radius: 0.3em;
+        cursor: pointer;
+      }
+      @media screen and (max-width: 600px) {
+        body {
+          font-size: 10px;
+        }
+        .wrapper {
+          height: 35em;
+          width: 35em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <p id="result" class="hide">Demo Message</p>
+      <button id="start">Commencer le jeu</button>
+    </div>
+    <div class="wrapper hide">
+      <div class="simon">
+        <div class="color1 color-part"></div>
+        <div class="color2 color-part"></div>
+        <div class="color3 color-part"></div>
+        <div class="color4 color-part"></div>
+        <div id="count">00</div>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <button id="home" onclick="window.location.href = 'accueil4.html';">Accueil</button>
+    </div>
+    <script>
+      const countValue = document.getElementById("count");
+      const colorPart = document.querySelectorAll(".color-part");
+      const container = document.querySelector(".container");
+      const startButton = document.querySelector("#start");
+      const result = document.querySelector("#result");
+      const wrapper = document.querySelector(".wrapper");
+      const homeButton = document.getElementById("home");
+
+      const colors = {
+        color1: {
+          current: "#068e06",
+          new: "#11e711",
+        },
+        color2: {
+          current: "#950303",
+          new: "#fd2a2a",
+        },
+        color3: {
+          current: "#01018a",
+          new: "#2062fc",
+        },
+        color4: {
+          current: "#919102",
+          new: "#fafa18",
+        },
+      };
+
+      let randomColors = [];
+      let pathGeneratorBool = false;
+      let count,
+        clickCount = 0;
+
+      startButton.addEventListener("click", () => {
+        count = 0;
+        clickCount = 0;
+        randomColors = [];
+        pathGeneratorBool = false;
+        wrapper.classList.remove("hide");
+        container.classList.add("hide");
+        homeButton.classList.remove("hide");
+        pathGenerate();
+      });
+
+      const pathGenerate = () => {
+        randomColors.push(generateRandomValue(colors));
+        count = randomColors.length;
+        pathGeneratorBool = true;
+        pathDecide(count);
+      };
+
+      const generateRandomValue = (obj) => {
+        let arr = Object.keys(obj);
+        return arr[Math.floor(Math.random() * arr.length)];
+      };
+
+      const pathDecide = async (count) => {
+        countValue.innerText = count;
+        for (let i of randomColors) {
+          let currentColor = document.querySelector(`.${i}`);
+          await delay(200);
+          currentColor.style.backgroundColor = `${colors[i]["new"]}`;
+          await delay(300);
+          currentColor.style.backgroundColor = `${colors[i]["current"]}`;
+          await delay(300);
+        }
+        pathGeneratorBool = false;
+      };
+
+      async function delay(time) {
+        return await new Promise((resolve) => {
+          setTimeout(resolve, time);
+        });
+      }
+
+      colorPart.forEach((element) => {
+        element.addEventListener("click", async (e) => {
+          if (pathGeneratorBool) {
+            return false;
+          }
+          if (e.target.classList[0] == randomColors[clickCount]) {
+            e.target.style.backgroundColor = `${
+              colors[randomColors[clickCount]]["new"]
+            }`;
+            await delay(500);
+
+            e.target.style.backgroundColor = `${
+              colors[randomColors[clickCount]]["current"]
+            }`;
+
+            clickCount += 1;
+
+            if (clickCount == count) {
+              clickCount = 0;
+              pathGenerate();
+            }
+          } else {
+            lose();
+          }
+        });
+      });
+
+      const lose = () => {
+        result.innerHTML = `<span> Score: </span> ${count}`;
+        result.classList.remove("hide");
+        container.classList.remove("hide");
+        wrapper.classList.add("hide");
+
+        startButton.innerText = "Jouer à nouveau";
+        startButton.classList.remove("hide");
+      };
+
+      homeButton.addEventListener("click", () => {
+        container.classList.remove("hide");
+        wrapper.classList.add("hide");
+        result.classList.add("hide");
+        startButton.innerText = "Commencer le jeu";
+        startButton.classList.remove("hide");
+      });
+
+
+    </script>
+  </body>
+</html>
