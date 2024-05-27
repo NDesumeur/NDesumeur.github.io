@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        .bizarre-content {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .bizarre-element {
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+    <div id="bizarre-content" class="bizarre-content"></div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function(event) {
+            generateBizarreContent();
+        });
+
+        function generateBizarreContent() {
+            const contentContainer = document.getElementById('bizarre-content');
+            const elementCount = Math.floor(Math.random() * 50) + 10; // Générer entre 50 et 100 éléments
+
+            for (let i = 0; i < elementCount; i++) {
+                const elementType = Math.floor(Math.random() * 10); // Augmenter le nombre de types d'éléments
+
+                switch (elementType) {
+                    case 0:
+                        contentContainer.appendChild(generateRandomPoemElement());
+                        break;
+                    case 1:
+                        contentContainer.appendChild(generateRandomImageElement());
+                        break;
+                    case 2:
+                        contentContainer.appendChild(generateRandomLinkElement());
+                        break;
+                    case 3:
+                        contentContainer.appendChild(generateRandomTextElement());
+                        break;
+                    case 4:
+                        contentContainer.appendChild(generateRandomShapeElement());
+                        break;
+                    case 5:
+                        contentContainer.appendChild(generateRandomVideoElement());
+                        break;
+                    case 6:
+                        contentContainer.appendChild(generateRandomAudioElement());
+                        break;
+                }
+            }
+        }
+
+        // Fonctions de génération d'éléments aléatoires
+
+        function getRandomColor() {
+            return '#' + Math.floor(Math.random()*16777215).toString(16); // Générer une couleur hexadécimale aléatoire
+        }
+
+        function getRandomPosition() {
+            const x = Math.random() * 100;
+            const y = Math.random() * 100;
+            return { x, y };
+        }
+
+        function generateRandomPoemElement() {
+            const poem = document.createElement('p');
+            poem.textContent = generateRandomPoem();
+            poem.style.color = getRandomColor();
+            poem.style.fontSize = Math.floor(Math.random() * 20 + 10) + 'px';
+
+            const position = getRandomPosition();
+            poem.style.left = position.x + '%';
+            poem.style.top = position.y + '%';
+            poem.className = 'bizarre-element';
+            
+            return poem;
+        }
+
+        function generateRandomPoem() {
+            const words = [
+    // Anglais
+    "fluffy", "banana", "unicorn", "spaceship", "wobble", "glow", "harmony", "zigzag", "bizarre", "galactic",
+    "sunshine", "butterfly", "adventure", "rainbow", "magic", "fantastic", "whisper", "mystery", "treasure", "serendipity",
+    "laughter", "dream", "wonder", "ocean", "firefly", "enchanted", "dazzle", "radiant", "splendid", "twilight",
+    "crescent", "whimsical", "silhouette", "luminous", "sparkle", "cascade", "harmony", "azure", "lullaby", "miracle",
+    "cosmic", "journey", "glitter", "eternity", "vivid", "charisma", "serenity", "enigma", "ethereal", "paradise",
+    // Français
+    "papillon", "cascade", "étoile", "soleil", "montagne", "arc-en-ciel", "liberté", "aventure", "magique", "chocolat",
+    "paradis", "mystère", "rêve", "fleur", "bisou", "féerie", "enchanteur", "sérénité", "mélodie", "tendresse",
+    "lueur", "charme", "émerveillement", "chance", "câlin", "réconfort", "fascination", "merveilleux", "inspiration", "éclatant",
+    "cascade", "douceur", "plénitude", "évasion", "délice", "mirage", "brillance", "parfait", "harmonie", "éclaireur",
+    // Espagnol
+    "playa", "sol", "amor", "beso", "fiesta", "alegría", "sorpresa", "fantástico", "bailar", "vida",
+    "luz", "esplendor", "cariño", "encanto", "celestial", "sonrisa", "abrazo", "susurro", "encantado", "paraíso",
+    "maravilloso", "gracia", "ternura", "risa", "mágico", "esperanza", "risueño", "esencia", "destino", "caricia",
+    "destello", "encendido", "luna", "refugio", "paz", "sueño", "júbilo", "encantamiento", "maravilla", "aleteo",
+    // Allemand
+    "glücklich", "sonnenschein", "abenteuer", "schokolade", "kätzchen", "regenbogen", "bienenstock", "märchen", "glitzer", "fabelhaft",
+    "zauberhaft", "freude", "wunder", "fantasie", "melodie", "sehnsucht", "herzlich", "lächeln", "kuscheln", "traumhaft",
+    "stern", "mond", "natur", "phantasie", "fantastisch", "zauber", "sehnsucht", "froh", "geheimnisvoll", "lieblich",
+    "lachen", "freundlich", "frieden", "harmonie", "leidenschaft", "erinnerung", "sanft", "zärtlich", "vertrauen", "glanz",
+    // Italien
+    "sole", "amore", "bacio", "cioccolato", "avventura", "felicità", "magico", "farfalla", "meraviglioso", "arcobaleno",
+    "incanto",
+    "incanto", "sogno", "gioia", "dolcezza", "fortuna", "abbraccio", "sorriso", "emozione", "tesoro", "paradiso",
+    "splendore", "profumo", "bontà", "fascino", "scintilla", "armonia", "innamorato", "serenità", "carezza", "risata",
+    "brillante", "radioso", "fiorire", "gioioso", "incandescente", "lusinghiero", "meraviglia", "pazienza", "vivace", "luminoso",
+    // Russe
+    "солнце", "любовь", "цветок", "весна", "счастье", "радуга", "путешествие", "волшебный", "дружба", "море",
+    "свобода", "удивительный", "тайна", "вдохновение", "восторг", "мир", "чудесный", "приключение", "успех", "легкость",
+    "лучик", "поцелуй", "сладость", "искра", "романтика", "подарок", "поддержка", "смех", "звезда", "мечта",
+    // Japonais
+    "太陽", "愛", "幸せ", "冒険", "チョコレート", "輝く", "猫", "夢", "桜", "友情",
+    "魔法", "喜び", "神秘", "優しさ", "輝き", "奇跡", "憧れ", "踊る", "静か", "浮世",
+    "希望", "美しい", "約束", "秘密", "楽しい", "冬",   "雪", "星", "宇宙", "夢見る", "彩り", "微笑み", "温かさ", "花", "海", "風",
+    // Chinois
+    "太阳", "爱", "幸福", "冒险", "巧克力", "闪闪发光", "猫", "梦想", "友谊", "海洋",
+    "明亮", "神奇", "温馨", "希望", "微笑", "宝贝", "宝藏", "美好", "温暖", "诗意",
+    "雨", "花朵", "微风", "快乐", "幸运", "魅力", "激情", "祝福", "幽静", "安详",
+    // Arabe
+    "شمس", "حب", "سعادة", "مغامرة", "شوكولاتة", "سحري", "قوس قزح", "زهرة", "فرح", "حلم",
+    "سلام", "نجم", "جمال", "سحر", "حنان", "بهجة", "سرور", "سماء", "بحر", "فناء",
+    "تألق", "فجر", "هدوء", "مساء", "نجاح", "إبتسامة", "أمل", "إرتياح", "إثارة", "حيوية",
+];
+
+            let poem = '';
+            for (let i = 0; i < 100; i++) { // Générer un plus grand nombre de mots
+                poem += words[Math.floor(Math.random() * words.length)] + ' ';
+            }
+            return poem.trim();
+        }
+
+
+        
+        function generateRandomShapeElement() {
+            const shape = document.createElement('div');
+            const size = Math.floor(Math.random() * 100) + 50; // Taille aléatoire entre 50 et 150 pixels
+
+            const shapes = ['rectangle', 'circle', 'triangle'];
+            const randomShape = shapes[Math.floor(Math.random() * shapes.length)];
+
+            shape.style.width = size + 'px';
+            shape.style.height = size + 'px';
+
+            switch (randomShape) {
+                case 'rectangle':
+                    shape.style.borderRadius = '10%'; // Bords arrondis pour un rectangle
+                    break;
+                case 'circle':
+                    shape.style.borderRadius = '50%'; // Forme circulaire pour un cercle
+                    break;
+                case 'triangle':
+                    shape.style.width = '0';
+                    shape.style.height = '0';
+                    shape.style.borderLeft = size / 2 + 'px solid transparent';
+                    shape.style.borderRight = size / 2 + 'px solid transparent';
+                    shape.style.borderBottom = size + 'px solid ' + getRandomColor(); // Triangle équilatéral
+                    break;
+            }
+
+            shape.style.backgroundColor = getRandomColor();
+
+            const position = getRandomPosition();
+            shape.style.left = position.x + '%';
+            shape.style.top = position.y + '%';
+            shape.className = 'bizarre-element';
+
+            return shape;
+        }
+
+        function generateRandomImageElement() {
+            const image = document.createElement('img');
+            image.src = `https://picsum.photos/200/300?random=${Math.random()}`; // Utiliser des images aléatoires de Lorem Picsum
+            image.style.width = Math.floor(Math.random() * 200) + 100 + 'px'; // Largeur aléatoire entre 100 et 300 pixels
+            image.style.height = Math.floor(Math.random() * 200) + 100 + 'px'; // Hauteur aléatoire entre 100 et 300 pixels
+
+            const position = getRandomPosition();
+            image.style.left = position.x + '%';
+            image.style.top = position.y + '%';
+            image.className = 'bizarre-element';
+
+            return image;
+        }
+
+        function generateRandomLinkElement() {
+            const link = document.createElement('a');
+            link.href = 'https://example.com'; // Lien vers une page factice
+            link.textContent = generateRandomString(Math.floor(Math.random() * 10) + 5);
+            link.style.color = getRandomColor();
+            link.style.fontSize = Math.floor(Math.random() * 20 + 10) + 'px';
+
+            const position = getRandomPosition();
+            link.style.left = position.x + '%';
+            link.style.top = position.y + '%';
+            link.className = 'bizarre-element';
+
+            return link;
+        }
+
+        function generateRandomAudioElement() {
+            const audio = document.createElement('audio');
+            audio.src = `https://www.soundjay.com/button/beep-01a.mp3`;
+            audio.controls = true;
+
+            const position = getRandomPosition();
+            audio.style.left = position.x + '%';
+            audio.style.top = position.y + '%';
+            audio.className = 'bizarre-element';
+
+            return audio;
+        }
+
+// Fonction pour générer un lien vidéo aléatoire basé sur un modèle
+function generateRandomVideoLink() {
+    const videoLinkTemplate = "https://cdn.pixabay.com/video/{{year}}/{{month}}/{{day}}/{{id}}_large.mp4";
+    const currentDate = new Date();
+
+    // Remplacer les placeholders dans le modèle de lien avec la date actuelle et un identifiant aléatoire
+    const videoId = Math.floor(Math.random() * 1000000); // Identifiant aléatoire
+    const videoLink = videoLinkTemplate
+        .replace('{{year}}', currentDate.getFullYear())
+        .replace('{{month}}', ('0' + (currentDate.getMonth() + 1)).slice(-2)) // Ajouter un zéro en tête si nécessaire
+        .replace('{{day}}', ('0' + currentDate.getDate()).slice(-2)) // Ajouter un zéro en tête si nécessaire
+        .replace('{{id}}', videoId);
+
+    return videoLink;
+}
+
+// Fonction pour générer un élément vidéo avec un lien vidéo aléatoire
+function generateRandomVideoElement() {
+    const video = document.createElement('video');
+    const randomVideoSource = generateRandomVideoLink();
+
+    video.src = randomVideoSource;
+    video.controls = true;
+
+    const position = getRandomPosition();
+    video.style.left = position.x + '%';
+    video.style.top = position.y + '%';
+    video.style.width = '300px'; // Largeur spécifique
+    video.style.height = '200px'; // Hauteur spécifique
+    video.className = 'bizarre-element';
+
+    return video;
+}
+
+
+
+        function generateRandomTextElement() {
+            const text = document.createElement('div');
+            text.textContent = generateRandomString(Math.floor(Math.random() * 100) + 50);
+            text.style.color = getRandomColor();
+            text.style.fontSize = Math.floor(Math.random() * 20 + 10) + 'px';
+
+            const position = getRandomPosition();
+            text.style.left = position.x + '%';
+            text.style.top = position.y + '%';
+            text.className = 'bizarre-element';
+
+            return text;
+        }
+
+        function generateRandomString(length) {
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let result = '';
+            for (let i = 0; i < length; i++) {
+                result += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+            return result;
+        }
+    </script>
+</body>
+</html>
+
