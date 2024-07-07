@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autres Projets</title>
+    <link rel="icon" type="image/png" href="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #111;
+            color: #f4f4f4;
+            line-height: 1.6; 
+        }
+
+        .container {
+            width: 90%; 
+            margin: 0 auto;
+            padding-top: 50px;
+            padding: 20px; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center; 
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .logo {
+            width: 120px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 48px;
+            margin-bottom: 1px;
+            color:rgb(255, 81, 0);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            margin-top: 1px;
+            font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+        }
+
+        p {
+            font-size: 20px; 
+            margin-bottom: 20px;
+        }
+
+        .button {
+            width: 100%;
+            padding: 14px 0;
+            background-color:rgb(255, 81, 0);
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px; 
+        }
+
+        .button:hover {
+            background-color: #ff8200;
+        }
+
+        .project-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .project-item {
+            background-color: #222;
+            border-radius: 15px;
+            padding: 20px;
+            width: 300px;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+        }
+
+        .project-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+        }
+
+        .project-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .project-title {
+            font-size: 24px;
+            color:rgb(255, 81, 0);
+            margin-top: 10px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .project-description {
+            font-size: 16px;
+            color: #f4f4f4;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                max-width: 90%;
+            }
+
+            h1 {
+                font-size: 36px;
+            }
+
+            .logo {
+                width: 80px;
+            }
+
+            .project-title {
+                font-size: 18px;
+            }
+
+            .project-description {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="#">
+                <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" alt="Logo" class="logo">
+            </a>
+            <h1><strong>Autres Projets</strong></h1>
+            <p>Bienvenue dans la section "Autres", où vous trouverez tous mes projets divers et variés. Explorez et découvrez ce que j'ai créé en dehors des autres rubriques !</p>
+        </div>
+        
+        <div class="project-list">
+            <a href="projet1.html" class="project-item">
+                <img src="projet1.jpg" alt="Projet 1">
+                <div class="project-title">Projet 1</div>
+                <div class="project-description">Description du projet 1.</div>
+            </a>
+
+        </div>
+        
+        <button class="button" onclick="window.location.href='index.html'">Retourner à la page principale</button>
+    </div>
+</body>
+</html>
