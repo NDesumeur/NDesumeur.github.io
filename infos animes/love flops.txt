@@ -84,3 +84,16 @@ Graphismes : 1PT 1/1
 OP : 1PT 1/1
 Endings : 1PT 1/1
 OST : 1PT 0.8/1
+
+
+Appréciation générale : 4PTS  0.1/4
+Développement général 2PTS  0.25/2
+Histoire : 2PTS  0.25/2
+Persos : 2PTS 0/2
+Chara developement : 2PTS 0/2
+Rythme : 2PTS 0.1/2
+Ambiance : 2PTS 0/2
+Graphismes : 1PT 0.3/1
+OP : 1PT 0.4/1
+Endings : 1PT 0.2/1
+OST : 1PT 0.2/1
