@@ -3,78 +3,81 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>site de ND</title>
+  <title>Site de ND</title>
   <style>
-    
     body, html {
       height: 100%;
       margin: 0;
-      overflow: hidden;
-    }
-
-    .background {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #000;
       position: relative;
-      width: 100%;
-      height: 100%;
-      background-color: #000; /* couleur de fond */
-    }
-
-    .moving-image {
-      position: absolute;
-      width: 100px; /* taille de l'image */
-      height: 100px;
-      transition: left 5s ease-in-out;
     }
 
     .info-box {
-      position: absolute;
-      top: 40%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: #000;
-      border-radius: 120px;
-      padding: 120px;
+      width: 70vw; /* Ajuste la largeur selon la taille de l'écran */
+      max-width: 500px; /* Limite la largeur maximale pour les grands écrans */
+      height: 70vw;
+      max-height: 500px;
+      background-color: #222;
+      border-radius: 50%; /* Rond parfait */
+      box-shadow: 0 0 25px #fff;
+      padding: 20px;
       color: #fff;
-      border: 20px solid green;
-      animation: changeBorder 5s infinite; /* changement de couleur de la bordure */
+      border: 1cap solid green;
+      animation: changeBorder 5s infinite;
       text-align: center;
+      position: relative;
+      z-index: 1;
     }
 
     .info-box h2 {
-      font-size: 24px;
-      margin-bottom: 20px;
+      font-size: 210%; 
+      margin-bottom: 7.5%;
+      margin-top: 10%;
       text-transform: uppercase;
       text-align: center;
     }
 
     .info-box p {
-      font-size: 18px;
+      font-size: 160%;
       line-height: 1.2;
     }
 
     .info-box ul {
-      font-size: 14px;
-      text-align: left;
+      font-size: 150%;
+      text-align: center;
+      padding: 0;
+      list-style: none;
     }
 
+    .info-box ul li {
+      margin-bottom: 5%;
+      padding: 2.5%;
+    }
 
+    .info-box ul li a {
+      text-decoration: none;
+      padding: 3%;
+      border-width: 5px;
+      border-style: solid;
+      border-radius: 50px;
+      background-color: #000;
+      box-shadow: 0 0 5px #fff;
+    }
 
-  
-    .dore {
-      color:gold
+    .info-box ul li a:hover{
+      padding: 4%;
+      box-shadow: 0 0 10px #fff;
+      font-size: 165%;
     }
-    .violet {
-      color:violet
-    }
-    .green {
-      color: #52f552
-    }
-    .orange {
-      color:rgb(255, 81, 0)
-    }
-    #random-char {
-            font-size: 2;
-        }
+
+    .dore { color: gold; }
+    .violet { color: violet; }
+    .green { color: #52f552; }
+    .orange { color: rgb(255, 81, 0); }
+
     @keyframes changeBorder {
       0% { border-color: #52f552; }
       25% { border-color: gold; }
@@ -82,499 +85,111 @@
       75% { border-color: violet; }
       100% { border-color: #52f552; }
     }
-  </style>
 
+    .egg {
+      position: absolute;
+      transform-origin: center;
+    }
+
+    @keyframes rotate_vert {
+      0% {transform: translate(-225px, -225px) rotate(30deg);}
+      12.5% {transform: translate(0px, -285px)rotate(-30deg);}
+      25% {transform: translate(225px, -225px)rotate(30deg);}
+      37.5% {transform: translate(285px, 0px)rotate(-30deg);}
+      50% {transform: translate(225px, 225px)rotate(30deg);}
+      62.5% {transform: translate(0px, 285px)rotate(-30deg);}
+      75% {transform: translate(-225px, 225px)rotate(30deg);}
+      87.5% {transform: translate(-285px, 0px)rotate(-30deg);}
+      100% {transform: translate(-225px, -225px)rotate(30deg);}
+    }
+
+    @keyframes rotate_violet {
+      0% {transform: translate(225px, -225px)rotate(-30deg);}
+      12.5% {transform: translate(285px, 0px)rotate(30deg);}
+      25% {transform: translate(225px, 225px)rotate(-30deg);}
+      37.5% {transform: translate(0px, 285px)rotate(30deg);}
+      50% {transform: translate(-225px, 225px)rotate(-30deg);}
+      62.5% {transform: translate(-285px, 0px)rotate(30deg);}
+      75% {transform: translate(-225px, -225px)rotate(-30deg);}
+      87.5% {transform: translate(0px, -285px)rotate(30deg);}
+      100% {transform: translate(225px, -225px)rotate(-30deg);}
+    }
+
+    @keyframes rotate_rouge {
+      0% {transform: translate(225px, 225px)rotate(30deg);}
+      12.5% {transform: translate(0px, 285px)rotate(-30deg);}
+      25% {transform: translate(-225px, 225px)rotate(30deg);}
+      37.5% {transform: translate(-285px, 0px)rotate(-30deg);}
+      50% {transform: translate(-225px, -225px)rotate(30deg);}
+      62.5% {transform: translate(0px, -285px)rotate(-30deg);}
+      75% {transform: translate(225px, -225px)rotate(30deg);}
+      87.5% {transform: translate(285px, 0px)rotate(-30deg);}
+      100% {transform: translate(225px, 225px)rotate(30deg);}
+    }
+
+    @keyframes rotate_jaune {
+      0% {transform: translate(-225px, 225px)rotate(-30deg);}
+      12.5% {transform: translate(-285px, 0px)rotate(30deg);}
+      25% {transform: translate(-225px, -225px)rotate(-30deg);}
+      37.5% {transform: translate(0px, -285px)rotate(30deg);}
+      50% {transform: translate(225px, -225px)rotate(-30deg);}
+      62.5% {transform: translate(285px, 0px)rotate(30deg);}
+      75% {transform: translate(225px, 225px)rotate(-30deg);}
+      87.5% {transform: translate(0px, 285px)rotate(30deg);}
+      100% {transform: translate(-225px, 225px)rotate(-30deg);}
+    }
+
+    @keyframes rotate_noir {
+      0% {transform: translate(0px, 0px);}
+      12.5% {transform: translate(0px, 300px);}
+      25% {transform: translate(0px, 0px);}
+      37.5% {transform: translate(300px, 0px);}
+      50% {transform: translate(0px, 0px);}
+      62.5% {transform: translate(0px, -300px);}
+      75% {transform: translate(0px, 0px);}
+      87.5% {transform: translate(-300px, 0px);}
+      100% {transform: translate(0px, 0px);}
+    }
+
+    .egg.sw { animation: rotate_vert 10s linear infinite; }
+    .egg.nw { animation: rotate_jaune 10s linear infinite; }
+    .egg.ne { animation: rotate_violet 10s linear infinite; }
+    .egg.se { animation: rotate_rouge 10s linear infinite; }
+    .egg.nig { animation: rotate_noir 25s linear infinite; }
+
+   
+  </style>
 </head>
 <body>
-  <audio id="background-music" loop>
-    <source src="musique_de_fond.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
-  </audio>
-  
-  <div class="background">
-
-    <a href="accueil.html">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    <img src="logo.png" class="moving-image">
-    </a>
-    <a href="accueil2.html">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-        <img src="Purple_yoshi_YID.png" class="moving-image">
-    </a>
-
-    <a href="accueil4.html">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="120px-Yoshi_Egg_Green_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-    </a>
-
-    <a href="accueil3.html">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        <img src="200px-Yoshi_Egg_Red_Artwork_-_Yoshi_s_New_Island.png" class="moving-image">
-        
-    </a>
-
-
-    <div class="info-box">
-      <h2>Site de ND</h2>
-      <p>Bienvenue, où souhaitez-vous aller ? </p>
-      <ul>
-        <li><a class="dore" href="accueil.html">critique d'animes</a></li>
-        <li><a class="violet" href="accueil2.html">notes de musiques</a></li>
-        <li><a class="green" href="accueil4.html">jeux développés</a></li>
-        <li><a class="orange" href="accueil3.html">autres</a></li>
-      </ul>
-
-    </div>
+  <div class="info-box">
+    <h2>Site de ND</h2>
+    <p>Bienvenue, où souhaitez-vous aller ?</p>
+    <ul>
+      <li><a class="dore" href="accueil.html">critique d'animes</a></li>
+      <li><a class="violet" href="accueil2.html">notes de musiques</a></li>
+      <li><a class="green" href="accueil4.html">jeux développés</a></li>
+      <li><a class="orange" href="accueil3.html">autres</a></li>
+    </ul>
   </div>
-  <script>
-    window.addEventListener('load', function() {
-        // Attachez un gestionnaire d'événements de clic à la fenêtre
-        window.addEventListener('click', function() {
-            // L'utilisateur a interagi avec la page, commencez la lecture de la musique
-            var audio = document.getElementById('background-music');
-            audio.volume = 0.2; // Réglez le volume à 50% (0.5)
-            audio.play();
-            
-            // Une fois que la musique commence à jouer, supprimez cet écouteur d'événements de clic
-            window.removeEventListener('click', arguments.callee);
-        });
-    });
-    document.addEventListener("DOMContentLoaded", function(event) {
-      const images = document.querySelectorAll('.moving-image');
 
-      images.forEach(image => {
-        const screenWidth = window.innerWidth;
-        const screenHeight = window.innerHeight;
-        const randomX = Math.random() * screenWidth;
-        const randomY = Math.random() * screenHeight;
-        const direction = Math.random() < 0.5 ? 'left' : 'right';
+  <a href="accueil.html" class="egg nw">
+    <img src="oeuf_jaune.png" alt="Œuf jaune" width="85%">
+  </a>
 
-        image.style.top = randomY + 'px';
-        image.style.left = randomX + 'px';
+  <a href="accueil2.html" class="egg ne">
+    <img src="oeuf_violet.png" alt="Œuf violet" width="85%">
+  </a>
 
-        moveImage(image, direction);
-      });
+  <a href="accueil3.html" class="egg se">
+    <img src="oeuf_rouge.png" alt="Œuf rouge" width="85%">
+  </a>
 
-      function moveImage(image, direction) {
-        const screenWidth = window.innerWidth;
-        const screenHeight = window.innerHeight;
-        const imageWidth = image.clientWidth;
-        const imageHeight = image.clientHeight;
-        const currentLeft = parseInt(window.getComputedStyle(image).left);
-        const currentTop = parseInt(window.getComputedStyle(image).top);
+  <a href="accueil4.html" class="egg sw">
+    <img src="oeuf_vert.png" alt="Œuf vert" width="85%">
+  </a>
 
-        const speed = Math.random() * 1000; // Vitesse de déplacement aléatoire entre 5 et 15 pixels par seconde
-
-        setInterval(() => {
-          if (direction === 'left') {
-            if (currentLeft <= -imageWidth) {
-              image.style.left = (screenWidth + imageWidth) + 'px';
-            } else {
-              image.style.left = (currentLeft - speed) + 'px';
-            }
-          } else {
-            if (currentLeft >= screenWidth) {
-              image.style.left = (-imageWidth) + 'px';
-            } else {
-              image.style.left = (currentLeft + speed) + 'px';
-            }
-          }
-        }, 100); // Rafraîchir toutes les 100 millisecondes
-      }
-    });
-
-  </script>
+  <a href="" class="egg nig">
+    <img src="oeuf_noir.png" alt="oeuf noir" width="85%">
+  </a>
 </body>
 </html>
