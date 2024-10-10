@@ -105,25 +105,38 @@
         }
 
         @media (max-width: 768px) {
-            .container {
-                max-width: 90%;
-            }
+            html {
+      overflow: hidden;
+    }
+    .info-box ul li a{
+        font-size: 10px; /* Réduire la taille de la police */
+        padding: 10px;
+        margin: 0px;   /* Ajuster le padding pour rendre les éléments plus compacts */
+    }
 
-            h1 {
-                font-size: 36px;
-            }
+    .info-box ul li {
+      padding: 0.5%;
+    }
 
-            .logo {
-                width: 80px;
-            }
+    .info-box ul li a:hover{
+      padding: 2%;
+      box-shadow: 0 0 10px #fff;
+      font-size: 80%;
+    }
 
-            .game-section {
-                padding: 10px;
-            }
+    .info-box {
+        width: 300px; /* Réduire la taille de la boîte sur les petits écrans */
+        height: 300px;
+        padding: 10px;
+    }
 
-            .playable {
-                font-size: 12px;
-            }
+    .info-box h2 {
+        font-size: 22px; /* Réduire la taille du titre */
+    }
+
+    .info-box p {
+        font-size: 18px; /* Réduire la taille du paragraphe */
+    }
         }
     </style>
 </head>
