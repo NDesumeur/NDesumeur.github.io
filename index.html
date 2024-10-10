@@ -157,6 +157,40 @@
     .egg.se { animation: rotate_rouge 10s linear infinite; }
     .egg.nig { animation: rotate_noir 25s linear infinite; }
 
+    @media (max-width: 1000px) {
+            html {
+      overflow: hidden;
+    }
+    .info-box ul li a{
+        font-size: 10px; /* Réduire la taille de la police */
+        padding: 10px;
+        margin: 0px;   /* Ajuster le padding pour rendre les éléments plus compacts */
+    }
+
+    .info-box ul li {
+      padding: 0.5%;
+    }
+
+    .info-box ul li a:hover{
+      padding: 2%;
+      box-shadow: 0 0 10px #fff;
+      font-size: 80%;
+    }
+
+    .info-box {
+        width: 300px; /* Réduire la taille de la boîte sur les petits écrans */
+        height: 300px;
+        padding: 10px;
+    }
+
+    .info-box h2 {
+        font-size: 22px; /* Réduire la taille du titre */
+    }
+
+    .info-box p {
+        font-size: 18px; /* Réduire la taille du paragraphe */
+    }
+        }
    
   </style>
 </head>
