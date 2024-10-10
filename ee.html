@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>U found it GG</title>
+</head>
+
+<style>
+    body, html {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #000;
+        position: relative;
+    }
+
+    .text h1 {
+        color: white;
+    }
+
+    .text p {
+        color: white;
+    }
+
+    .text {
+        text-align: center;
+        border: 3px solid orange;
+        border-radius: 20px;
+        padding: 10px;
+        margin: 20px;
+        background-color: #222;
+        box-shadow: 0 0 10px #fff;
+    }
+
+    .yoshi img {
+        transition: transform 0.3s ease;
+    }
+
+    /* Animation hover sur l'image du gros Yoshi */
+    .yoshi img {
+        transition: transform 0.3s ease;
+    }
+
+    /* Animation hover sur l'image du gros Yoshi */
+    .yoshi img:hover {
+        transform: scale(1.1); /* Effet de zoom */
+    }
+</style>
+
+<!-- Son joué lors du chargement de la page -->
+<audio id="audio" src="111_HKJkJTm.mp3" preload="auto"></audio>
+
+<!-- Son joué au hover sur l'image -->
+<audio id="yoshi" src="yoshi-tongue.mp3" preload="auto"></audio>
+
+<script>
+    // Jouer le son lorsque la page est complètement chargée
+    window.addEventListener('load', function() {
+        var audio = document.getElementById('audio');
+        audio.play();
+    });
+
+    // Jouer un son au hover sur l'image
+    const yoshiImg = document.querySelector('.yoshi img');
+    const hoverSound = document.getElementById('yoshi');
+
+    yoshiImg.addEventListener('mouseenter', function() {
+        hoverSound.currentTime = 0; // Repartir le son de zéro
+        hoverSound.play();
+    });
+
+</script>
+
+<body>
+    <div class="text">
+        <h1>GG tu m'as trouvé</h1>
+        <p>Bon après j'ai bouffé le reste des easter eggs... j'avais faim OK !</p>
+    </div>
+
+    <div class="yoshi">
+        <img src="fat_yoshi.png" alt="gros yoshi" width="500px">
+    </div>
+</body>
+</html>
