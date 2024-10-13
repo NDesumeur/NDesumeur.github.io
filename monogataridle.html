@@ -227,7 +227,7 @@
             "Heavy Stone Crab": { age: "Inconnu", hairColor: "", eyeColor:"Jaune", occupation:"Aberration", power: "Aberration Heavy Stone Crab", anime: "Bakemonogatari", sex: "Inconnu", image: "Monogataridle/Crab.jpg" },
             "Flame-Wreathe Bee": { age: "Inconnu", hairColor: "", eyeColor:"Inconnu", occupation:"Aberration", power: "Aberration Flame-Wreathe Bee", anime: "Nisemonogatari", sex: "Inconnu", image: "Monogataridle/Bee.jpg" },
             "Shide No Tori": { age: "Inconnu", hairColor: "", eyeColor:"Inconnu", occupation:"Aberration", power: "Aberration Shide No Tori", anime: "Nisemonogatari", sex: "Inconnu", image: "Monogataridle/Tori.jpg" },
-            
+
 
 
 
@@ -335,12 +335,12 @@
                 hairColorCell.textContent = data.hairColor;
                 hairColorCell.className = (data.hairColor === characterData[randomCharacter].hairColor) ? 'correct' : 'incorrect';
 
-                const eyeColorCell = row.insertCell(5); // Nouvelle cellule
-                eyeColorCell.textContent = data.eyeColor; // Ajout de la couleur des yeux
+                const eyeColorCell = row.insertCell(5); 
+                eyeColorCell.textContent = data.eyeColor; 
                 eyeColorCell.className = (data.eyeColor === characterData[randomCharacter].eyeColor) ? 'correct' : 'incorrect';
 
-                const occupationCell = row.insertCell(6); // Nouvelle cellule
-                occupationCell.textContent = data.occupation; // Ajout de l'occupation
+                const occupationCell = row.insertCell(6); 
+                occupationCell.textContent = data.occupation;
                 occupationCell.className = (data.occupation === characterData[randomCharacter].occupation) ? 'correct' : 'incorrect';
 
                 const powerCell = row.insertCell(7);
