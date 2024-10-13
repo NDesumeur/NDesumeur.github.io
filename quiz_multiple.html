@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz à 4 Réponses</title>
+    <link rel="icon" type="image/png" href="Purple_yoshi_YID.png">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #111;
+            color: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+        }
+        .question {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #8a2be2; /* Violet */
+        }
+        .option {
+            display: block;
+            margin: 10px auto;
+            padding: 14px;
+            width: 80%;
+            background-color: #222;
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .option:hover {
+            background-color: #9400d3; /* Darker Violet */
+        }
+        #result {
+            font-size: 20px;
+            margin-top: 20px;
+        }
+        .button-container {
+            margin-top: 20px;
+        }
+        .next-button, .start-button, .retry-button, .home-button {
+            padding: 14px 20px;
+            background-color: #8a2be2; /* Violet */
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            display: none; /* Hidden initially */
+            transition: background-color 0.3s;
+            margin: 10px auto; /* Center button */
+        }
+        .next-button:hover, .start-button:hover, .retry-button:hover, .home-button:hover {
+            background-color: #9400d3; /* Darker Violet */
+        }
+        .settings {
+            margin-bottom: 20px;
+        }
+        #timer {
+            font-size: 20px;
+            margin: 10px 0;
+        }
+        #score {
+            font-size: 20px;
+            margin-top: 10px;
+            display: none; /* Masqué par défaut */
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Quiz à 4 Réponses</h1>
+    
+    <div class="settings">
+        <label for="numQuestions">Nombre de questions :</label>
+        <select id="numQuestions">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+        </select>
+        
+        <label for="timeLimit">Temps par question (secondes) :</label>
+        <select id="timeLimit">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+        </select>
+        
+        <button class="start-button" id="startButton" onclick="startQuiz()">Démarrer le Quiz</button>
+    </div>
+
+    <div class="question" id="question"></div>
+    <div id="options"></div>
+    <div id="timer"></div>
+    <div id="result"></div>
+    <div id="score">Score : 0</div>
+    <div class="button-container">
+        <button class="next-button" id="nextButton" onclick="loadQuestion()">Suivant</button>
+        <button class="retry-button" id="retryButton" onclick="restartQuiz()">Refaire le Quiz</button>
+        <button class="home-button" id="homeButton" onclick="goHome()">Revenir à l'Accueil</button> <!-- Nouveau bouton -->
+    </div>
+
+    <script>
+        let questions = [
+            {
+                question: "Quelle est la capitale de la France ?",
+                options: ["Paris", "Lyon", "Marseille", "Nice"],
+                answer: "Paris"
+            },
+            {
+                question: "Qui a écrit 'Les Misérables' ?",
+                options: ["Victor Hugo", "Emile Zola", "Molière", "Balzac"],
+                answer: "Victor Hugo"
+            },
+            {
+                question: "Quel est le plus grand océan du monde ?",
+                options: ["Atlantique", "Indien", "Arctique", "Pacifique"],
+                answer: "Pacifique"
+            },
+            {
+                question: "Quelle est la langue la plus parlée au monde ?",
+                options: ["Anglais", "Espagnol", "Chinois", "Français"],
+                answer: "Chinois"
+            },
+            {
+                question: "Quel est l'élément chimique dont le symbole est O ?",
+                options: ["Or", "Oxygène", "Hydrogène", "Fer"],
+                answer: "Oxygène"
+            },
+            {
+                question: "Qui a peint la Mona Lisa ?",
+                options: ["Vincent van Gogh", "Pablo Picasso", "Léonard de Vinci", "Claude Monet"],
+                answer: "Léonard de Vinci"
+            },
+            {
+                question: "Quel pays est connu pour ses kangourous ?",
+                options: ["Australie", "Canada", "Brésil", "Afrique du Sud"],
+                answer: "Australie"
+            },
+            {
+                question: "Quelle est la monnaie du Japon ?",
+                options: ["Yuan", "Won", "Yen", "Dollar"],
+                answer: "Yen"
+            },
+            {
+                question: "Quel est le plus haut sommet du monde ?",
+                options: ["K2", "Kangchenjunga", "Everest", "Makalu"],
+                answer: "Everest"
+            },
+            {
+                question: "En quelle année a eu lieu la Révolution française ?",
+                options: ["1789", "1776", "1804", "1812"],
+                answer: "1789"
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let timeLimit = 10;
+        let timer;
+        let selectedQuestions = [];
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function startQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            const numQuestions = parseInt(document.getElementById("numQuestions").value);
+            selectedQuestions = shuffleArray(questions).slice(0, numQuestions);
+            timeLimit = parseInt(document.getElementById("timeLimit").value);
+            document.querySelector('.settings').style.display = 'none';
+            document.getElementById("result").textContent = '';
+            document.getElementById("score").textContent = `Score : ${score}`;
+            document.getElementById("score").style.display = "block"; 
+            document.getElementById("retryButton").style.display = "none"; 
+            document.getElementById("homeButton").style.display = "none"; 
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            if (currentQuestionIndex < selectedQuestions.length) {
+                const currentQuestion = selectedQuestions[currentQuestionIndex];
+                document.getElementById("question").textContent = currentQuestion.question;
+                const optionsContainer = document.getElementById("options");
+                optionsContainer.innerHTML = ""; 
+                const nextButton = document.getElementById("nextButton");
+                nextButton.style.display = "none"; 
+                document.getElementById("result").textContent = ''; 
+
+                const shuffledOptions = shuffleArray(currentQuestion.options);
+                shuffledOptions.forEach(option => {
+                    const button = document.createElement("button");
+                    button.textContent = option;
+                    button.className = "option";
+                    button.onclick = () => checkAnswer(option);
+                    optionsContainer.appendChild(button);
+                });
+
+                startTimer();
+            } else {
+                showResult();
+            }
+        }
+
+        function startTimer() {
+            let timeLeft = timeLimit;
+            document.getElementById("timer").textContent = `Temps restant : ${timeLeft} secondes`;
+            timer = setInterval(() => {
+                timeLeft--;
+                document.getElementById("timer").textContent = `Temps restant : ${timeLeft} secondes`;
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    checkAnswer(null);
+                }
+            }, 1000);
+        }
+
+        function checkAnswer(selectedOption) {
+            clearInterval(timer); 
+            const correctAnswer = selectedQuestions[currentQuestionIndex].answer;
+            const result = document.getElementById("result");
+            if (selectedOption === correctAnswer) {
+                result.textContent = "Correct !";
+                score++;
+            } else {
+                result.textContent = `Faux ! La bonne réponse était : ${correctAnswer}`;
+            }
+            document.getElementById("score").textContent = `Score : ${score}`; 
+            currentQuestionIndex++;
+            const nextButton = document.getElementById("nextButton");
+            nextButton.style.display = "block"; 
+            disableOptions(); 
+        }
+
+        function disableOptions() {
+            const options = document.querySelectorAll(".option");
+            options.forEach(option => {
+                option.disabled = true;
+            });
+        }
+
+        function showResult() {
+            document.getElementById("question").textContent = "Quiz terminé !";
+            document.getElementById("options").innerHTML = "";
+            document.getElementById("timer").textContent = '';
+            const percentage = (score / selectedQuestions.length) * 100;
+            document.getElementById("result").textContent = `Votre score final : ${score} sur ${selectedQuestions.length} (${percentage.toFixed(2)}%)`;
+            document.getElementById("nextButton").style.display = "none"; 
+            document.getElementById("retryButton").style.display = "block"; 
+            document.getElementById("homeButton").style.display = "block"; 
+        }
+
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            document.getElementById("result").textContent = '';
+            document.getElementById("score").textContent = `Score : ${score}`;
+            document.getElementById("score").style.display = "none"; 
+            document.querySelector('.settings').style.display = 'block'; 
+            document.getElementById("nextButton").style.display = "none"; 
+            document.getElementById("retryButton").style.display = "none"; 
+            document.getElementById("homeButton").style.display = "block";
+            document.getElementById("options").innerHTML = ""; 
+            document.getElementById("timer").textContent = ''; 
+            selectedQuestions = []; 
+        }
+
+        function goHome() {
+            window.location.href = "accueil2.html"; 
+        }
+
+        document.getElementById("startButton").style.display = "block"; 
+        document.getElementById("homeButton").style.display = "block"; 
+    </script>
+
+</body>
+</html>

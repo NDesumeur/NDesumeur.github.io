@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notes de Musiques</title>
+    <title>QUIZ !</title>
     <link rel="icon" type="image/png" href="Purple_yoshi_YID.png">
     <style>
         body {
@@ -38,40 +38,17 @@
         h1 {
             font-size: 48px;
             margin-bottom: 1px;
-            color: #8a2be2; /* Violet */
+            color: #8a2be2; 
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
             text-align: center;
             margin-top: 1px;
             font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
         }
 
-        p {
-            font-size: 20px; 
-            margin-bottom: 20px;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 14px;
-            margin-top: 10px; 
-            border: none;
-            border-radius: 25px;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-            font-size: 16px;
-            outline: none;
-            background-color: #222;
-            color: #f4f4f4;
-        }
-
-        input[type="text"]::placeholder {
-            color: #999;
-        }
-
-        input[type="submit"],
-        .button {
+        button {
             width: 100%;
             padding: 14px 0;
-            background-color: #8a2be2; /* Violet */
+            background-color: #8a2be2;
             color: #fff;
             border: none;
             border-radius: 25px;
@@ -81,122 +58,8 @@
             margin-top: 20px; 
         }
 
-        input[type="submit"]:hover,
-        .button:hover {
-            background-color: #9400d3; /* Darker Violet */
-        }
-
-        .error-message {
-            color: red;
-            margin-top: 10px;
-        }
-
-        .autocomplete {
-            position: relative;
-            width: 75%;
-            margin: 0% 10% 120px 10%;
-        }
-
-        .autocomplete-items {
-            margin-top: 20px;
-            margin-left: 15px;
-            position: absolute;
-            border: 1px solid #d4d4d4;
-            border-radius: 10px;
-            background-color: #222;
-            z-index: 99;
-            width: 100% ;
-            max-height: 150px;
-            box-shadow: 0 0 30px #8a2be2; /* Violet */
-            overflow-y: auto;
-            left: 0;
-            opacity: 0;
-            transition: opacity 0.8s ease;
-        }
-
-        .autocomplete-items::-webkit-scrollbar {
-            width: 3px; 
-        }
-
-        .autocomplete-items::-webkit-scrollbar-thumb {
-            background-color: #d4d4d4; /* Scrollbar Cursor Color */
-        }
-
-        .autocomplete-items.show {
-            opacity: 1;
-        }
-
-        .autocomplete-item {
-            cursor: pointer;
-            color: #f4f4f4;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-bottom: 1px solid #423c3c;
-            transition: box-shadow 0.3s, transform 0.3s;
-        }
-
-        .autocomplete-item:hover {
-            background-color: #383333;
-            color: #8a2be2; /* Violet */
-            box-shadow: 0 0 10px rgba(255, 165, 0, 0.6);
-        }
-
-        .autocomplete-item:last-child {
-            border-bottom: none;
-        }
-
-        .autocomplete-item img {
-            background-color: cyan;
-            width: 120px;
-            height: auto;
-            border-radius: 5px;
-        }
-
-        .music-info {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .music-title {
-            display: flex;
-            align-items: center;
-            font-size: 24px;
-            color: #8a2be2; /* Violet */
-            padding-left: 10px;
-            font-weight: bold;
-        }
-
-        .artist, .rating, .genre, .language {
-            font-size: 18px;
-            color: #4322b9;
-            display: flex;
-            align-items: center;
-            padding-left: 10px;
-            font-weight: bold;
-            text-align: center;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                max-width: 90%;
-            }
-
-            h1 {
-                font-size: 36px;
-            }
-
-            .logo {
-                width: 80px;
-            }
-            .artist, .rating, .genre, .language {
-                font-size: 14px;
-            }
-
-            .music-title {
-                font-size: 18px;
-            }
+        button:hover {
+            background-color: #9400d3; 
         }
     </style>
 </head>
@@ -206,130 +69,33 @@
         <div class="header">
             <img src="Purple_yoshi_YID.png" alt="Logo" class="logo">
 
-            <h1> <strong> Notes de Musiques</strong></h1>
-            <p>Sur ce site, vous pouvez découvrir des notes différentes musiques. Cherchez des musiques japonaises pour avoir un avis ou pour découvrir des musiques !</p>
+            <h1>Bienvenue aux quiz !</h1>
+            <br>
+            <br>
+            <br>
+            <button onclick="startNormalQuiz()">Quiz normal</button>
+            <br>
+            <button onclick="startMultipleChoiceQuiz()">Quiz à 4 réponses</button>
+            <br>
+            <br><br>
+            <button onclick="index()">revenir à l'accueil</button>
+            
+
+        
+            <script>
+                function startNormalQuiz() {
+                    window.location.href = "quiz.html";
+                }
+
+                function startMultipleChoiceQuiz() {
+                    window.location.href = "quiz_multiple.html";
+                }
+                function index(){
+                    window.location.href = "index.html";
+                }
+
+            </script>
         </div>
-        <form id="searchForm">
-            <div class="autocomplete">
-                <input type="text" id="musicInput" placeholder="Rechercher une musique...">
-                <div class="autocomplete-items" id="autocompleteItems"></div>
-            </div>
-            <input type="submit" value="Rechercher">
-        </form>
-        <div id="errorMessage" class="error-message" style="display: none;">Aucun résultat trouvé pour cette musique.</div>
-        <button class="button" onclick="window.location.href='liste_musiques.html'">Liste de toutes les musiques</button>
-        <button class="button" onclick="goToRandomMusic()">Musique aléatoire</button>
-        <button class="button" onclick="window.location.href='index.html'">Retourner à la page principale</button>
-        <br>
     </div>
-    
-
-    <script>
-        var musicList = [
-        {
-            "name": "New Genesis",
-            "image": "NEWGENESIS.png",
-            "rating": "10",
-            "genre": "Pop",
-            "language": "Japonais",
-            "artist": "Ado"
-        }
-    ]
-        var musicInput = document.getElementById("musicInput");
-        var autocompleteItems = document.getElementById("autocompleteItems");
-
-        musicInput.addEventListener("input", function() {
-            var input = this.value.trim().toLowerCase();
-            var suggestions = musicList.filter(function(music) {
-                return music.name.toLowerCase().startsWith(input);
-            });
-            if (input) {
-                autocompleteItems.innerHTML = "";
-                suggestions.slice(0, 5).forEach(function(music) {
-                    var item = document.createElement("div");
-                    item.classList.add("autocomplete-item");
-
-                    var image = document.createElement("img");
-                    image.src = "images_Musiques/" + music.image;
-                    image.alt = "Image de " + music.name;
-
-                    var musicInfo = document.createElement("div");
-                    musicInfo.classList.add("music-info");
-
-                    var musicTitle = document.createElement("div");
-                    musicTitle.classList.add("music-title");
-                    musicTitle.textContent = music.name;
-
-                    var artist = document.createElement("div");
-                    artist.classList.add("artist");
-                    artist.textContent = "Artiste: " + music.artist;
-
-                    var rating = document.createElement("div");
-                    rating.classList.add("rating");
-                    rating.textContent = "Note: " + music.rating;
-
-                    var genre = document.createElement("div");
-                    genre.classList.add("genre");
-                    genre.textContent = music.genre;
-
-                    var language = document.createElement("div");
-                    language.classList.add("language");
-                    language.textContent = "Langue: " + music.language;
-
-                    musicInfo.appendChild(musicTitle);
-                    musicInfo.appendChild(artist);
-                    musicInfo.appendChild(rating);
-                    musicInfo.appendChild(genre);
-                    musicInfo.appendChild(language);
-
-                    item.appendChild(image);
-                    item.appendChild(musicInfo);
-
-                    item.addEventListener("click", function() {
-                        musicInput.value = music.name;
-                        autocompleteItems.style.display = "none";
-                    });
-
-                    autocompleteItems.appendChild(item);
-                });
-                autocompleteItems.classList.add("show"); 
-            } else {
-                autocompleteItems.innerHTML = ""; 
-                autocompleteItems.classList.remove("show");
-            }
-            autocompleteItems.style.display = input ? "block" : "none"; 
-        });
-
-        document.getElementById("searchForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-
-            var musicName = document.getElementById("musicInput").value.trim();
-            if (musicName) {
-                var url = "html_musiques/" + musicName.toLowerCase().replace(/\s+/g, '-') + ".html";
-                var http = new XMLHttpRequest();
-                http.open('HEAD', url, true);
-                http.onreadystatechange = function() {
-                    if (http.readyState === 4) {
-                        if (http.status === 200) {
-                            window.location.href = url;
-                        } else {
-                            window.location.href = "notfound.html";
-                        }
-                    }
-                };
-                http.send();
-            } else {
-                document.getElementById("errorMessage").style.display = "block";
-            }
-        });
-
-
-        function goToRandomMusic() {
-            var randomIndex = Math.floor(Math.random() * musicList.length);
-            var randomMusic = musicList[randomIndex];
-            var url = "html_musiques/" + randomMusic.name.toLowerCase().replace(/\s+/g, '-') + ".html";
-            window.location.href = url;
-        }
-    </script>
 </body>
 </html>

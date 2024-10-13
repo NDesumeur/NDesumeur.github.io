@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MonogatariDle</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #111;
+            color: #f4f4f4;
+        }
+
+        h1 {
+            text-align: center;
+            color: #52f552;
+        }
+
+        .autocomplete-suggestions {
+            border: 1px solid #ccc;
+            background-color: #222;
+            position: absolute;
+            z-index: 1000;
+            width: calc(100% - 2px);
+            animation: fadeIn 0.3s;
+        }
+
+        .autocomplete-suggestion {
+            padding: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.3s;
+        }
+
+        .autocomplete-suggestion:hover {
+            background-color: #444;
+        }
+
+        .autocomplete-suggestion img {
+            width: 30px;
+            height: auto;
+            margin-right: 10px;
+        }
+
+        .input-container {
+            width: 100%;
+            position: relative;
+        }
+
+        input {
+            width: calc(100% - 6px);
+            padding: 10px;
+            border: 3px solid #ccc;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        .character-list {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #222;
+            border-radius: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #444;
+            text-align: center;
+        }
+
+        .correct {
+            background-color: #4CAF50;
+        }
+
+        .incorrect {
+            background-color: #F44336;
+        }
+
+        .age-indicator {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            position: relative;
+            margin-left: 5px;
+        }
+
+        .up-arrow, .down-arrow {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+        }
+
+        .up-arrow {
+            border-bottom: 15px solid orange;
+            bottom: -15px;
+        }
+
+        .down-arrow {
+            border-top: 15px solid blue;
+            bottom: -15px;
+        }
+
+        #result {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+        }
+
+        .button {
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: #45a049;
+        }
+
+        .gif-container {
+            margin-top: 20px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>MonogatariDle</h1>
+    <input type="text" id="characterInput" placeholder="Entrez un personnage...">
+    <div id="suggestions" class="autocomplete-suggestions"></div>
+
+    <div class="character-list" id="characterList">
+        <table id="characterTable">
+            <thead>
+                <tr>
+                    <th>Photo</th>
+                    <th>Nom</th>
+                    <th>Sexe</th>
+                    <th>Âge</th>
+                    <th>Couleur de cheveux</th>
+                    <th>Couleur des yeux</th> 
+                    <th>Occupation</th> 
+                    <th>Classification</th>
+                    <th>Première apparition</th>
+                </tr>
+            </thead>
+            
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <div id="result">
+        <h2>GG ! Tu as trouvé le personnage de Monogatari en <span id="attempts"></span> essais !</h2>
+        <div class="gif-container" id="gifContainer"></div>
+        <button class="button" id="playAgainButton">Rejouer</button>
+        <button class="button" id="homeButton" onclick="window.location.href='index.html'">Retourner à l'accueil</button>
+    </div>
+
+    <script>
+        const characterData = {
+            "Araragi Koyomi": { age: 18, hairColor: "Noir",eyeColor:"Noir", occupation:"Etudiant", power: "Vampire", anime: "Bakemonogatari", sex: "Homme", image: "Monogataridle/Araragi.jpg" },
+            "Nadeko Sengoku": { age: 15, hairColor: "Brun", eyeColor:"Marron", occupation:"Etudiant", power: "ancien déese Serpent / humain", anime: "Bakemonogatari", sex: "Femme", image: "Monogataridle/Sengoku.png" },
+            "Ougi Oshino": { age: "1-6 mois", hairColor: "Noir",eyeColor:"Noir", occupation:"Etudiant", power: "Darkness", anime: "Monogatari 2ème saison", sex: "Variable", image: "Monogataridle/Ougi.png" },
+            "Deathtopia Virtuoso Suicide-Master": { age: 600, hairColor: "Blonde",eyeColor:"Jaune", occupation:"Vampire", power: "Vampire", anime: "Orokamonogatari", sex: "Femme", image: "Monogataridle/Suicide_Master.jpg" },
+            "Deishuu Kaiki": { age: 30, hairColor: "Noir",eyeColor:"Violet", occupation:"Escroc", power: "Humain", anime: "Nisemonogatari", sex: "Homme", image: "Monogataridle/Kaiki.jpg" },
+            "Dramaturgy": { age: "Inconnu" , hairColor: "Rouge",eyeColor:"Rouge", occupation:"Chasseur de vampire", power: "Vampire", anime: "Kizumonogatari", sex: "Homme", image: "Monogataridle/Dramaturgy.png" },
+            "Mère d'Araragi": { age: "Inconnu" , hairColor: "Black",eyeColor:"Gris", occupation:"Officier de police", power: "Humain", anime: "Nekomonogatari", sex: "Femme", image: "Monogataridle/Mere.jpg" },
+            "Black Hanekawa": { age: 18, hairColor: "Blanc",eyeColor:"Or", occupation:"Sawarineko", power: "Sawarineko", anime: "Bakemonogatari", sex: "Femme", image: "Monogataridle/Black.jpg" },
+            "Rouka Numachi": { age: "Inconnu", hairColor: "Brun",eyeColor:"Marron", occupation:"Etudiant / joueuse de basketball", power: "Fantôme / Semi-Demon", anime: "Monogatari 2ème saison", sex: "Femme", image: "Monogataridle/Rouka.jpg" },
+            "Rousokuzawa": { age: "Inconnu", hairColor: "Inconnu",eyeColor:"Inconnu", occupation:"Etudiant", power: "Humain", anime: "Monogatari 2ème saison", sex: "Homme", image: "Monogataridle/Rousokuzawa.jpg" },
+            "Episode": { age: 6, hairColor: "Blond",eyeColor:"Jaune", occupation:"Chasseur de vampire", power: "Dhampire", anime: "Kizumonogatari", sex: "Homme", image: "Monogataridle/Episode.png" },
+            "Sasayabu": { age: "Inconnu", hairColor: "Inconnu", eyeColor:"Inconnu", occupation:"Professeur", power: "Humain", anime: "Monogatari 2ème saison", sex: "Homme", image: "Monogataridle/Sasayabu.jpg" },
+            "Seishirou Shishirui": { age: 400, hairColor: "Noir", eyeColor:"Rouge", occupation:"Vampire", power: "Vampire", anime: "Owarimonogatari", sex: "Homme", image: "Monogataridle/Shishirui.png" },
+            "Seiu Higasa": { age: 17, hairColor: "Noir", eyeColor:"Violet", occupation:"Etudiant / joueuse de basketball", power: "Humain", anime: "Monogatari 2ème saison", sex: "Femme", image: "Monogataridle/Higasa.png" },
+            "Shinobu Oshino": { age: 598, hairColor: "Blond", eyeColor:"Jaune", occupation:"Vampire", power: "Vampire", anime: "Bakemonogatari", sex: "Femme", image: "Monogataridle/Shinobu.png" },
+            "Sodachi Oikura": { age: 18, hairColor: "Gris", eyeColor:"Gris", occupation:"Etudiant", power: "Humain", anime: "Owarimonogatari", sex: "Femme", image: "Monogataridle/Oikura.png" },
+            "Suruga Kanbaru": { age: 17, hairColor: "Bleu Foncé", eyeColor:"Marron", occupation:"Etudiant / joueuse de basketball", power: "Humain / Semi-Demon", anime: "Bakemonogatari", sex: "Femme", image: "Monogataridle/Kanbaru.png" },
+            "Guillotine Cutter": { age: "Inconnu" , hairColor: "Brun", eyeColor:"Marron", occupation:"Chasseur de vampire", power: "humain", anime: "Kizumonogatari", sex: "Homme", image: "Monogataridle/Guillotine.png" },
+            "Hitagi Senjougahara": { age: 18, hairColor: "Violet", eyeColor:"Bleu", occupation:"Etudiant", power: "Humain", anime: "Bakemonogatari", sex: "Femme", image: "Monogataridle/Senjougahara.jpg" },
+            "Père de Senjougahara": { age: "Inconnu", hairColor: "Gris", eyeColor:"Inconnu", occupation:"Inconnu", power: "Humain", anime: "Bakemonogatari", sex: "Homme", image: "Monogataridle/HitagiPapa.jpg" },
+            "Mère de Senjougahara": { age: "Inconnu", hairColor: "Inconnu", eyeColor:"Inconnu", occupation:"Inconnu", power: "Humain", anime: "Bakemonogatari", sex: "Femme", image: "Monogataridle/HitagiMama.jpg" },
+            "Izuko Gaen": { age: "Inconnu", hairColor: "Brun", eyeColor:"Marron", occupation:"Spécialiste d'aberrations", power: "Humain", anime: "Nekomonogatari", sex: "Femme", image: "Monogataridle/Gaen.png" },
+            "Tadatsuru Teori": { age: "Inconnu" , hairColor: "Bleu", eyeColor:"Noir", occupation:"Spécialiste d'aberrations", power: "Tsukumogami", anime: "Tsukimonogatari", sex: "Homme", image: "Monogataridle/Teori.png" },
+            "Tooe Gaen": { age: "Inconnu", hairColor: "Brun", eyeColor:"Marron", occupation:"Spécialiste d'aberrations", power: "Humain", anime: "Monogatari 2ème saison", sex: "Femme", image: "Monogataridle/Tooe.jpg" },
+            "Tropicalesque Home-A-Wave Dog-Strings": { age: "Inconnu", hairColor: "Blond", eyeColor:"Jaune", occupation:"Vampire", power: "Vampire", anime: "Orokamonogatari", sex: "Homme", image: "Monogataridle/Tropicalesque.jpg" },
+            "Tsubasa Hanekawa": { age: 18, hairColor: "Noir", eyeColor:"Violet", occupation:"Etudiant", power: "Humain", anime: "Bakemonogatari", sex: "Femme", image: "Monogataridle/Hanekawa.png" },
+            "Tsukihi Araragi": { age: 14, hairColor: "Noir", eyeColor:"Gris", occupation:"Etudiant", power: "Phoenix", anime: "Bakemonogatari", sex: "Femme", image: "Monogataridle/Tsukihi.png" },
+            "Tsunade": { age: "Inconnu", hairColor: "Inconnu", eyeColor:"Inconnu", occupation:"Inconnu", power: "Humain", anime: "Bakemonogatari", sex: "Femme", image: "Monogataridle/Tsunade.jpg" },
+            "Karen Araragi": { age: 15, hairColor: "Noir", eyeColor:"Gris", occupation:"Etudiant", power: "Humain", anime: "Bakemonogatari", sex: "Femme", image: "Monogataridle/Karen.jpg" },
+            "Yotsugi Ononoki": { age: 15, hairColor: "Bleu", eyeColor:"Vert", occupation:"Spécialiste d'aberrations", power: "Tsukumogami", anime: "Nisemonogatari", sex: "Femme", image: "Monogataridle/Ononoki.jpg" },
+            "Yozuru Kagenui": { age: "Inconnu", hairColor: "Noir", eyeColor:"Marron", occupation:"Spécialiste d'aberrations", power: "Humain", anime: "Nisemonogatari", sex: "Femme", image: "Monogataridle/Kagenui.png" },
+            "Mayoi Hachikuji": { age: 22, hairColor: "Noir", eyeColor:"Rouge", occupation:"Dieu du temple Shirahebi", power: "Dieu Escargot", anime: "Bakemonogatari", sex: "Femme", image: "Monogataridle/Hachikuji.jpg" },
+            "Père de Hachikuji": { age: "Inconnu", hairColor: "Noir", eyeColor:"Inconnu", occupation:"Inconnu", power: "Humain", anime: "Bakemonogatari", sex: "Homme", image: "Monogataridle/MayoiPapa.jpg" },
+            "Meme Oshino": { age: "Inconnu", hairColor: "Blond", eyeColor:"Jaune", occupation:"Spécialiste d'aberrations", power: "Humain", anime: "Bakemonogatari", sex: "Homme", image: "Monogataridle/Meme.png" },
+            "Meniko Hamukai": { age: 18, hairColor: "Gris", eyeColor:"Bleu", occupation:"Etudiant", power: "Humain", anime: "Orokamonogatari", sex: "Femme", image: "Monogataridle/Meniko.png" },
+            "Mizudori": { age: "Inconnu", hairColor: "Inconnu", eyeColor:"Inconnu", occupation:"Etudiant", power: "Humain", anime: "Monogatari 2ème saison", sex: "Homme", image: "Monogataridle/Mizudori.jpg" },
+            "Kako": { age: "Inconnu", hairColor: "", eyeColor:"Jaune", occupation:"Aberration", power: "Aberration du tigre", anime: "Monogatari 2ème saison", sex: "Inconnu", image: "Monogataridle/Kako.png" },
+            "Rainy Devil": { age: "Inconnu", hairColor: "Inconnu", eyeColor:"Rouge", occupation:"Aberration", power: "Aberration Rainy Devil", anime: "Bakemonogatari", sex: "Inconnu", image: "Monogataridle/Rainy.jpg" },
+            "Kuchinawa": { age: "Inconnu", hairColor: "", eyeColor:"Rouge", occupation:"Dieu Serpent", power: "Aberration Jagirinawa", anime: "Monogatari 2ème saison", sex: "Homme", image: "Monogataridle/Kuchinawa.png" },
+            "Heavy Stone Crab": { age: "Inconnu", hairColor: "", eyeColor:"Jaune", occupation:"Aberration", power: "Aberration Heavy Stone Crab", anime: "Bakemonogatari", sex: "Inconnu", image: "Monogataridle/Crab.jpg" },
+            "Flame-Wreathe Bee": { age: "Inconnu", hairColor: "", eyeColor:"Inconnu", occupation:"Aberration", power: "Aberration Flame-Wreathe Bee", anime: "Nisemonogatari", sex: "Inconnu", image: "Monogataridle/Bee.jpg" },
+            "Shide No Tori": { age: "Inconnu", hairColor: "", eyeColor:"Inconnu", occupation:"Aberration", power: "Aberration Shide No Tori", anime: "Nisemonogatari", sex: "Inconnu", image: "Monogataridle/Tori.jpg" },
+            
+
+
+
+
+        };
+
+        let enteredCharacters = [];
+        let attempts = 0;
+        let randomCharacter = getRandomCharacter();
+
+        const input = document.getElementById('characterInput');
+        const suggestionsDiv = document.getElementById('suggestions');
+        const characterTableBody = document.getElementById('characterTable').getElementsByTagName('tbody')[0];
+        const resultDiv = document.getElementById('result');
+        const gifContainer = document.getElementById('gifContainer');
+        const attemptsDisplay = document.getElementById('attempts');
+
+        const gifs = [
+            "Monogataridle/GIF1.gif",
+            "Monogataridle/GIF2.gif",
+            "Monogataridle/GIF3.gif",
+            "Monogataridle/GIF4.gif",
+            "Monogataridle/GIF5.gif"
+        ];
+
+        input.addEventListener('input', function() {
+            const inputValue = this.value.toLowerCase();
+            suggestionsDiv.innerHTML = '';
+
+            const filteredCharacters = Object.keys(characterData).filter(character => 
+                character.toLowerCase().includes(inputValue) && 
+                !enteredCharacters.includes(character)
+            );
+
+            filteredCharacters.forEach(character => {
+                const suggestion = document.createElement('div');
+                suggestion.classList.add('autocomplete-suggestion');
+
+                const img = document.createElement('img');
+                img.src = characterData[character].image;
+                suggestion.appendChild(img);
+
+                suggestion.appendChild(document.createTextNode(character));
+                suggestion.addEventListener('click', function() {
+                    addCharacter(character);
+                });
+                suggestionsDiv.appendChild(suggestion);
+            });
+        });
+
+        function addCharacter(character) {
+            enteredCharacters.push(character);
+            attempts++;
+            input.value = '';
+            suggestionsDiv.innerHTML = '';
+            displaySelectedCharacters();
+            checkIfFound(character);
+        }
+
+        function displaySelectedCharacters() {
+            characterTableBody.innerHTML = '';
+            enteredCharacters.forEach(character => {
+                const data = characterData[character];
+                const row = characterTableBody.insertRow();
+
+                const imgCell = row.insertCell(0);
+                const img = document.createElement('img');
+                img.src = data.image;
+                img.style.width = '50px';
+                imgCell.appendChild(img);
+
+                row.insertCell(1).textContent = character;
+
+                const sexCell = row.insertCell(2);
+                sexCell.textContent = data.sex;
+                sexCell.className = (data.sex === characterData[randomCharacter].sex) ? 'correct' : 'incorrect';
+
+                const ageCell = row.insertCell(3);
+                ageCell.textContent = data.age;
+                const indicator = document.createElement('div');
+                indicator.className = 'age-indicator';
+
+                if (data.age === "Inconnu") {
+                    ageCell.className = (characterData[randomCharacter].age === "Inconnu") ? 'correct' : 'incorrect';
+                } else if (characterData[randomCharacter].age === "Inconnu") {
+                    ageCell.className = 'incorrect'; 
+                } else if (data.age === characterData[randomCharacter].age) {
+                    ageCell.className = 'correct'; 
+                } else {
+                    const ageDifference = parseInt(data.age) - characterData[randomCharacter].age;
+
+                    ageCell.className = 'incorrect'; 
+                    if (ageDifference < 0) {
+                        const upArrow = document.createElement('div');
+                        upArrow.className = 'up-arrow';
+                        indicator.appendChild(upArrow);
+                    } else {
+                        const downArrow = document.createElement('div');
+                        downArrow.className = 'down-arrow';
+                        indicator.appendChild(downArrow);
+                    }
+                }
+                ageCell.appendChild(indicator);
+                const hairColorCell = row.insertCell(4);
+                hairColorCell.textContent = data.hairColor;
+                hairColorCell.className = (data.hairColor === characterData[randomCharacter].hairColor) ? 'correct' : 'incorrect';
+
+                const eyeColorCell = row.insertCell(5); // Nouvelle cellule
+                eyeColorCell.textContent = data.eyeColor; // Ajout de la couleur des yeux
+                eyeColorCell.className = (data.eyeColor === characterData[randomCharacter].eyeColor) ? 'correct' : 'incorrect';
+
+                const occupationCell = row.insertCell(6); // Nouvelle cellule
+                occupationCell.textContent = data.occupation; // Ajout de l'occupation
+                occupationCell.className = (data.occupation === characterData[randomCharacter].occupation) ? 'correct' : 'incorrect';
+
+                const powerCell = row.insertCell(7);
+                powerCell.textContent = data.power;
+                powerCell.className = (data.power === characterData[randomCharacter].power) ? 'correct' : 'incorrect';
+
+                const animeCell = row.insertCell(8);
+                animeCell.textContent = data.anime;
+                animeCell.className = (data.anime === characterData[randomCharacter].anime) ? 'correct' : 'incorrect';
+            });
+        }
+
+        function checkIfFound(character) {
+            if (character === randomCharacter) {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            resultDiv.style.display = 'block';
+            attemptsDisplay.textContent = attempts;
+            const randomGif = gifs[Math.floor(Math.random() * gifs.length)];
+            gifContainer.innerHTML = `<img src="${randomGif}" alt="GIF de célébration" style="width: 100%; max-width: 300px;">`;
+            resultDiv.style.opacity = 1;
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+
+        function getRandomCharacter() {
+            const keys = Object.keys(characterData);
+            return keys[Math.floor(Math.random() * keys.length)];
+        }
+
+        document.getElementById('playAgainButton').addEventListener('click', function() {
+            location.reload();
+        });
+    </script>
+
+</body>
+</html>

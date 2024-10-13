@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeu de Quiz</title>
+    <link rel="icon" type="image/png" href="Purple_yoshi_YID.png">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #111;
+            color: #f4f4f4;
+            line-height: 1.6; 
+        }
+
+        .container {
+            width: 90%; 
+            margin: 0 auto;
+            padding-top: 50px;
+            padding: 20px; 
+            display: flex;
+            flex-direction: column;
+            align-items: center; 
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .logo {
+            width: 120px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 48px;
+            margin-bottom: 1px;
+            color: #8a2be2; /* Violet */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+        }
+
+        .question {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 14px;
+            margin-top: 10px; 
+            border: none;
+            border-radius: 25px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+            font-size: 16px;
+            outline: none;
+            background-color: #222;
+            color: #f4f4f4;
+        }
+
+        input[type="text"]::placeholder {
+            color: #999;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px 0;
+            background-color: #8a2be2; /* Violet */
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px; 
+        }
+
+        button:hover {
+            background-color: #9400d3; /* Darker Violet */
+        }
+
+        #result, #settings {
+            margin-top: 20px;
+            font-size: 20px;
+        }
+
+        #timer {
+            font-size: 20px;
+            margin-top: 10px;
+        }
+
+        #error-count {
+            font-size: 20px;
+            margin-top: 10px;
+            color: red;
+        }
+
+        #score {
+            font-size: 20px;
+            margin-top: 10px;
+            color: blue;
+        }
+
+        .correct {
+            color: green;
+        }
+
+        .almost-correct {
+            color: orange;
+        }
+
+        .incorrect {
+            color: red;
+        }
+
+        #end-screen {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="Purple_yoshi_YID.png" alt="Logo" class="logo">
+            <h1>Quiz normal</h1>
+            <div id="settings-container">
+                <h2>Choisissez vos paramètres</h2>
+                <label for="time-limit">Temps par question (secondes) :</label>
+                <input type="number" id="time-limit" value="15" min="5" max="60"><br>
+                
+                <label for="number-of-questions">Nombre de questions :</label>
+                <input type="number" id="number-of-questions" value="10" min="1" max="20"><br>
+                
+                <label for="difficulty">Difficulté :</label>
+                <select id="difficulty">
+                    <option value="facile">Facile</option>
+                    <option value="moyenne">Moyenne</option>
+                    <option value="difficile">Difficile</option>
+                </select><br>
+                
+                <button id="start-quiz">Commencer le quiz</button>
+                <button id="go-home">Retour à l'accueil</button>
+
+            </div>
+    
+            <div id="quiz-container" style="display:none;">
+                <div class="question" id="question"></div>
+                <input type="text" id="answer" placeholder="Entrez votre réponse ici">
+                <div id="timer"></div>
+                <div id="error-count"></div>
+                <div id="score">Score : 0</div>
+                <div id="result"></div>
+            </div>
+    
+            <div id="end-screen" style="display:none;">
+                <h2>Quiz terminé !</h2>
+                <div id="final-score"></div>
+                <button id="restart-quiz">Recommencer le quiz</button>
+                <button id="go-home">Retour à l'accueil</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        const questions = [
+            { question: "Quelle est la capitale de la France ?", answers: ["Paris"], difficulty: "facile" },
+            { question: "Qui a écrit 'Les Misérables' ?", answers: ["Victor Hugo", "Hugo"], difficulty: "facile" },
+            { question: "Quel est le plus grand océan du monde ?", answers: ["Pacifique"], difficulty: "facile" },
+            { question: "Quelle est la langue la plus parlée au monde ?", answers: ["Chinois"], difficulty: "moyenne" },
+            { question: "Combien de continents y a-t-il sur Terre ?", answers: ["7"], difficulty: "facile" },
+            { question: "Quel est le plus long fleuve du monde ?", answers: ["Amazonie"], difficulty: "difficile" },
+            { question: "Qui a peint la Mona Lisa ?", answers: ["Da Vinci"], difficulty: "moyenne" },
+            { question: "Quelle est la monnaie du Japon ?", answers: ["Yen"], difficulty: "facile" },
+            { question: "Quel est l'élément chimique dont le symbole est O ?", answers: ["Oxygène, oxygene"], difficulty: "moyenne" },
+            { question: "Qui est le héros de 'Harry Potter' ?", answers: ["Harry"], difficulty: "facile" }
+        ];
+
+        let shuffledQuestions = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let timer;
+        let timeLimit;
+        let maxQuestions;
+        let errorCount = 0;
+        const maxErrors = 3;
+        let isAnswered = false; 
+
+        document.getElementById("start-quiz").addEventListener("click", () => {
+            timeLimit = parseInt(document.getElementById("time-limit").value);
+            maxQuestions = parseInt(document.getElementById("number-of-questions").value);
+            const difficulty = document.getElementById("difficulty").value;
+            shuffledQuestions = getQuestionsByDifficulty(difficulty);
+            shuffledQuestions = shuffleArray(shuffledQuestions).slice(0, maxQuestions);
+
+            currentQuestionIndex = 0;
+            score = 0;
+            errorCount = 0;
+            updateErrorCountDisplay();
+            updateScoreDisplay();
+            isAnswered = false; 
+
+            document.getElementById("settings-container").style.display = "none";
+            document.getElementById("quiz-container").style.display = "block";
+            loadQuestion();
+        });
+
+        function getQuestionsByDifficulty(selectedDifficulty) {
+            let selectedQuestions = [];
+
+            if (selectedDifficulty === 'facile') {
+                selectedQuestions = questions.filter(q => q.difficulty === 'facile');
+                const rareQuestions = questions.filter(q => q.difficulty === 'moyenne');
+                selectedQuestions = selectedQuestions.concat(getRandomQuestions(rareQuestions, 1));
+            } else if (selectedDifficulty === 'moyenne') {
+                selectedQuestions = questions.filter(q => q.difficulty === 'moyenne');
+                const easyQuestions = questions.filter(q => q.difficulty === 'facile');
+                const hardQuestions = questions.filter(q => q.difficulty === 'difficile');
+                selectedQuestions = selectedQuestions.concat(getRandomQuestions(easyQuestions, 1), getRandomQuestions(hardQuestions, 1));
+            } else if (selectedDifficulty === 'difficile') {
+                selectedQuestions = questions.filter(q => q.difficulty === 'difficile');
+                const rareQuestions = questions.filter(q => q.difficulty === 'moyenne');
+                selectedQuestions = selectedQuestions.concat(getRandomQuestions(rareQuestions, 1));
+            }
+
+            return selectedQuestions;
+        }
+
+        function getRandomQuestions(questionArray, count) {
+            const shuffled = questionArray.sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, count);
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function loadQuestion() {
+            if (currentQuestionIndex < shuffledQuestions.length) {
+                const currentQuestion = shuffledQuestions[currentQuestionIndex];
+                document.getElementById("question").textContent = currentQuestion.question;
+                document.getElementById("answer").value = "";
+                document.getElementById("result").textContent = "";
+                errorCount = 0; 
+                updateErrorCountDisplay();
+                isAnswered = false; 
+                startTimer();
+            } else {
+                showResult();
+            }
+        }
+
+        function startTimer() {
+            let timeRemaining = timeLimit;
+            document.getElementById("timer").textContent = `Temps restant : ${timeRemaining} secondes`;
+            timer = setInterval(() => {
+                timeRemaining--;
+                document.getElementById("timer").textContent = `Temps restant : ${timeRemaining} secondes`;
+                if (timeRemaining <= 0) {
+                    clearInterval(timer);
+                    showCorrectAnswer();
+                    document.addEventListener('keydown', nextQuestion);
+                }
+            }, 1000);
+        }
+
+        document.getElementById("answer").addEventListener("keypress", function(event) {
+            if (event.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+
+        function checkAnswer() {
+            if (isAnswered || errorCount >= maxErrors) return; 
+
+            const userAnswer = document.getElementById("answer").value.trim();
+            const correctAnswers = shuffledQuestions[currentQuestionIndex].answers;
+
+            if (correctAnswers.some(answer => answer.toLowerCase() === userAnswer.toLowerCase())) {
+                score++;
+                document.getElementById("result").textContent = "Correct !";
+                document.getElementById("result").className = "correct";
+                updateScoreDisplay();
+                clearInterval(timer);
+                isAnswered = true; 
+                document.removeEventListener('keydown', nextQuestion);
+                document.addEventListener('keydown', nextQuestion);
+            } else if (isAlmostCorrect(userAnswer, correctAnswers)) {
+                document.getElementById("result").textContent = "Presque !";
+                document.getElementById("result").className = "almost-correct";
+                errorCount++;
+                updateErrorCountDisplay();
+            } else {
+                errorCount++;
+                document.getElementById("result").textContent = "Faux !";
+                document.getElementById("result").className = "incorrect";
+                updateErrorCountDisplay();
+            }
+
+            if (errorCount >= maxErrors) {
+                document.getElementById("result").textContent = "Trop d'erreurs !";
+                clearInterval(timer);
+                showCorrectAnswer();
+                document.addEventListener('keydown', nextQuestion);
+            }
+        }
+
+        function updateErrorCountDisplay() {
+            document.getElementById("error-count").textContent = `Erreurs : ${errorCount}/${maxErrors}`;
+        }
+
+        function updateScoreDisplay() {
+            document.getElementById("score").textContent = `Score : ${score}`;
+        }
+
+        function normalizeString(str) {
+            return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+        }
+
+        function isAlmostCorrect(userAnswer, correctAnswers) {
+            const normalizedUserAnswer = normalizeString(userAnswer);
+            const normalizedCorrectAnswers = correctAnswers.map(normalizeString);
+
+            const userAnswerNumber = parseFloat(normalizedUserAnswer);
+            const isUserAnswerNumber = !isNaN(userAnswerNumber);
+
+            if (isUserAnswerNumber) {
+                return normalizedCorrectAnswers.some(correctAnswer => {
+                    const correctAnswerNumber = parseFloat(correctAnswer);
+                    return !isNaN(correctAnswerNumber) && (userAnswerNumber === correctAnswerNumber || 
+                        userAnswerNumber === correctAnswerNumber + 1 || 
+                        userAnswerNumber === correctAnswerNumber - 1);
+                });
+            }
+
+            const userEdits = edits1(normalizedUserAnswer);
+
+            return normalizedCorrectAnswers.some(correctAnswer => {
+                return userEdits.has(correctAnswer) || correctAnswer === normalizedUserAnswer;
+            });
+        }
+
+        function edits1(word) {
+            const letters = 'abcdefghijklmnopqrstuvwxyz';
+            const splits = [...Array(word.length + 1)].map((_, i) => [word.slice(0, i), word.slice(i)]);
+            
+            const deletes = splits.map(([L, R]) => L + R.slice(1)).filter(R => R);
+            const transposes = splits.filter(([, R]) => R.length > 1).map(([L, R]) => L + R[1] + R[0] + R.slice(2));
+            const replaces = splits.flatMap(([L, R]) => letters.split('').map(c => L + c + R.slice(1)));
+            const inserts = splits.flatMap(([L, R]) => letters.split('').map(c => L + c + R));
+            
+            return new Set([...deletes, ...transposes, ...replaces, ...inserts]);
+        }
+
+
+
+        function showCorrectAnswer() {
+            const correctAnswers = shuffledQuestions[currentQuestionIndex].answers;
+            document.getElementById("result").textContent += ` La bonne réponse était : ${correctAnswers.join(" / ")}`;
+        }
+
+        function nextQuestion(event) {
+            if (event.code === 'Space') {
+                currentQuestionIndex++;
+                loadQuestion();
+                document.removeEventListener('keydown', nextQuestion);
+            }
+        }
+
+        function showResult() {
+            clearInterval(timer);
+            document.getElementById("quiz-container").style.display = "none";
+            const percentage = (score / shuffledQuestions.length) * 100;
+            document.getElementById("final-score").innerHTML = `Votre score final est ${score}/${shuffledQuestions.length} (${percentage.toFixed(2)}%).`;
+            document.getElementById("end-screen").style.display = "block";
+        }
+
+        document.getElementById("restart-quiz").addEventListener("click", () => {
+            document.getElementById("end-screen").style.display = "none";
+            document.getElementById("settings-container").style.display = "block";
+        });
+
+        document.getElementById("go-home").addEventListener("click", () => {
+            window.location.href = "accueil2.html";
+            alert("Retour à l'accueil");
+        });
+
+        document.getElementById("settings-container").style.display = "block";
+    </script>
+</body>
+</html>
