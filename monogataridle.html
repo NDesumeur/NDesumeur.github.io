@@ -11,11 +11,13 @@
             padding: 20px;
             background-color: #111;
             color: #f4f4f4;
+            transition: background-color 0.5s;
         }
 
         h1 {
             text-align: center;
             color: #52f552;
+            transition: color 0.5s;
         }
 
         .autocomplete-suggestions {
@@ -24,7 +26,7 @@
             position: absolute;
             z-index: 1000;
             width: calc(100% - 2px);
-            animation: fadeIn 0.3s;
+            animation: slideDown 0.3s;
         }
 
         .autocomplete-suggestion {
@@ -37,10 +39,11 @@
 
         .autocomplete-suggestion:hover {
             background-color: #444;
+            transform: scale(1.03);
         }
 
         .autocomplete-suggestion img {
-            width: 30px;
+            width: 40px; /* Agrandi un peu l'image */
             height: auto;
             margin-right: 10px;
         }
@@ -56,6 +59,12 @@
             border: 3px solid #ccc;
             margin-bottom: 10px;
             box-sizing: border-box;
+            transition: border-color 0.3s, transform 0.3s;
+        }
+
+        input:focus {
+            border-color: #52f552;
+            transform: scale(1.02); /* Agrandi légèrement la barre de recherche */
         }
 
         .character-list {
@@ -63,6 +72,7 @@
             padding: 10px;
             background-color: #222;
             border-radius: 5px;
+            transition: background-color 0.3s;
         }
 
         table {
@@ -74,6 +84,7 @@
             padding: 10px;
             border: 1px solid #444;
             text-align: center;
+            transition: background-color 0.3s;
         }
 
         .correct {
@@ -100,6 +111,7 @@
             height: 0;
             border-left: 10px solid transparent;
             border-right: 10px solid transparent;
+            transition: transform 0.3s;
         }
 
         .up-arrow {
@@ -118,6 +130,7 @@
             margin-top: 20px;
             opacity: 0;
             animation: fadeIn 0.5s forwards;
+            transition: opacity 0.5s;
         }
 
         .button {
@@ -128,14 +141,28 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s;
         }
 
         .button:hover {
             background-color: #45a049;
+            transform: scale(1.05);
         }
 
         .gif-container {
             margin-top: 20px;
+            transition: transform 0.3s;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-10px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         @keyframes fadeIn {
@@ -148,7 +175,44 @@
                 transform: translateY(0);
             }
         }
+        .fade-in {
+    animation: fadeIn 0.5s forwards;
+}
+.autocomplete-suggestion {
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.autocomplete-suggestion.fade-in {
+    opacity: 1;
+}
+
+#result {
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+#result.fade-in {
+    opacity: 1;
+}
+.age-indicator .up-arrow,
+.age-indicator .down-arrow {
+    animation: bounce 0.5s;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+
+
     </style>
+
 </head>
 <body>
 
@@ -275,6 +339,8 @@
                     addCharacter(character);
                 });
                 suggestionsDiv.appendChild(suggestion);
+                suggestion.classList.add('fade-in');
+
             });
         });
 
@@ -296,7 +362,7 @@
                 const imgCell = row.insertCell(0);
                 const img = document.createElement('img');
                 img.src = data.image;
-                img.style.width = '50px';
+                img.style.width = '80px';
                 imgCell.appendChild(img);
 
                 row.insertCell(1).textContent = character;
@@ -350,6 +416,7 @@
                 const animeCell = row.insertCell(8);
                 animeCell.textContent = data.anime;
                 animeCell.className = (data.anime === characterData[randomCharacter].anime) ? 'correct' : 'incorrect';
+                row.classList.add('fade-in');
             });
         }
 
@@ -361,6 +428,7 @@
 
         function showResult() {
             resultDiv.style.display = 'block';
+            resultDiv.classList.add('fade-in');
             attemptsDisplay.textContent = attempts;
             const randomGif = gifs[Math.floor(Math.random() * gifs.length)];
             gifContainer.innerHTML = `<img src="${randomGif}" alt="GIF de célébration" style="width: 100%; max-width: 300px;">`;
