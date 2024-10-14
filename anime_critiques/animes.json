@@ -1,0 +1,44 @@
+[
+    {
+        "name": "Serial Experiments Lain",
+        "image": "SERIAL EXPERIMENTS LAIN.jpg",
+        "rating": "7.525",
+        "genre": "Drame, Horreur, Science-fiction"
+    },
+    {
+        "name": "Paranoia Agent",
+        "image": "PARANOIA AGENT.jpg",
+        "rating": "8.1",
+        "genre": "Drame, Psychologique, Surnaturel"
+    },
+    {
+        "name": "Love Flops",
+        "image": "LOVE FLOPS.jpg",
+        "rating": "3.25",
+        "genre": "Myst\u00e8re, Romance, Ecchi"
+    },
+    {
+        "name": "Orange",
+        "image": "ORANGE.jpg",
+        "rating": "8.9",
+        "genre": "Sh\u00f4jo, Slice-of-Life, Surnaturel"
+    },
+    {
+        "name": "Fireworks",
+        "image": "FIREWORKS.jpg",
+        "rating": "5,125",
+        "genre": "Drame, Romance, Surnaturel"
+    },
+    {
+        "name": "King's Game",
+        "image": "KING'S GAME.jpg",
+        "rating": "1.325",
+        "genre": "Drame, Horreur, Myst\u00e8re"
+    },
+    {
+        "name": "happy sugar life",
+        "image": "HAPPY SUGAR LIFE.jpg",
+        "rating": "7.33",
+        "genre": "Drame, Horreur, Myst\u00e8re"
+    }
+]

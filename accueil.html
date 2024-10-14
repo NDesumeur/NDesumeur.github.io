@@ -230,7 +230,7 @@
         <br>
     </div>
     
-    <audio id="audio" src="images_Animes/PresentDay.mp3"></audio>
+    <audio id="audio" src="anime_critiques/images_Animes/PresentDay.mp3"></audio>
 
     <script>
         var animeList = [
@@ -406,7 +406,7 @@
                     item.classList.add("autocomplete-item");
 
                     var image = document.createElement("img");
-                    image.src = "images_Animes/" + anime.image;
+                    image.src = "anime_critiques/images_Animes/" + anime.image;
                     image.alt = "Image de " + anime.name;
 
                     var animeInfo = document.createElement("div");
@@ -453,7 +453,7 @@
 
             var animeName = document.getElementById("animeInput").value.trim();
             if (animeName) {
-                var url = animeName.toLowerCase().replace(/\s+/g, '-') + ".html";
+                var url = "anime_critiques/" + animeName.toLowerCase().replace(/\s+/g, '-') + ".html";
                 var http = new XMLHttpRequest();
                 http.open('HEAD', url, true);
                 http.onreadystatechange = function() {
@@ -482,7 +482,7 @@
         function goToRandomAnime() {
             var randomIndex = Math.floor(Math.random() * animeList.length);
             var randomAnime = animeList[randomIndex];
-            var url = randomAnime.name.toLowerCase().replace(/\s+/g, '-') + ".html";
+            var url = "anime_critiques/" + randomAnime.name.toLowerCase().replace(/\s+/g, '-') + ".html";
             window.location.href = url;
         }       
     </script>

@@ -320,10 +320,10 @@
                         listItem.classList.add("anime-item");
                         var link = document.createElement("a");
                         link.innerHTML = "<strong>" + anime.name + "</strong>"; 
-                        link.href = anime.name.toLowerCase().replace(/\s+/g, '-') + ".html";
+                        link.href = "anime_critiques/" + anime.name.toLowerCase().replace(/\s+/g, '-') + ".html";
                         var image = document.createElement("img");
                         image.classList.add("anime-image");
-                        image.src = "images_Animes/" + anime.image;
+                        image.src = "anime_critiques/images_Animes/" + anime.image;
                         image.alt = "Image de " + anime.name;
                         var info = document.createElement("span");
                         info.classList.add("anime-info");
