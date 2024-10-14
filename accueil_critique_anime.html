@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Critiques d'animes</title>
+    <link rel="icon" type="image/png" href="image_oeuf/oeuf_jaune.png">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #111;
+            color: #f4f4f4;
+            line-height: 1.6; 
+        }
+
+        .container {
+            width: 90%; 
+            margin: 0 auto;
+            padding-top: 50px;
+            padding: 20px; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center; 
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .logo {
+            width: 120px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 48px;
+            margin-bottom: 1px;
+            color: #ffa500;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            margin-top: 1px;
+            font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+        }
+
+        p {
+            font-size: 20px; 
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 14px;
+            margin-top: 10px; 
+            border: none;
+            border-radius: 25px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+            font-size: 16px;
+            outline: none;
+            background-color: #222;
+            color: #f4f4f4;
+        }
+
+        input[type="text"]::placeholder {
+            color: #999;
+        }
+
+        input[type="submit"],
+        .button {
+            width: 100%;
+            padding: 14px 0;
+            background-color: #ffa500;
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px; 
+        }
+
+        input[type="submit"]:hover,
+        .button:hover {
+            background-color: #ff8200;
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
+
+        .autocomplete {
+            position: relative;
+            width: 75%;
+            margin: 0% 10% 120px 10%;
+        }
+
+        .autocomplete-items {
+            margin-top: 20px;
+            margin-left: 15px;
+            position: absolute;
+            border: 1px solid #d4d4d4;
+            border-radius: 10px;
+            background-color: #222;
+            z-index: 99;
+            width: 100% ;
+            max-height: 150px;
+            box-shadow: 0 0 30px #ffa500;
+            overflow-y: auto;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+
+            
+
+        }
+        .autocomplete-items::-webkit-scrollbar {
+    width: 0px; 
+}
+
+
+        .autocomplete-items.show {
+            opacity: 1;
+        }
+
+        .autocomplete-item {
+            cursor: pointer;
+            color: #f4f4f4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid #423c3c;
+            transition: box-shadow 0.3s, transform 0.3s;
+        }
+
+        .autocomplete-item:hover {
+            background-color: #383333;
+            color: #ffa500;
+            box-shadow: 0 0 10px rgba(255, 165, 0, 0.6);
+        }
+
+        .autocomplete-item:last-child {
+            border-bottom: none;
+        }
+
+        .autocomplete-item img {
+            background-color: cyan;
+            width: 120px;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .anime-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .anime-title {
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            color: #ffa500;
+            padding-left: 10px;
+            font-weight: bold;
+        }
+
+        .rating,.genre {
+            font-size: 18px;
+            color: #00ff00;
+            display: flex;
+            align-items: center;
+            padding-left: 10px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+
+
+        @media (max-width: 768px) {
+            .container {
+                max-width: 90%;
+            }
+
+            h1 {
+                font-size: 36px;
+            }
+
+            .logo {
+                width: 80px;
+            }
+            .rating, .genre {
+                font-size: 14px;
+            }
+
+            .anime-title {
+                font-size: 18px;
+            }
+        }
+
+    </style>
+</head>
+
+
+
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="#" onclick="playAudioAndRedirect()">
+                <img src="image_oeuf/oeuf_jaune.png" alt="oeuf_jaune class="logo">
+            </a>
+            <h1> <strong> Critiques d'animes</strong></h1>
+            <p>Sur ce site vous trouverez des avis sur plein d'animes ainsi que des informations sur ces animes, chaque animé obtient une note que vous pouvez consulter, ici
+                pas de <strong>divulgâchage</strong> et beaucoup <strong>d'objectivité</strong>  !
+            </p>
+        </div>
+        <form id="searchForm">
+            <div class="autocomplete">
+                <input type="text" id="animeInput" placeholder="Rechercher un anime...">
+                <div class="autocomplete-items" id="autocompleteItems"></div>
+            </div>
+            <input type="submit" value="Rechercher">
+        </form>
+        <div id="errorMessage" class="error-message" style="display: none;">Aucun résultat trouvé pour cet anime.</div>
+        <button class="button" onclick="window.location.href='liste_animes.html'">Liste de tous les animes</button>
+        <button class="button" onclick="goToRandomAnime()">Critique aléatoire</button>
+        <button class="button" onclick="window.location.href='index.html'">Retourner à la page principale</button>
+        <br>
+    </div>
+    
+    <audio id="audio" src="anime_critiques/images_Animes/PresentDay.mp3"></audio>
+
+    <script>
+        var animeList = [
+            {
+                "name": "Serial Experiments Lain",
+                "image": "SERIAL EXPERIMENTS LAIN.jpg",
+                "rating": "7.825",
+                "genre": "Drame, Horreur, Sci-fi"
+            },
+            {
+                "name": "Paranoia Agent",
+                "image": "PARANOIA AGENT.jpg",
+                "rating": "8.1",
+                "genre": "Drame, Psychologique, Surnaturel"
+            },
+            {
+                "name": "Love Flops",
+                "image": "LOVE FLOPS.jpg",
+                "rating": "3.25",
+                "genre": "Myst\u00e8re, Romance, Ecchi"
+            },
+            {
+                "name": "Orange",
+                "image": "ORANGE.jpg",
+                "rating": "8.3",
+                "genre": "Sh\u00f4jo, Slice of Life, Surnaturel"
+            },
+            {
+                "name": "Fireworks",
+                "image": "FIREWORKS.jpg",
+                "rating": "5,125",
+                "genre": "Drame, Romance, Surnaturel"
+            },
+            {
+                "name": "King's Game",
+                "image": "KINGS GAME.jpg",
+                "rating": "1.325",
+                "genre": "Drame, Horreur, Myst\u00e8re"
+            },
+            {
+                "name": "Happy Sugar Life",
+                "image": "HAPPY SUGAR LIFE.jpg",
+                "rating": "7.33",
+                "genre": "Romance, Horreur, Myst\u00e8re"
+            },
+            {
+                "name": "Terror in resonance",
+                "image": "TERROR IN RESONANCE.jpg",
+                "rating": "7.875",
+                "genre": "Thriller, Drame , Myst\u00e8re"
+            },
+            {
+                "name": "Anohana",
+                "image": "ANOHANA.jpg",
+                "rating": "8.275",
+                "genre": "Slice of Life, Surnaturel , Romance"
+
+            },
+            {
+                "name": "Blade & Soul",
+                "image": "BLADE & SOUL.jpg",
+                "rating": "2.7",
+                "genre": "Action, Aventure, Fantasie"
+            },
+            {
+                "name": "Hanasaku Iroha",
+                "image": "HANASAKU IROHA.jpg",
+                "rating": "8.65",
+                "genre": "Slice of Life, Comédie, Drame"
+
+            },
+            {
+                "name": "Jingai-San No Yome",
+                "image": "JINGAI-SAN NO YOME.jpg",
+                "rating": "2",
+                "genre": "Romance, Comédie, Fantastique"
+            },
+            {
+                "name": "Komori-San Wa Kotowarenai!",
+                "image": "KOMORI-SAN WA KOTOWARENAI!.jpg",
+                "rating": "5.65",
+                "genre": "Slice of Life, Comédie"
+    },
+    {
+                "name": "Hal",
+                "image": "HAL.jpg",
+                "rating": "8.75",
+                "genre": "Drame, Romance, Sci-fi"
+    },
+    {
+        "name": "Hourou Musuko",
+        "image": "HOUROU MUSUKO.jpg",
+        "rating": "8.65",
+        "genre": "Slice of Life, Romance, Drame"
+
+    },
+    {
+        "name": "Pupa",
+        "image": "PUPA.jpg",
+        "rating": "0.7",
+        "genre": "Horreur, Psychologique, Surnaturel"
+    },
+    {
+        "name": "Barakamon",
+        "image": "BARAKAMON.jpg",
+        "rating": "8.75",
+        "genre": "Slice of Life, Comédie"
+    },
+    {
+        "name": "Eve No Jikan",
+        "image": "EVE NO JIKAN.jpg",
+        "rating": "7.5",
+        "genre": "Slice of Life, Sci-fi"
+    },
+    {
+        "name": "Elfen Lied",
+        "image": "ELFEN LIED.jpg",
+        "rating": "9",
+        "genre": "Sci-fi, Horreur, Psychologique"
+    },
+    {
+        "name": "Deadman Wonderland",
+        "image": "DEADMAN WONDERLAND.jpg",
+        "rating": "6.8",
+        "genre": "Sci-fi, Shônen, Surnaturel"
+    },
+    {
+        "name": "Clannad",
+        "image": "CLANNAD.jpg",
+        "rating": "8.95",
+        "genre": "Romance, Slice of Life, Surnaturel"
+    },
+    {
+        "name": "Gakuen Basara",
+        "image": "GAKUEN BASARA.jpg",
+        "rating": "4.2",
+        "genre": "Action, Aventure, Comédie"
+    },
+    {
+        "name": "Iroduku",
+        "image": "IRODUKU.jpg",
+        "rating": "7.8",
+        "genre": "Romance, Slice-of-Life, Surnaturel"
+    },
+    {
+        "name": "Mind Game",
+        "image": "MIND GAME.jpg",
+        "rating": "8.85",
+        "genre": "Psychologique, Romance, Comédie"
+    },
+    {
+        "name": "Qualidea Code",
+        "image": "QUALIDEA CODE.jpg",
+        "rating": "4.5",
+        "genre": "Action, Sci-fi, Surnaturel"
+    }
+    
+
+        ];
+        
+        var animeInput = document.getElementById("animeInput");
+        var autocompleteItems = document.getElementById("autocompleteItems");
+
+        animeInput.addEventListener("input", function() {
+            var input = this.value.trim().toLowerCase();
+            var suggestions = animeList.filter(function(anime) {
+                return anime.name.toLowerCase().startsWith(input);
+            });
+            if (input) {
+                autocompleteItems.innerHTML = "";
+                suggestions.slice(0, 5).forEach(function(anime) {
+                    var item = document.createElement("div");
+                    item.classList.add("autocomplete-item");
+
+                    var image = document.createElement("img");
+                    image.src = "anime_critiques/images_Animes/" + anime.image;
+                    image.alt = "Image de " + anime.name;
+
+                    var animeInfo = document.createElement("div");
+                    animeInfo.classList.add("anime-info");
+
+                    var animeTitle = document.createElement("div");
+                    animeTitle.classList.add("anime-title");
+                    animeTitle.textContent = anime.name;
+
+                    var rating = document.createElement("div");
+                    rating.classList.add("rating");
+                    rating.textContent = "Note: " + anime.rating;
+
+                    var genre = document.createElement("div");
+                    genre.classList.add("genre");
+                    genre.textContent = anime.genre;
+
+                    animeInfo.appendChild(animeTitle);
+                    animeInfo.appendChild(rating);
+                    animeInfo.appendChild(genre);
+
+                    item.appendChild(image);
+                    item.appendChild(animeInfo);
+
+                    item.addEventListener("click", function() {
+                        animeInput.value = anime.name;
+                        autocompleteItems.style.display = "none";
+                    });
+
+                    autocompleteItems.appendChild(item);
+                });
+                autocompleteItems.classList.add("show"); 
+            } else {
+                autocompleteItems.innerHTML = ""; 
+                autocompleteItems.classList.remove("show");
+            }
+            autocompleteItems.style.display = input ? "block" : "none"; 
+            
+        });
+
+
+        document.getElementById("searchForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            var animeName = document.getElementById("animeInput").value.trim();
+            if (animeName) {
+                var url = "anime_critiques/" + animeName.toLowerCase().replace(/\s+/g, '-') + ".html";
+                var http = new XMLHttpRequest();
+                http.open('HEAD', url, true);
+                http.onreadystatechange = function() {
+                    if (http.readyState === 4) {
+                        if (http.status === 200) {
+                            window.location.href = url;
+                        } else {
+                            window.location.href = "notfound.html";
+                        }
+                    }
+                };
+                http.send();
+            } else {
+                document.getElementById("errorMessage").style.display = "block";
+            }
+        });
+
+        function playAudioAndRedirect() {
+            var audio = document.getElementById("audio");
+            audio.play();
+            
+            setTimeout(function() {
+                window.location.href = "pagecachee.html";
+            }, 4500);
+        }
+        function goToRandomAnime() {
+            var randomIndex = Math.floor(Math.random() * animeList.length);
+            var randomAnime = animeList[randomIndex];
+            var url = "anime_critiques/" + randomAnime.name.toLowerCase().replace(/\s+/g, '-') + ".html";
+            window.location.href = url;
+        }       
+    </script>
+    
+</body>
+</html>
