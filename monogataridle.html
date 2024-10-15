@@ -20,13 +20,24 @@
             transition: color 0.5s;
         }
 
+        .choix {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin: 20px auto;
+        }
+
         .autocomplete-suggestions {
             border: 1px solid #ccc;
             background-color: #222;
             position: absolute;
-            z-index: 1000;
-            width: calc(100% - 2px);
+            z-index: 1;
+            margin-left: 0.6%;
+            width: 90%;
+            max-width: 97%;
             animation: slideDown 0.3s;
+            position: absolute;
+            margin-top: 55px;
         }
 
         .autocomplete-suggestion {
@@ -50,7 +61,7 @@
 
         .input-container {
             width: 100%;
-            position: relative;
+            position: absolute;
         }
 
         input {
@@ -68,8 +79,11 @@
         }
 
         .character-list {
+            display: flex;
+            justify-content: center;
+            width: 95%;
             margin-top: 20px;
-            padding: 10px;
+            padding: 2.5%;
             background-color: #222;
             border-radius: 5px;
             transition: background-color 0.3s;
@@ -78,11 +92,12 @@
         table {
             width: 100%;
             border-collapse: collapse;
+            font-size: 22px;
         }
 
         th, td {
             padding: 10px;
-            border: 1px solid #444;
+            border: 2px solid #444;
             text-align: center;
             transition: background-color 0.3s;
         }
@@ -175,40 +190,60 @@
                 transform: translateY(0);
             }
         }
+
         .fade-in {
-    animation: fadeIn 0.5s forwards;
-}
-.autocomplete-suggestion {
-    opacity: 0;
-    transition: opacity 0.3s;
-}
+            animation: fadeIn 0.5s forwards;
+        }
+        .autocomplete-suggestion {
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
 
-.autocomplete-suggestion.fade-in {
-    opacity: 1;
-}
+        .autocomplete-suggestion.fade-in {
+            opacity: 1;
+        }
 
-#result {
-    opacity: 0;
-    transition: opacity 0.5s;
-}
+        #result {
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
 
-#result.fade-in {
-    opacity: 1;
-}
-.age-indicator .up-arrow,
-.age-indicator .down-arrow {
-    animation: bounce 0.5s;
-}
+        #result.fade-in {
+            opacity: 1;
+        }
+        .age-indicator .up-arrow,
+        .age-indicator .down-arrow {
+            animation: bounce 0.5s;
+        }
 
-@keyframes bounce {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-5px);
-    }
-}
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-5px);
+            }
+        }
 
+        @media (max-width: 1000px) {
+            table {
+                font-size: 10px;
+            }
+
+            .character-list {
+                display: flex;
+                justify-content: center;
+                width: 100%;
+                margin-left: -5px;
+                margin-top: 20px;
+                padding: 1%;
+                background-color: #222;
+                border-radius: 5px;
+                transition: background-color 0.3s;
+            }
+            
+
+        }
 
 
     </style>
@@ -217,8 +252,11 @@
 <body>
 
     <h1>MonogatariDle</h1>
-    <input type="text" id="characterInput" placeholder="Entrez un personnage...">
-    <div id="suggestions" class="autocomplete-suggestions"></div>
+
+    <div class="choix">
+        <input type="text" id="characterInput" placeholder="Entrez un personnage...">
+        <div id="suggestions" class="autocomplete-suggestions"></div>
+    </div>
 
     <div class="character-list" id="characterList">
         <table id="characterTable">
@@ -362,7 +400,11 @@
                 const imgCell = row.insertCell(0);
                 const img = document.createElement('img');
                 img.src = data.image;
-                img.style.width = '80px';
+                if (window.innerWidth < 1000) {
+                    img.style.width = '40px'; // Taille de l'image pour petits écrans
+                } else {
+                    img.style.width = '80px'; // Taille de l'image pour grands écrans
+                }
                 imgCell.appendChild(img);
 
                 row.insertCell(1).textContent = character;
