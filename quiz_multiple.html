@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz à 4 Réponses</title>
-    <link rel="icon" type="image/png" href="Purple_yoshi_YID.png">
+    <link rel="icon" type="image/png" href="image_oeuf/oeuf_violet.png">
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -16,7 +16,7 @@
         .question {
             font-size: 24px;
             margin-bottom: 20px;
-            color: #8a2be2; /* Violet */
+            color: #8a2be2; 
         }
         .option {
             display: block;
@@ -31,7 +31,7 @@
             transition: background-color 0.3s;
         }
         .option:hover {
-            background-color: #9400d3; /* Darker Violet */
+            background-color: #9400d3; 
         }
         #result {
             font-size: 20px;
@@ -42,17 +42,17 @@
         }
         .next-button, .start-button, .retry-button, .home-button {
             padding: 14px 20px;
-            background-color: #8a2be2; /* Violet */
+            background-color: #8a2be2; 
             color: #fff;
             border: none;
             border-radius: 25px;
             cursor: pointer;
-            display: none; /* Hidden initially */
+            display: none; 
             transition: background-color 0.3s;
-            margin: 10px auto; /* Center button */
+            margin: 10px auto; 
         }
         .next-button:hover, .start-button:hover, .retry-button:hover, .home-button:hover {
-            background-color: #9400d3; /* Darker Violet */
+            background-color: #9400d3; 
         }
         .settings {
             margin-bottom: 20px;
@@ -64,11 +64,12 @@
         #score {
             font-size: 20px;
             margin-top: 10px;
-            display: none; /* Masqué par défaut */
+            display: none; 
         }
     </style>
 </head>
 <body>
+    <img src="image_oeuf/oeuf_violet.png" alt="oeuf_violet">
 
     <h1>Quiz à 4 Réponses</h1>
     
@@ -275,7 +276,7 @@
         }
 
         function goHome() {
-            window.location.href = "accueil2.html"; 
+            window.location.href = "accueil_quiz.html"; 
         }
 
         document.getElementById("startButton").style.display = "block"; 
