@@ -196,7 +196,7 @@
                 "name": "Blade & Soul",
                 "image": "BLADE & SOUL.jpg",
                 "rating": "2.7",
-                "genre": "Action, Aventure, Fantasie"
+                "genre": "Action, Aventure, Fantastique"
             },
             {
                 "name": "Hanasaku Iroha",
@@ -276,7 +276,7 @@
         "name": "Iroduku",
         "image": "IRODUKU.jpg",
         "rating": "7.8",
-        "genre": "Romance, Slice-of-Life, Surnaturel"
+        "genre": "Romance, Slice of Life, Surnaturel"
     },
     {
         "name": "Mind Game",
@@ -289,7 +289,63 @@
         "image": "QUALIDEA CODE.jpg",
         "rating": "4.5",
         "genre": "Action, Sci-fi, Surnaturel"
+    },
+    {
+        "name": "Ping Pong the animation",
+        "image": "PING PONG THE ANIMATION.jpg",
+        "rating": "8.9",
+        "genre": "Seinen, Sports, Psychologique"
+    },
+    {
+        "name": "Houseki no Kuni",
+        "image": "HOUSEKI NO KUNI.jpg",
+        "rating": "8.25",
+        "genre": "Seinen, Drame, Fantastique"
+    },
+    {
+        "name": "Wolf Children",
+        "image": "WOLF CHILDREN.jpg",
+        "rating": "8.9",
+        "genre": "Romance, Surnaturel, Slice of Life"
+    },
+    {
+        "name": "Shiki",
+        "image": "SHIKI.jpg",
+        "rating": "7.25",
+        "genre": "Horreur, Psychologique, Surnaturel"
+    },
+    {
+        "name": "Asobi Asobase",
+        "image": "ASOBI ASOBASE.jpg",
+        "rating": "7.8",
+        "genre": "Comédie, Slice of Life"
+    },
+    {
+        "name": "Plastic Memories",
+        "image": "PLASTIC MEMORIES.jpg",
+        "rating": "7.5",
+        "genre": "Romance, Drame, Sci-fi"
+    },
+    {
+        "name": "Angel Beats",
+        "image": "ANGEL BEATS.jpg",
+        "rating": "8.3",
+        "genre": "Drame, Action, Surnaturel"
+    },
+    {
+        "name": "After the Rain",
+        "image": "AFTER THE RAIN.jpg",
+        "rating": "8.4",
+        "genre": "Drame, Romance, Slice of Life"
+    },
+    {
+        "name": "Akame ga Kill",
+        "image": "AKAME GA KILL.jpg",
+        "rating": "6.3",
+        "genre": "Action, Aventure, Drame"
     }
+    
+
 
 
         ];
@@ -361,10 +417,10 @@
                         listItem.classList.add("anime-item");
                         var link = document.createElement("a");
                         link.innerHTML = "<strong>" + anime.name + "</strong>"; 
-                        link.href = anime.name.toLowerCase().replace(/\s+/g, '-') + ".html";
+                        link.href = "anime_critiques/" + anime.name.toLowerCase().replace(/\s+/g, '-') + ".html";
                         var image = document.createElement("img");
                         image.classList.add("anime-image");
-                        image.src = "images_Animes/" + anime.image;
+                        image.src = "anime_critiques/images_Animes/" + anime.image;
                         image.alt = "Image de " + anime.name;
                         var info = document.createElement("span");
                         info.classList.add("anime-info");
@@ -433,10 +489,10 @@
                         listItem.classList.add("anime-item");
                         var link = document.createElement("a");
                         link.innerHTML = "<strong>" + anime.name + "</strong>"; 
-                        link.href = anime.name.toLowerCase().replace(/\s+/g, '-') + ".html";
+                        link.href = "anime_critiques/" + anime.name.toLowerCase().replace(/\s+/g, '-') + ".html";
                         var image = document.createElement("img");
                         image.classList.add("anime-image");
-                        image.src = "images_Animes/" + anime.image;
+                        image.src = "anime_critiques/images_Animes/" + anime.image;
                         image.alt = "Image de " + anime.name;
                         var info = document.createElement("span");
                         info.classList.add("anime-info");
