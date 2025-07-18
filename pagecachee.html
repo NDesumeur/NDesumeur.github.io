@@ -27,7 +27,7 @@
 
         h1 {
             font-family: 'Arial', sans-serif; 
-            font-size: 48px;
+            font-size: 44px;
             margin-bottom: 20px;
             color: #ffa500; 
         }
@@ -39,33 +39,93 @@
         }
 
         .statistics {
-            font-size: 28px;
+            font-size: 22px;
             margin-top: 30px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            padding: 20px 18px;
+            box-shadow: 0 2px 12px rgba(255,165,0,0.08);
         }
 
-        .number {
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 32px;
-            color: #00ff00;
+        .statistics h2 {
+            color: #ffa500;
+            font-size: 1.3rem;
+            margin-top: 24px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #ffa500;
+            padding-bottom: 5px;
+            letter-spacing: 1px;
         }
-        /* Pour les écrans de petite taille comhme les téléphones */
+
+        .statistics ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 18px;
+        }
+
+        .statistics ul li {
+            background: linear-gradient(90deg, rgba(255,165,0,0.18) 0%, rgba(255,222,89,0.18) 100%);
+            margin-bottom: 10px;
+            padding: 13px 20px;
+            border-radius: 10px;
+            transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+            color: #fff;
+            font-size: 1.12rem;
+            box-shadow: 0 2px 10px rgba(255, 165, 0, 0.09);
+            display: flex;
+            align-items: center;
+            border-left: 4px solid #ffa500;
+        }
+
+        .statistics ul li:hover {
+            background: linear-gradient(90deg, #ffd859 0%, #ffa500 100%);
+            color: #222;
+            transform: scale(1.04);
+            box-shadow: 0 4px 16px rgba(255,165,0,0.18);
+            cursor: pointer;
+            border-left: 4px solid #ffd859;
+        }
+
+        .home-btn {
+            display: block;
+            width: fit-content;
+            margin: 32px auto 0 auto;
+            padding: 12px 32px;
+            background: linear-gradient(90deg, #ffa500 0%, #ffce70 100%);
+            color: #222;
+            font-weight: bold;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            box-shadow: 0 2px 8px rgba(255,165,0,0.12);
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .home-btn:hover {
+            background: linear-gradient(90deg, #ffce70 0%, #ffa500 100%);
+            transform: scale(1.05);
+            color: #111;
+            box-shadow: 0 4px 16px rgba(255,165,0,0.18);
+            cursor: pointer;
+        }
+
 @media only screen and (max-width: 768px) {
     .container {
         width: 100%;
-        padding-top: 20px; /* Ajustement de l'espace en haut */
-        padding: 20px; /* Ajustement du rembourrage */
-        border-radius: 0; /* Supprimer la bordure arrondie */
-        border: none; /* Supprimer la bordure */
+        padding-top: 20px; 
+        padding: 20px;
+        border-radius: 0; 
+        border: none; 
     }
     h1 {
-        font-size: 36px; /* Ajustement de la taille de la police du titre */
+        font-size: 36px; 
     }
     p {
-        font-size: 18px; /* Ajustement de la taille de la police du paragraphe */
+        font-size: 18px; 
     }
 }
 
-/* Pour les écrans de taille moyenne comme les tablettes */
 @media only screen and (min-width: 769px) and (max-width: 1024px) {
     .container {
         width: 80%;
@@ -73,7 +133,6 @@
     }
 }
 
-/* Pour les écrans de grande taille comme les ordinateurs de bureau */
 @media only screen and (min-width: 1025px) {
     .container {
         width: 70%;
@@ -85,13 +144,25 @@
 </head>
 <body>
     <div class="container">
-        <h1>Informations supplémentaires</h1>
-        <p>Bienvenue sur la page cachée ! Cette page contient des informations statistiques.</p>
+        <h1>Bienvenue sur la page cachée !</h1>
+
         <div class="statistics">
-            <p>Nombre total d'épisodes visionnés : <strong class="number">64</strong></p>
-            <p>Nombre total d'animes visionnés : <strong class="number">6</strong></p>
-            <p>Nombre total de minutes visionnées : <strong class="number">1350</strong></p>
+            <h2>Animes à regarder</h2>
+            <ul>
+                <li>91 days</li>
+                <li>Azumanga Daioh</li>
+                <li>weathering with you</li>
+                <li>le chateau dans le ciel</li>
+                <li>pathéma et le monde inversé</li>
+                <li>i want to eat your pancreas</li>
+            </ul>
+            <h2>Animes en cours de visionnage</h2>
+            <ul>
+                <li>One Piece — Épisode 782</li>
+                <li>Summer Time Rendering - Épisode 11</li>
+            </ul>
         </div>
+        <a href="accueil_critique_anime.html" class="home-btn">Revenir à l'accueil</a>
     </div>
 </body>
 </html>
