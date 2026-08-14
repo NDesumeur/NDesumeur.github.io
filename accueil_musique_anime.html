@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes de musiques d'animes</title>
+    <link rel="icon" type="image/png" href="image_oeuf/oeuf_violet.png">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #111;
+            color: #f4f4f4;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 90%;
+            margin: 0 auto;
+            padding-top: 50px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .logo {
+            width: 120px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 48px;
+            margin-bottom: 1px;
+            color: #b56dff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            margin-top: 1px;
+            font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+        }
+
+        p {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 14px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 25px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+            font-size: 16px;
+            outline: none;
+            background-color: #222;
+            color: #f4f4f4;
+        }
+
+        input[type="text"]::placeholder {
+            color: #999;
+        }
+
+        input[type="submit"],
+        .button {
+            width: 100%;
+            padding: 14px 0;
+            background-color: #9b63ff;
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+
+        input[type="submit"]:hover,
+        .button:hover {
+            background-color: #8148e6;
+        }
+
+        .error-message {
+            color: #d07cff;
+            margin-top: 10px;
+        }
+
+        .autocomplete {
+            position: relative;
+            width: 75%;
+            margin: 0% 10% 120px 10%;
+        }
+
+        .autocomplete-items {
+            margin-top: 20px;
+            margin-left: 15px;
+            position: absolute;
+            border: 1px solid #d4d4d4;
+            border-radius: 10px;
+            background-color: #222;
+            z-index: 99;
+            width: 100%;
+            max-height: 150px;
+            box-shadow: 0 0 30px #9b63ff;
+            overflow-y: auto;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+
+        .autocomplete-items::-webkit-scrollbar {
+            width: 0px;
+        }
+
+        .autocomplete-items.show {
+            opacity: 1;
+        }
+
+        .autocomplete-item {
+            cursor: pointer;
+            color: #f4f4f4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid #423c3c;
+            transition: box-shadow 0.3s, transform 0.3s;
+        }
+
+        .autocomplete-item:hover {
+            background-color: #383333;
+            color: #d07cff;
+            box-shadow: 0 0 10px rgba(155, 99, 255, 0.6);
+        }
+
+        .autocomplete-item:last-child {
+            border-bottom: none;
+        }
+
+        .anime-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .anime-title {
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            color: #d07cff;
+            padding-left: 10px;
+            font-weight: bold;
+        }
+
+        .rating,
+        .genre {
+            font-size: 18px;
+            color: #d07cff;
+            display: flex;
+            align-items: center;
+            padding-left: 10px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                max-width: 90%;
+            }
+
+            h1 {
+                font-size: 36px;
+            }
+
+            .logo {
+                width: 80px;
+            }
+
+            .rating, .genre {
+                font-size: 14px;
+            }
+
+            .anime-title {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="#" onclick="playAudioAndRedirect()">
+                <img src="image_oeuf/oeuf_violet.png" alt="oeuf_violet" class="logo">
+            </a>
+            <h1><strong>Notes de musiques d'animes</strong></h1>
+            <p>Sur ce site tu trouveras des notes sur des musiques d'animes, classées en <strong>opening</strong>, <strong>ending</strong> et <strong>OST</strong>.</p>
+        </div>
+
+        <form id="searchForm">
+            <div class="autocomplete">
+                <input type="text" id="musicInput" placeholder="Rechercher une musique...">
+                <div class="autocomplete-items" id="autocompleteItems"></div>
+            </div>
+            <input type="submit" value="Rechercher">
+        </form>
+
+        <div id="errorMessage" class="error-message" style="display: none;">Aucun résultat trouvé pour cette musique.</div>
+        <button class="button" onclick="window.location.href='liste_musiques_anime.html'">Liste de toutes les musiques</button>
+        <button class="button" onclick="goToRandomMusic()">Musique aléatoire</button>
+        <button class="button" onclick="window.location.href='index.html'">Retourner à la page principale</button>
+        <br>
+    </div>
+
+    <audio id="audio" src="anime_critiques/images_Animes/PresentDay.mp3"></audio>
+
+    <script>
+        var musicList = [
+            { name: 'Unravel', anime: 'Tokyo Ghoul', type: 'opening', rating: '9.6', note: 'Un opening très intense, avec une montée qui reste en tête.' },
+            { name: 'Dango Daikazoku', anime: 'Clannad', type: 'ending', rating: '9.7', note: 'Douce, émotive et instantanément mémorable.' },
+            { name: 'Sadness and Sorrow', anime: 'Naruto', type: 'ost', rating: '9.8', note: 'Une OST emblématique, ultra reconnaissable et chargée en émotion.' }
+        ];
+
+        var musicInput = document.getElementById('musicInput');
+        var autocompleteItems = document.getElementById('autocompleteItems');
+
+        function normalizeSlug(value) {
+            return String(value || '')
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-+|-+$/g, '') || 'musique';
+        }
+
+        function getTypeLabel(type) {
+            if (type === 'ending') return 'Ending';
+            if (type === 'ost') return 'OST';
+            return 'Opening';
+        }
+
+        function renderSuggestions(inputValue) {
+            var value = inputValue.trim().toLowerCase();
+            autocompleteItems.innerHTML = '';
+
+            if (!value) {
+                autocompleteItems.style.display = 'none';
+                return;
+            }
+
+            var suggestions = musicList.filter(function (item) {
+                return item.name.toLowerCase().startsWith(value) || item.anime.toLowerCase().startsWith(value) || item.type.startsWith(value);
+            });
+
+            suggestions.slice(0, 5).forEach(function (item) {
+                var row = document.createElement('div');
+                row.className = 'autocomplete-item';
+
+                var info = document.createElement('div');
+                info.className = 'anime-info';
+
+                var title = document.createElement('div');
+                title.className = 'anime-title';
+                title.textContent = item.name;
+
+                var rating = document.createElement('div');
+                rating.className = 'rating';
+                rating.textContent = 'Note: ' + item.rating;
+
+                var genre = document.createElement('div');
+                genre.className = 'genre';
+                genre.textContent = getTypeLabel(item.type) + ' • ' + item.anime;
+
+                info.appendChild(title);
+                info.appendChild(rating);
+                info.appendChild(genre);
+                row.appendChild(info);
+                row.addEventListener('click', function () {
+                    window.location.href = 'liste_musiques_anime.html#' + normalizeSlug(item.name);
+                });
+
+                autocompleteItems.appendChild(row);
+            });
+
+            autocompleteItems.style.display = suggestions.length ? 'block' : 'none';
+        }
+
+        musicInput.addEventListener('input', function () {
+            renderSuggestions(this.value);
+            document.getElementById('errorMessage').style.display = 'none';
+        });
+
+        document.getElementById('searchForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            var musicName = document.getElementById('musicInput').value.trim();
+            if (!musicName) {
+                document.getElementById('errorMessage').style.display = 'block';
+                return;
+            }
+
+            var match = musicList.find(function (item) {
+                return item.name.toLowerCase() === musicName.toLowerCase() || item.anime.toLowerCase() === musicName.toLowerCase();
+            });
+
+            if (match) {
+                window.location.href = 'liste_musiques_anime.html#' + normalizeSlug(match.name);
+            } else {
+                window.location.href = 'liste_musiques_anime.html';
+            }
+        });
+
+        function playAudioAndRedirect() {
+            var audio = document.getElementById('audio');
+            audio.play();
+            setTimeout(function () {
+                window.location.href = 'pagecachee.html';
+            }, 4500);
+        }
+
+        function goToRandomMusic() {
+            var randomItem = musicList[Math.floor(Math.random() * musicList.length)];
+            window.location.href = 'liste_musiques_anime.html#' + normalizeSlug(randomItem.name);
+        }
+
+        document.addEventListener('click', function (event) {
+            if (!autocompleteItems.contains(event.target) && event.target !== musicInput) {
+                autocompleteItems.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -2,78 +2,112 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #111;
+    --accent: #ff9f1c;
+    --accent-soft: rgba(255, 159, 28, 0.14);
+    --accent-shadow: rgba(255, 159, 28, 0.24);
     color: #f4f4f4;
+    background:
+        radial-gradient(circle at top, rgba(255, 165, 0, 0.16), transparent 30%),
+        linear-gradient(180deg, #151515 0%, #0f0f0f 55%, #090909 100%);
 }
 
 .container {
-    width: 80%;
+    width: min(92%, 1100px);
     margin: 0 auto;
     text-align: center;
-    padding-top: 50px;
+    padding: 48px 0 56px;
 }
 
 .info-box {
-    background-color: #222;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 20px;
-    border: 2px solid #ffa500; 
-    box-shadow: 0 0 10px rgba(255, 165, 0, 0.5); 
-    transition: border-color 0.3s ease, box-shadow 0.3s ease; 
+    background: linear-gradient(180deg, rgba(30, 30, 30, 0.96), rgba(20, 20, 20, 0.96));
+    border-radius: 22px;
+    padding: 24px;
+    margin: 0 auto 22px;
+    border: 1px solid var(--accent);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45), 0 0 0 1px var(--accent-soft) inset;
+    transition: transform 0.25s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    max-width: 900px;
 }
 
 .info-box:hover {
-    border-color: #ff8200; 
-    box-shadow: 0 0 20px rgba(255, 165, 0, 0.8); 
+    transform: translateY(-2px);
+    border-color: var(--accent);
+    box-shadow: 0 20px 44px rgba(0, 0, 0, 0.52), 0 0 0 1px var(--accent-soft) inset;
 }
 
 .review-box {
-    background-color: #222;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 20px;
-    border: 2px solid #ffa500; 
-    box-shadow: 0 0 10px rgba(255, 165, 0, 0.5); 
-    transition: border-color 0.3s ease, box-shadow 0.3s ease; 
+    background: linear-gradient(180deg, rgba(24, 24, 24, 0.98), rgba(17, 17, 17, 0.98));
+    border-radius: 26px;
+    padding: 26px;
+    margin: 0 auto 22px;
+    border: 1px solid var(--accent);
+    box-shadow: 0 18px 44px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--accent-soft) inset;
+    transition: transform 0.25s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    max-width: 900px;
+    text-align: left;
+    border-left: 8px solid var(--accent);
 }
 
 .review-box:hover {
-    border-color: #ff8200; 
-    box-shadow: 0 0 20px rgba(255, 165, 0, 0.8); 
+    transform: translateY(-2px);
+    border-color: var(--accent);
+    box-shadow: 0 22px 48px rgba(0, 0, 0, 0.56), 0 0 0 1px var(--accent-soft) inset;
 }
 
 h2 {
-    font-size: 36px;
-    margin-bottom: 20px;
-    color: #ffa500;
+    font-size: clamp(2rem, 4vw, 3rem);
+    margin: 0 0 18px;
+    color: var(--accent);
+    letter-spacing: 0.02em;
+    text-shadow: 0 4px 18px var(--accent-shadow);
 }
 
 img {
-    width: 300px;
+    width: 100%;
+    max-width: 760px;
     height: auto;
-    margin-bottom: 20px;
-    border-radius: 10px;
-    box-shadow: 0 8px 16px rgba(255, 255, 255, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 24px;
+    border-radius: 22px;
+    border: 2px solid var(--accent);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.42), 0 0 0 1px var(--accent-soft) inset;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
 }
 
 img:hover {
-    transform: scale(1.05);
-    box-shadow: 0 12px 20px rgba(255, 255, 255, 0.2);
+    transform: scale(1.015);
+    box-shadow: 0 22px 46px rgba(0, 0, 0, 0.52), 0 0 0 1px var(--accent-soft) inset;
+    filter: saturate(1.05);
 }
 
 .rating {
-    font-size: 48px;
-    color: #ffa500;
-    margin-bottom: 20px;
-    font-family: 'Pacifico', cursive;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 140px;
+    padding: 12px 20px;
+    border-radius: 999px;
+    font-size: 42px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    color: #fff;
+    background: linear-gradient(180deg, rgba(18, 18, 18, 0.96) 0%, rgba(8, 8, 8, 0.98) 100%);
+    margin-bottom: 22px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-shadow:
+        0 16px 30px rgba(0, 0, 0, 0.42),
+        0 0 0 1px rgba(255, 255, 255, 0.06) inset,
+        0 0 0 3px var(--accent);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.65);
 }
 
 p {
     font-size: 20px;
     line-height: 1.6;
     margin-bottom: 20px;
+    color: #f4f4f4;
 }
 
 .episode-info,
@@ -82,22 +116,96 @@ p {
 .genre-info,
 .opening-info,
 .ending-info {
-    color: #00ff00;
+    color: #d8e6ff;
     font-weight: bold;
 }
 
 .title {
-    font-size: 24px;
-    color: #ffa500;
-    margin-bottom: 10px;
+    font-size: 26px;
+    color: var(--accent);
+    margin: 18px 0 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--accent-soft);
+    letter-spacing: 0.01em;
 }
 
 a {
-    color: #ffa500;
+    color: var(--accent);
     text-decoration: none;
     font-size: 24px;
 }
 
 a:hover {
     text-decoration: underline;
+}
+
+.review-box p:not(.title) {
+    max-width: 78ch;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.review-box > .title:first-of-type {
+    display: none;
+}
+
+.review-box .title[data-section="synopsis"] {
+    display: none;
+}
+
+.review-box p.title + p {
+    margin-top: 0;
+}
+
+.info-box p {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 78ch;
+}
+
+.review-box a,
+.info-box a {
+    color: #ffd36c;
+}
+
+.review-box strong,
+.info-box strong {
+    color: #ffd36c;
+}
+
+.info-box .rating,
+.review-box .title,
+.title {
+    color: var(--accent);
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: min(94%, 1100px);
+        padding: 32px 0 44px;
+    }
+
+    img {
+        max-width: 100%;
+    }
+
+    .info-box,
+    .review-box {
+        padding: 18px;
+        border-radius: 20px;
+    }
+
+    .rating {
+        font-size: 34px;
+        min-width: 120px;
+        padding: 10px 16px;
+    }
+
+    p {
+        font-size: 18px;
+    }
+
+    .title {
+        font-size: 22px;
+    }
 }

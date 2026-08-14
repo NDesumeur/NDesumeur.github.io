@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur musiques d'animes</title>
+    <link rel="icon" type="image/png" href="image_oeuf/oeuf_violet.png">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #111;
+            color: #f4f4f4;
+        }
+
+        .wrap {
+            width: min(92%, 1180px);
+            margin: 0 auto;
+            padding: 34px 0 60px;
+        }
+
+        .hero,
+        .card {
+            background: #1b1b1b;
+            border: 1px solid rgba(155, 99, 255, 0.18);
+            border-radius: 24px;
+            box-shadow: 0 18px 38px rgba(0, 0, 0, 0.34);
+        }
+
+        .hero {
+            padding: 24px 18px 18px;
+            text-align: center;
+            margin-bottom: 18px;
+        }
+
+        .hero h1 {
+            margin: 0 0 10px;
+            font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+            font-size: clamp(2.2rem, 5vw, 3.8rem);
+            color: #b56dff;
+        }
+
+        .hero p {
+            margin: 0 auto;
+            max-width: 860px;
+            font-size: 18px;
+            color: #d6d1e3;
+            line-height: 1.6;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .card {
+            padding: 18px;
+        }
+
+        .card h2 {
+            margin: 0 0 14px;
+            color: #d9c0ff;
+            font-size: 22px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(155, 99, 255, 0.18);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .field.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            color: #eee3ff;
+            font-weight: 700;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid rgba(155, 99, 255, 0.22);
+            border-radius: 16px;
+            background: #222;
+            color: #f4f4f4;
+            padding: 12px 14px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .actions {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .button {
+            border: none;
+            border-radius: 18px;
+            padding: 14px 16px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 800;
+            color: #fff;
+            background: #9b63ff;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            background: #8148e6;
+        }
+
+        .button.secondary {
+            background: #2a2238;
+        }
+
+        .button.secondary:hover {
+            background: #382d4b;
+        }
+
+        .preview-box {
+            padding: 18px;
+            border-radius: 20px;
+            background: #151515;
+            border: 1px solid rgba(155, 99, 255, 0.16);
+        }
+
+        .preview-title {
+            font-size: 26px;
+            font-weight: 800;
+            color: #d07cff;
+        }
+
+        .preview-meta {
+            margin-top: 10px;
+            color: #d8d0ea;
+            line-height: 1.6;
+        }
+
+        .preview-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 14px 0;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 800;
+            color: #111;
+            background: #d9c0ff;
+        }
+
+        .badge.rating {
+            background: #9b63ff;
+        }
+
+        .output {
+            width: 100%;
+            min-height: 180px;
+            box-sizing: border-box;
+            border: 1px solid rgba(155, 99, 255, 0.22);
+            border-radius: 18px;
+            background: #111;
+            color: #f4f4f4;
+            padding: 14px;
+            font-family: Consolas, monospace;
+            font-size: 14px;
+            resize: vertical;
+        }
+
+        .stack {
+            display: grid;
+            gap: 14px;
+        }
+
+        .hint {
+            margin-top: 10px;
+            color: #b8b2cb;
+            font-size: 14px;
+        }
+
+        @media (max-width: 900px) {
+            .grid,
+            .form-grid,
+            .actions {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <section class="hero">
+            <h1>Générateur musiques d'animes</h1>
+            <p>Crée rapidement une fiche avec seulement <strong>titre</strong>, <strong>type</strong>, <strong>note</strong>, <strong>artiste</strong> et <strong>lien</strong>, puis récupère le bloc à coller dans la liste musique.</p>
+        </section>
+
+        <div class="grid">
+            <section class="card">
+                <h2>Infos</h2>
+                <div class="form-grid">
+                    <div class="field">
+                        <label for="name">Titre</label>
+                        <input id="name" type="text" placeholder="Unravel">
+                    </div>
+                    <div class="field">
+                        <label for="note">Note</label>
+                        <input id="note" type="text" placeholder="9.6">
+                    </div>
+                    <div class="field">
+                        <label for="type">Type</label>
+                        <select id="type">
+                            <option value="opening">Opening</option>
+                            <option value="ending">Ending</option>
+                            <option value="ost">OST</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="artist">Artiste</label>
+                        <input id="artist" type="text" placeholder="TK">
+                    </div>
+                    <div class="field full">
+                        <label for="link">Lien</label>
+                        <input id="link" type="text" placeholder="https://...">
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button class="button" id="generateBtn" type="button">Générer</button>
+                    <button class="button secondary" id="copyBtn" type="button">Copier</button>
+                </div>
+
+                <div class="hint">Le bloc généré est fait pour être collé dans <strong>liste_musiques_anime.html</strong>.</div>
+            </section>
+
+            <section class="card stack">
+                <div>
+                    <h2>Prévisualisation</h2>
+                    <div class="preview-box">
+                        <div class="preview-title" id="previewTitle">Unravel</div>
+                        <div class="preview-badges">
+                            <span class="badge" id="previewType">Opening</span>
+                            <span class="badge rating" id="previewRating">9.6</span>
+                        </div>
+                        <div class="preview-meta" id="previewArtist">Artiste : TK</div>
+                        <div class="preview-meta" id="previewLink">Lien : https://www.youtube.com/watch?v=Fve_lHIPa-I</div>
+                    </div>
+                </div>
+
+                <div>
+                    <h2>Bloc à coller</h2>
+                    <textarea id="output" class="output" readonly></textarea>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        const fields = {
+            name: document.getElementById('name'),
+            note: document.getElementById('note'),
+            type: document.getElementById('type'),
+            artist: document.getElementById('artist'),
+            link: document.getElementById('link')
+        };
+
+        const preview = {
+            title: document.getElementById('previewTitle'),
+            type: document.getElementById('previewType'),
+            rating: document.getElementById('previewRating'),
+            artist: document.getElementById('previewArtist'),
+            link: document.getElementById('previewLink')
+        };
+
+        const output = document.getElementById('output');
+
+        function escapeText(value) {
+            return String(value ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function generateEntry(data) {
+            return `{
+    name: '${data.name.replace(/'/g, "\\'")}',
+    type: '${data.type}',
+    rating: '${data.note.replace(/'/g, "\\'")}',
+    artist: '${data.artist.replace(/'/g, "\\'")}',
+    link: '${data.link.replace(/'/g, "\\'")}'
+}`;
+        }
+
+        function refresh() {
+            const data = {
+                name: fields.name.value.trim() || 'Unravel',
+                note: fields.note.value.trim() || '9.6',
+                type: fields.type.value,
+                artist: fields.artist.value.trim() || 'TK',
+                link: fields.link.value.trim() || 'https://www.youtube.com/watch?v=Fve_lHIPa-I'
+            };
+
+            preview.title.textContent = data.name;
+            preview.type.textContent = data.type === 'ending' ? 'Ending' : data.type === 'ost' ? 'OST' : 'Opening';
+            preview.rating.textContent = data.note;
+            preview.artist.textContent = 'Artiste : ' + data.artist;
+            preview.link.textContent = 'Lien : ' + data.link;
+            output.value = generateEntry(data);
+        }
+
+        async function copyOutput() {
+            await navigator.clipboard.writeText(output.value);
+        }
+
+        Object.keys(fields).forEach(function (key) {
+            fields[key].addEventListener('input', refresh);
+            fields[key].addEventListener('change', refresh);
+        });
+
+        document.getElementById('generateBtn').addEventListener('click', refresh);
+        document.getElementById('copyBtn').addEventListener('click', copyOutput);
+
+        refresh();
+    </script>
+</body>
+</html>

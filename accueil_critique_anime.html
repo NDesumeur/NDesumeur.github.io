@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Critiques d'animes</title>
+    <title>Notes d'animes</title>
     <link rel="icon" type="image/png" href="image_oeuf/oeuf_jaune.png">
     <style>
         body {
@@ -141,16 +141,32 @@
             box-shadow: 0 0 10px rgba(255, 165, 0, 0.6);
         }
 
+        .content-type {
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 8px;
+            padding: 5px 10px;
+            border-radius: 999px;
+            background: rgba(255, 191, 64, 0.12);
+            border: 1px solid rgba(255, 191, 64, 0.28);
+            color: #ffdd87;
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .content-type img {
+            width: 16px;
+            height: 16px;
+        }
+
         .autocomplete-item:last-child {
             border-bottom: none;
         }
 
         .autocomplete-item img {
             background-color: cyan;
-            width: 120px;
-            height: auto;
-            border-radius: 5px;
-        }
 
         .anime-info {
             display: flex;
@@ -211,7 +227,7 @@
             <a href="#" onclick="playAudioAndRedirect()">
                 <img src="image_oeuf/oeuf_jaune.png" alt="oeuf_jaune class="logo">
             </a>
-            <h1> <strong> Critiques d'animes</strong></h1>
+            <h1> <strong> Notes d'animes</strong></h1>
             <p>Sur ce site vous trouverez des avis sur plein d'animes ainsi que des informations sur ces animes, chaque animé obtient une note que vous pouvez consulter, ici
                 pas de <strong>divulgâchage</strong> et beaucoup <strong>d'objectivité</strong>  !
             </p>
@@ -225,7 +241,7 @@
         </form>
         <div id="errorMessage" class="error-message" style="display: none;">Aucun résultat trouvé pour cet anime.</div>
         <button class="button" onclick="window.location.href='liste_animes.html'">Liste de tous les animes</button>
-        <button class="button" onclick="goToRandomAnime()">Critique aléatoire</button>
+        <button class="button" onclick="goToRandomAnime()">Note aléatoire</button>
         <button class="button" onclick="window.location.href='index.html'">Retourner à la page principale</button>
         <br>
     </div>
@@ -465,6 +481,33 @@
         var animeInput = document.getElementById("animeInput");
         var autocompleteItems = document.getElementById("autocompleteItems");
 
+        function getAnimeSlug(name) {
+            return String(name || '')
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-+|-+$/g, '');
+        }
+
+        function getAnimeType(anime) {
+            if (anime.type) {
+                return anime.type;
+            }
+
+            var filmSlugs = {
+                'after-the-rain': true,
+                'eve-no-jikan': true,
+                'fireworks': true,
+                'hal': true,
+                'mind-game': true,
+                'princesse-mononoke': true,
+                'wolf-children': true
+            };
+
+            return filmSlugs[getAnimeSlug(anime.name)] ? 'film' : 'anime';
+        }
+
         animeInput.addEventListener("input", function() {
             var input = this.value.trim().toLowerCase();
             var suggestions = animeList.filter(function(anime) {
@@ -473,6 +516,7 @@
             if (input) {
                 autocompleteItems.innerHTML = "";
                 suggestions.slice(0, 5).forEach(function(anime) {
+                    var type = getAnimeType(anime);
                     var item = document.createElement("div");
                     item.classList.add("autocomplete-item");
 
@@ -482,6 +526,10 @@
 
                     var animeInfo = document.createElement("div");
                     animeInfo.classList.add("anime-info");
+
+                    var contentType = document.createElement("div");
+                    contentType.classList.add("content-type");
+                    contentType.textContent = type === 'film' ? 'Film' : 'Anime';
 
                     var animeTitle = document.createElement("div");
                     animeTitle.classList.add("anime-title");
@@ -495,6 +543,7 @@
                     genre.classList.add("genre");
                     genre.textContent = anime.genre;
 
+                    animeInfo.appendChild(contentType);
                     animeInfo.appendChild(animeTitle);
                     animeInfo.appendChild(rating);
                     animeInfo.appendChild(genre);

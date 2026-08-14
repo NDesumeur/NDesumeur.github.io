@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur de page critique</title>
+    <link rel="icon" type="image/png" href="image_oeuf/oeuf_jaune.png">
+    <style>
+        :root {
+            --bg: #0c0c0c;
+            --panel: rgba(19, 19, 19, 0.92);
+            --panel-2: rgba(28, 28, 28, 0.96);
+            --line: rgba(255, 165, 0, 0.22);
+            --accent: #ff9f1c;
+            --accent-soft: rgba(255, 159, 28, 0.14);
+            --text: #f4f4f4;
+            --muted: #cfc9c0;
+            --good: #22c55e;
+            --bad: #7f1d1d;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at 12% 12%, rgba(255, 159, 28, 0.16), transparent 26%),
+                radial-gradient(circle at 88% 0%, rgba(34, 197, 94, 0.08), transparent 24%),
+                radial-gradient(circle at 50% 100%, rgba(127, 29, 29, 0.12), transparent 30%),
+                linear-gradient(180deg, #111 0%, #0c0c0c 55%, #080808 100%);
+            min-height: 100vh;
+        }
+
+        .wrap {
+            width: min(96%, 1300px);
+            margin: 0 auto;
+            padding: 28px 0 44px;
+        }
+
+        .hero {
+            background: linear-gradient(180deg, rgba(28, 28, 28, 0.9), rgba(15, 15, 15, 0.92));
+            border: 1px solid var(--line);
+            border-radius: 28px;
+            padding: 24px 24px 18px;
+            box-shadow: 0 20px 48px rgba(0, 0, 0, 0.4);
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            margin: 0 0 8px;
+            font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+            font-size: clamp(2.2rem, 4vw, 4rem);
+            color: transparent;
+            background: linear-gradient(180deg, #fff5dd 0%, #ffd47f 45%, #ff9f1c 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            letter-spacing: 0.02em;
+        }
+
+        .hero p {
+            margin: 0;
+            color: var(--muted);
+            line-height: 1.6;
+            max-width: 900px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+            gap: 18px;
+            align-items: start;
+        }
+
+        .card {
+            background: linear-gradient(180deg, rgba(23, 23, 23, 0.96), rgba(16, 16, 16, 0.98));
+            border: 1px solid rgba(255, 165, 0, 0.18);
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.36);
+        }
+
+        .card h2 {
+            margin: 0 0 14px;
+            font-size: 22px;
+            color: #ffe0ac;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .field.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: #d8cfbf;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            border: 1px solid rgba(255, 165, 0, 0.18);
+            border-radius: 16px;
+            background: #171717;
+            color: #f4f4f4;
+            padding: 13px 14px;
+            font: inherit;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-soft);
+        }
+
+        .toggle-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 165, 0, 0.18);
+            background: rgba(255, 255, 255, 0.03);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .chip input {
+            width: auto;
+            margin: 0;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 14px;
+        }
+
+        button, .button-link {
+            appearance: none;
+            border: none;
+            border-radius: 16px;
+            padding: 13px 16px;
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        }
+
+        .primary {
+            background: linear-gradient(180deg, #ffb347 0%, #ff9f1c 100%);
+            color: #111;
+            box-shadow: 0 12px 24px rgba(255, 159, 28, 0.18);
+        }
+
+        .secondary {
+            background: #222;
+            color: #f4f4f4;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .ghost {
+            background: transparent;
+            color: #ffd48f;
+            border: 1px solid rgba(255, 165, 0, 0.22);
+        }
+
+        button:hover, .button-link:hover {
+            transform: translateY(-1px);
+        }
+
+        .preview {
+            display: grid;
+            gap: 14px;
+        }
+
+        .preview-box {
+            border-radius: 22px;
+            border: 1px solid rgba(255, 165, 0, 0.18);
+            background: linear-gradient(180deg, rgba(30, 30, 30, 0.96), rgba(17, 17, 17, 0.98));
+            padding: 18px;
+        }
+
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .preview-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 92px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: var(--accent);
+            color: #111;
+            font-weight: 800;
+        }
+
+        .preview-card {
+            border-radius: 18px;
+            background: rgba(0, 0, 0, 0.24);
+            border: 1px solid var(--accent-soft);
+            padding: 14px;
+            display: grid;
+            gap: 10px;
+        }
+
+        .preview-card .row {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            color: #e8e0d4;
+            line-height: 1.5;
+        }
+
+        .preview-card .row span:last-child {
+            color: #f4f4f4;
+        }
+
+        .code-group {
+            display: grid;
+            gap: 10px;
+        }
+
+        .code-group textarea {
+            min-height: 220px;
+            font-family: Consolas, 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .hint {
+            font-size: 13px;
+            color: #cfc6b8;
+            line-height: 1.5;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 980px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <section class="hero">
+            <h1>Générateur de page critique</h1>
+            <p>Remplis les champs, choisis <strong>anime</strong> ou <strong>film</strong>, puis récupère directement le fichier HTML de la page critique et le bloc à coller dans <strong>accueil_critique_anime.html</strong> et <strong>liste_animes.html</strong>. L'image doit être placée dans <strong>anime_critiques/images_Animes/</strong>.</p>
+        </section>
+
+        <div class="grid">
+            <section class="card">
+                <h2>Infos de base</h2>
+                <div class="form-grid">
+                    <div class="field full">
+                        <label>Type de page</label>
+                        <div class="toggle-row">
+                            <label class="chip"><input type="radio" name="type" value="anime" checked> Anime</label>
+                            <label class="chip"><input type="radio" name="type" value="film"> Film</label>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="title">Titre</label>
+                        <input id="title" type="text" placeholder="After the Rain">
+                    </div>
+                    <div class="field">
+                        <label for="slug">Nom du fichier</label>
+                        <input id="slug" type="text" placeholder="after-the-rain">
+                    </div>
+                    <div class="field">
+                        <label for="imageFile">Image</label>
+                        <input id="imageFile" type="text" placeholder="AFTER THE RAIN.jpg">
+                    </div>
+                    <div class="field">
+                        <label for="imageAlt">Texte alternatif image</label>
+                        <input id="imageAlt" type="text" placeholder="Image de l'anime">
+                    </div>
+                    <div class="field">
+                        <label for="rating">Note</label>
+                        <input id="rating" type="text" placeholder="8.4/10">
+                    </div>
+                    <div class="field">
+                        <label for="genre">Genres</label>
+                        <input id="genre" type="text" placeholder="Drame, Romance, Slice of Life">
+                    </div>
+                    <div class="field">
+                        <label for="linkTitle">Texte du lien</label>
+                        <input id="linkTitle" type="text" placeholder="After the Rain">
+                    </div>
+                    <div class="field">
+                        <label for="linkUrl">URL du lien</label>
+                        <input id="linkUrl" type="text" placeholder="https://anime-sama.to/catalogue/apres-la-pluie/">
+                    </div>
+                    <div class="field">
+                        <label for="diffusionDate">Date de diffusion</label>
+                        <input id="diffusionDate" type="text" placeholder="2018">
+                    </div>
+                    <div class="field">
+                        <label for="critiqueDate">Date de la critique</label>
+                        <input id="critiqueDate" type="text" placeholder="8 mars 2025">
+                    </div>
+                    <div class="field anime-only">
+                        <label for="episodes">Nombre d'épisodes</label>
+                        <input id="episodes" type="text" placeholder="12">
+                    </div>
+                    <div class="field anime-only">
+                        <label for="seasons">Nombre de saisons</label>
+                        <input id="seasons" type="text" placeholder="1">
+                    </div>
+                    <div class="field anime-only">
+                        <label for="status">Statut</label>
+                        <input id="status" type="text" placeholder="Terminé">
+                    </div>
+                    <div class="field anime-only">
+                        <label for="opening">Opening</label>
+                        <input id="opening" type="text" placeholder="9/10">
+                    </div>
+                    <div class="field anime-only">
+                        <label for="ending">Ending</label>
+                        <input id="ending" type="text" placeholder="10/10">
+                    </div>
+                    <div class="field film-only hidden">
+                        <label for="ost">OST</label>
+                        <input id="ost" type="text" placeholder="9/10">
+                    </div>
+                    <div class="field full">
+                        <label for="noteText">Texte de la note</label>
+                        <textarea id="noteText" placeholder="Un anime touchant avec un bon rythme et un beau développement des personnages."></textarea>
+                    </div>
+                    <div class="field full">
+                        <label for="synopsisText">Synopsis</label>
+                        <textarea id="synopsisText" placeholder="On suit le quotidien... "></textarea>
+                    </div>
+                </div>
+                <div class="actions">
+                    <button class="primary" id="generateBtn" type="button">Générer</button>
+                    <button class="secondary" id="downloadBtn" type="button">Télécharger le HTML</button>
+                    <button class="ghost" id="copyPageBtn" type="button">Copier la page</button>
+                    <button class="ghost" id="copyListBtn" type="button">Copier l'entrée liste/accueil</button>
+                </div>
+                <p class="hint">L’entrée à coller dans la liste et l’accueil est la même. Place simplement l’image dans <strong>anime_critiques/images_Animes/</strong> avec le nom saisi.</p>
+            </section>
+
+            <section class="preview">
+                <div class="card">
+                    <h2>Prévisualisation</h2>
+                    <div class="preview-box" id="previewBox">
+                        <div class="preview-header">
+                            <div class="preview-title" id="previewTitle">Titre</div>
+                            <div class="badge" id="previewBadge">8.4/10</div>
+                        </div>
+                        <div class="preview-card" id="previewCard">
+                            <div class="row"><span>Lien</span><span id="previewLink">—</span></div>
+                            <div class="row"><span>Genres</span><span id="previewGenre">—</span></div>
+                            <div class="row"><span>Infos</span><span id="previewInfo">—</span></div>
+                            <div class="row"><span>Date</span><span id="previewDates">—</span></div>
+                            <div class="row"><span>Note</span><span id="previewNote">—</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card code-group">
+                    <h2>HTML généré</h2>
+                    <textarea id="htmlOutput" readonly placeholder="Le HTML complet apparaîtra ici..."></textarea>
+                </div>
+
+                <div class="card code-group">
+                    <h2>Entrée à coller dans la liste / l'accueil</h2>
+                    <textarea id="listOutput" readonly placeholder="L'objet animeList apparaîtra ici..."></textarea>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        const fields = {
+            type: document.querySelector('input[name="type"]:checked'),
+            title: document.getElementById('title'),
+            slug: document.getElementById('slug'),
+            imageFile: document.getElementById('imageFile'),
+            imageAlt: document.getElementById('imageAlt'),
+            rating: document.getElementById('rating'),
+            genre: document.getElementById('genre'),
+            linkTitle: document.getElementById('linkTitle'),
+            linkUrl: document.getElementById('linkUrl'),
+            diffusionDate: document.getElementById('diffusionDate'),
+            critiqueDate: document.getElementById('critiqueDate'),
+            episodes: document.getElementById('episodes'),
+            seasons: document.getElementById('seasons'),
+            status: document.getElementById('status'),
+            opening: document.getElementById('opening'),
+            ending: document.getElementById('ending'),
+            ost: document.getElementById('ost'),
+            noteText: document.getElementById('noteText'),
+            synopsisText: document.getElementById('synopsisText')
+        };
+
+        const animeOnly = Array.from(document.querySelectorAll('.anime-only'));
+        const filmOnly = Array.from(document.querySelectorAll('.film-only'));
+        const preview = {
+            title: document.getElementById('previewTitle'),
+            badge: document.getElementById('previewBadge'),
+            link: document.getElementById('previewLink'),
+            genre: document.getElementById('previewGenre'),
+            info: document.getElementById('previewInfo'),
+            dates: document.getElementById('previewDates'),
+            note: document.getElementById('previewNote'),
+            html: document.getElementById('htmlOutput'),
+            list: document.getElementById('listOutput'),
+            card: document.getElementById('previewCard')
+        };
+
+        function escapeHtml(value) {
+            return String(value ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function normalizeSlug(value) {
+            return String(value || '')
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-+|-+$/g, '') || 'nouvelle-page';
+        }
+
+        function getType() {
+            const selected = document.querySelector('input[name="type"]:checked');
+            return selected ? selected.value : 'anime';
+        }
+
+        function getReviewTitle(type) {
+            return type === 'film' ? 'Note du film' : 'Note de l\'anime';
+        }
+
+        function getLinkLabel(type) {
+            return type === 'film' ? 'Lien du film' : 'Lien de l\'anime';
+        }
+
+        function computeAccent(ratingValue) {
+            const rating = parseFloat(String(ratingValue).replace(',', '.')) || 0;
+            if (rating >= 9.5) return { accent: '#2dd4bf', text: '#111111' };
+            if (rating >= 9) return { accent: '#22c55e', text: '#111111' };
+            if (rating >= 8.5) return { accent: '#38bdf8', text: '#111111' };
+            if (rating >= 8) return { accent: '#60a5fa', text: '#111111' };
+            if (rating >= 7.5) return { accent: '#f59e0b', text: '#111111' };
+            if (rating >= 7) return { accent: '#fb923c', text: '#111111' };
+            if (rating >= 6.5) return { accent: '#f97316', text: '#111111' };
+            if (rating >= 6) return { accent: '#ef4444', text: '#ffffff' };
+            if (rating >= 5) return { accent: '#f43f5e', text: '#ffffff' };
+            if (rating >= 4) return { accent: '#ec4899', text: '#ffffff' };
+            if (rating >= 3) return { accent: '#a855f7', text: '#ffffff' };
+            if (rating >= 1) return { accent: '#ef4444', text: '#ffffff' };
+            return { accent: '#7f1d1d', text: '#ffffff' };
+        }
+
+        function updateVisibility() {
+            const type = getType();
+            animeOnly.forEach(function (field) {
+                field.classList.toggle('hidden', type !== 'anime');
+            });
+            filmOnly.forEach(function (field) {
+                field.classList.toggle('hidden', type !== 'film');
+            });
+        }
+
+        function autoFill() {
+            const type = getType();
+            const title = fields.title.value.trim();
+            fields.slug.value = normalizeSlug(title);
+            if (!fields.imageAlt.value.trim()) {
+                fields.imageAlt.value = type === 'film' ? 'Image du film' : 'Image de l\'anime';
+            }
+            if (!fields.linkTitle.value.trim()) {
+                fields.linkTitle.value = title;
+            }
+            if (!fields.critiqueDate.value.trim()) {
+                fields.critiqueDate.value = '8 mars 2025';
+            }
+        }
+
+        function getCurrentData() {
+            const type = getType();
+            const title = fields.title.value.trim() || 'Titre';
+            const slug = normalizeSlug(fields.slug.value || title);
+            const imageFile = fields.imageFile.value.trim() || 'IMAGE.jpg';
+            const imageAlt = fields.imageAlt.value.trim() || (type === 'film' ? 'Image du film' : 'Image de l\'anime');
+            const rating = fields.rating.value.trim() || '8.4/10';
+            const genre = fields.genre.value.trim() || 'Genres';
+            const linkTitle = fields.linkTitle.value.trim() || title;
+            const linkUrl = fields.linkUrl.value.trim() || '#';
+            const diffusionDate = fields.diffusionDate.value.trim() || '2025';
+            const critiqueDate = fields.critiqueDate.value.trim() || '8 mars 2025';
+            const noteText = fields.noteText.value.trim() || 'Texte de la note.';
+            const synopsisText = fields.synopsisText.value.trim() || 'Synopsis.';
+            const opening = fields.opening.value.trim() || '9/10';
+            const ending = fields.ending.value.trim() || '10/10';
+            const episodes = fields.episodes.value.trim() || '12';
+            const seasons = fields.seasons.value.trim() || '1';
+            const status = fields.status.value.trim() || 'Terminé';
+            const ost = fields.ost.value.trim() || '9/10';
+
+            return {
+                type, title, slug, imageFile, imageAlt, rating, genre, linkTitle, linkUrl,
+                diffusionDate, critiqueDate, noteText, synopsisText, opening, ending, episodes, seasons, status, ost
+            };
+        }
+
+        function generatePageHtml(data) {
+            const reviewLabel = getReviewTitle(data.type);
+            const linkLabel = getLinkLabel(data.type);
+            const pageTypeLabel = data.type === 'film' ? 'Film' : 'Anime';
+            const extraInfo = data.type === 'film'
+                ? `<p>OST : <span class="opening-info">${escapeHtml(data.ost)}</span></p>`
+                : `<p>Nombre d'épisodes : <span class="episode-info">${escapeHtml(data.episodes)}</span> <br> Nombre de saisons : <span class="episode-info">${escapeHtml(data.seasons)}</span></p>\n            <p>Statut : <span class="status-info">${escapeHtml(data.status)}</span> <br> Date de diffusion : <span class="date-info">${escapeHtml(data.diffusionDate)}</span></p>\n            <p>Opening : <span class="opening-info">${escapeHtml(data.opening)}</span> <br> Ending : <span class="ending-info">${escapeHtml(data.ending)}</span></p>`;
+
+            return `<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="stylesheet" href="anime.css">
+    <title>${escapeHtml(data.title)}</title>
+</head>
+<body>
+    <div class="container">
+        <h2>${escapeHtml(data.title)}</h2>
+        <p class="page-type" style="display:inline-flex;align-items:center;justify-content:center;margin:0 0 18px;padding:6px 12px;border-radius:999px;font-size:0.95rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);border:1px solid var(--accent);font-weight:700;">${pageTypeLabel}</p>
+        <img src="images_Animes/${escapeHtml(data.imageFile)}" alt="${escapeHtml(data.imageAlt)}">
+        <div class="info-box">
+            <div class="rating">
+                ${escapeHtml(data.rating)}
+            </div>
+            <p>${linkLabel} : <a href="${escapeHtml(data.linkUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(data.linkTitle)}</a></p>
+            <p>Genres : <span class="genre-info">${escapeHtml(data.genre)}</span></p>
+            ${extraInfo}
+            <p>Date de la critique : <span class="date-info">${escapeHtml(data.critiqueDate)}</span></p>
+        </div>
+        <div class="review-box">
+            <p class="title">${reviewLabel}</p>
+            <p>${escapeHtml(data.noteText)}</p>
+            <p class="title">Synopsis</p>
+            <p>${escapeHtml(data.synopsisText)}</p>
+        </div>
+        <p><a href="../accueil_critique_anime.html">Revenir à la page d'accueil</a></p>
+
+        <script src="review-theme.js"><\/script>
+    </div>
+</body>
+</html>`;
+        }
+
+        function generateListSnippet(data) {
+            return `{
+    "name": "${data.title}",
+    "image": "${data.imageFile}",
+    "rating": "${data.rating.replace(/"/g, '\\"')}",
+            "genre": "${data.genre.replace(/"/g, '\\"')}",
+            "type": "${data.type}"
+}`;
+        }
+
+        function refreshPreview() {
+            autoFill();
+            updateVisibility();
+            const data = getCurrentData();
+            const accent = computeAccent(data.rating);
+
+            preview.title.textContent = data.title;
+            preview.badge.textContent = data.rating;
+            preview.badge.style.background = accent.accent;
+            preview.badge.style.color = accent.text;
+            preview.card.style.borderColor = accent.accent;
+            preview.card.style.boxShadow = `0 0 0 1px ${accent.accent}33 inset`;
+            preview.link.textContent = data.linkTitle || '—';
+            preview.genre.textContent = data.genre || '—';
+            preview.info.textContent = data.type === 'film'
+                ? `Film | OST ${data.ost}`
+                : `Anime | ${data.episodes} épisodes | ${data.seasons} saison(s) | ${data.status}`;
+            preview.dates.textContent = `${data.diffusionDate} | ${data.critiqueDate}`;
+            preview.note.textContent = data.noteText.substring(0, 90) + (data.noteText.length > 90 ? '…' : '');
+            preview.html.value = generatePageHtml(data);
+            preview.list.value = generateListSnippet(data);
+        }
+
+        function downloadHtml() {
+            const data = getCurrentData();
+            const blob = new Blob([generatePageHtml(data)], { type: 'text/html;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `${data.slug}.html`;
+            document.body.appendChild(link);
+            link.click();
+            URL.revokeObjectURL(link.href);
+            link.remove();
+        }
+
+        async function copyText(text) {
+            await navigator.clipboard.writeText(text);
+        }
+
+        document.querySelectorAll('input[name="type"]').forEach(function (input) {
+            input.addEventListener('change', refreshPreview);
+        });
+
+        Object.keys(fields).forEach(function (key) {
+            if (fields[key] && fields[key].addEventListener) {
+                fields[key].addEventListener('input', refreshPreview);
+            }
+        });
+
+        document.getElementById('generateBtn').addEventListener('click', refreshPreview);
+        document.getElementById('downloadBtn').addEventListener('click', downloadHtml);
+        document.getElementById('copyPageBtn').addEventListener('click', function () {
+            copyText(preview.html.value);
+        });
+        document.getElementById('copyListBtn').addEventListener('click', function () {
+            copyText(preview.list.value);
+        });
+
+        refreshPreview();
+    </script>
+</body>
+</html>

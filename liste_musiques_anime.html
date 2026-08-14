@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des musiques d'animes</title>
+    <link rel="icon" type="image/png" href="image_oeuf/oeuf_violet.png">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #f4f4f4;
+            background: #111;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        .container {
+            width: min(92%, 1180px);
+            margin: 0 auto;
+            padding: 34px 0 60px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            padding: 18px 18px 12px;
+            margin-bottom: 18px;
+            border-radius: 28px;
+            background: #1b1b1b;
+            border: 1px solid rgba(155, 99, 255, 0.20);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.36);
+        }
+
+        h1 {
+            font-size: clamp(2.6rem, 5vw, 4.6rem);
+            margin: 8px 0 10px;
+            color: #b56dff;
+            text-align: center;
+            font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+            letter-spacing: 0.02em;
+        }
+
+        h1::after {
+            content: '';
+            display: block;
+            width: min(220px, 34vw);
+            height: 4px;
+            margin: 14px auto 0;
+            border-radius: 999px;
+            background: linear-gradient(90deg, transparent, #9b63ff, transparent);
+            box-shadow: 0 0 14px rgba(155, 99, 255, 0.24);
+        }
+
+        .subtitle {
+            margin: 0 auto 6px;
+            max-width: 800px;
+            font-size: 18px;
+            line-height: 1.6;
+            color: #dad5e6;
+        }
+
+        .subtitle strong {
+            color: #e7d7ff;
+        }
+
+        .toolbar {
+            display: grid;
+            grid-template-columns: 1.3fr 0.7fr;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .panel {
+            background: #1b1b1b;
+            border: 1px solid rgba(155, 99, 255, 0.18);
+            border-radius: 22px;
+            padding: 16px;
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.40);
+        }
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .chip {
+            padding: 10px 14px;
+            border-radius: 999px;
+            background: rgba(155, 99, 255, 0.08);
+            border: 1px solid rgba(155, 99, 255, 0.18);
+            color: #e8d9ff;
+            font-weight: 800;
+            font-size: 13px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        .chip:hover {
+            transform: translateY(-1px);
+        }
+
+        .chip.opening {
+            border-color: rgba(155, 99, 255, 0.24);
+            color: #d9c0ff;
+        }
+
+        .chip.ending {
+            border-color: rgba(155, 99, 255, 0.24);
+            color: #d9c0ff;
+        }
+
+        .chip.ost {
+            border-color: rgba(155, 99, 255, 0.24);
+            color: #d9c0ff;
+        }
+
+        select,
+        input[type="text"] {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 14px 16px;
+            border-radius: 18px;
+            border: 1px solid rgba(155, 99, 255, 0.22);
+            background: #222;
+            color: #f4f4f4;
+            outline: none;
+            font-size: 16px;
+            box-shadow: 0 10px 22px rgba(0, 0, 0, 0.22);
+        }
+
+        select {
+            margin-bottom: 12px;
+        }
+
+        .music-section {
+            margin-bottom: 24px;
+            background: #1b1b1b;
+            border: 1px solid rgba(155, 99, 255, 0.18);
+            border-radius: 24px;
+            padding: 18px 18px 8px;
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.40);
+        }
+
+        .section-title {
+            font-size: 24px;
+            margin: 4px 0 14px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(175, 116, 255, 0.18);
+            letter-spacing: 0.02em;
+        }
+
+        .section-title.opening {
+            color: #d9c0ff;
+        }
+
+        .section-title.ending {
+            color: #d9c0ff;
+        }
+
+        .section-title.ost {
+            color: #d9c0ff;
+        }
+
+        .music-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            gap: 12px;
+        }
+
+        .music-item {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 14px;
+            align-items: start;
+            padding: 14px 16px;
+            border-radius: 18px;
+            background: #151515;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-left: 8px solid var(--accent, #9a63ff);
+            box-shadow: 0 0 0 1px var(--accent-soft, rgba(175, 116, 255, 0.08)) inset;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        .music-item:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent, #9a63ff);
+            box-shadow:
+                0 14px 24px rgba(0, 0, 0, 0.36),
+                0 0 0 1px var(--accent-soft, rgba(175, 116, 255, 0.08)) inset,
+                0 0 20px var(--accent-shadow, rgba(175, 116, 255, 0.18));
+        }
+
+        .music-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .music-top {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .music-note {
+            color: #d5d1e0;
+            font-size: 15px;
+            line-height: 1.5;
+            margin-top: 8px;
+        }
+
+        .badge,
+        .type-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .badge {
+            color: #111;
+            background: #9b63ff;
+            box-shadow: 0 8px 16px var(--accent-shadow, rgba(175, 116, 255, 0.18));
+        }
+
+        .type-badge {
+            color: #1d1230;
+            background: #d9c0ff;
+        }
+
+        .music-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 12px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: rgba(155, 99, 255, 0.16);
+            color: #f4eaff;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 13px;
+            border: 1px solid rgba(155, 99, 255, 0.22);
+        }
+
+        .music-link:hover {
+            background: rgba(155, 99, 255, 0.24);
+        }
+
+        .type-badge.opening {
+            color: #1d1230;
+            background: #d9c0ff;
+        }
+
+        .type-badge.ending {
+            color: #1d1230;
+            background: #d9c0ff;
+        }
+
+        .type-badge.ost {
+            color: #1d1230;
+            background: #d9c0ff;
+        }
+
+        .music-note {
+            color: #dcd6e7;
+            line-height: 1.5;
+            font-size: 15px;
+        }
+
+        .music-meta {
+            color: #aca6be;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .empty-state {
+            color: #b5b0c3;
+            padding: 12px 2px 4px;
+            font-size: 15px;
+        }
+
+        .footer-actions {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .button {
+            width: 100%;
+            border: none;
+            border-radius: 18px;
+            padding: 14px 16px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 800;
+            color: #fff;
+            background: #9b63ff;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 28px rgba(0, 0, 0, 0.30);
+        }
+
+        .button.secondary {
+            background: #8148e6;
+        }
+
+        .hint {
+            margin-top: 14px;
+            color: #b8b2cb;
+            font-size: 14px;
+        }
+
+        @media (max-width: 900px) {
+            .toolbar {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .music-item {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .music-actions {
+                min-width: 0;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Liste des musiques d'animes</h1>
+                <p class="subtitle">Chaque fiche contient seulement <strong>titre</strong>, <strong>type</strong>, <strong>note</strong>, <strong>artiste</strong> et <strong>lien</strong>. L'idée est de rester simple et rapide à lire.</p>
+        </div>
+
+        <div class="toolbar">
+            <div class="panel">
+                <select id="sort-selector">
+                    <option value="name">Trier par titre</option>
+                    <option value="rating">Trier par note</option>
+                    <option value="artist">Trier par artiste</option>
+                </select>
+                <input type="text" id="search-bar" placeholder="Rechercher un titre, un artiste ou un lien...">
+                <div class="hint">Tu peux filtrer rapidement par mot-clé. La liste reste volontairement courte et lisible.</div>
+            </div>
+
+            <div class="panel">
+                <p class="hint" style="margin-top: 0;">Les meilleures notes seront automatiquement mises en avant par le tri.</p>
+                <div class="footer-actions">
+                    <button class="button" type="button" onclick="window.location.href='accueil_musique_anime.html'">Retour à la recherche</button>
+                    <button class="button secondary" type="button" onclick="window.location.href='index.html'">Retour à la page principale</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="musicList"></div>
+    </div>
+
+    <script>
+        var musicList = [
+            {
+                name: 'Unravel',
+                type: 'opening',
+                rating: '9.6',
+                artist: 'TK',
+                link: 'https://www.youtube.com/watch?v=Fve_lHIPa-I'
+            },
+            {
+                name: 'Dango Daikazoku',
+                type: 'ending',
+                rating: '9.7',
+                artist: 'Chata',
+                link: 'https://www.youtube.com/watch?v=WVfyV36mSiM'
+            },
+            {
+                name: 'Sadness and Sorrow',
+                type: 'ost',
+                rating: '9.8',
+                artist: 'Toshio Masuda',
+                link: 'https://www.youtube.com/watch?v=6cR8T1CKrOo'
+            }
+        ];
+
+        function normalizeSlug(value) {
+            return String(value || '')
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-+|-+$/g, '') || 'musique';
+        }
+
+        function hexToRgb(hex) {
+            var normalized = hex.replace('#', '');
+            return {
+                red: parseInt(normalized.slice(0, 2), 16),
+                green: parseInt(normalized.slice(2, 4), 16),
+                blue: parseInt(normalized.slice(4, 6), 16)
+            };
+        }
+
+        function getContrastTextColor(hex) {
+            var rgb = hexToRgb(hex);
+            var luminance = (0.2126 * rgb.red + 0.7152 * rgb.green + 0.0722 * rgb.blue) / 255;
+            return luminance >= 0.5 ? '#111111' : '#ffffff';
+        }
+
+        function getAccent(index) {
+            var palette = [
+                { accent: '#9b63ff', soft: 'rgba(155, 99, 255, 0.12)', shadow: 'rgba(155, 99, 255, 0.22)' },
+                { accent: '#c084fc', soft: 'rgba(192, 132, 252, 0.12)', shadow: 'rgba(192, 132, 252, 0.22)' },
+                { accent: '#f59e0b', soft: 'rgba(245, 158, 11, 0.12)', shadow: 'rgba(245, 158, 11, 0.22)' }
+            ];
+            return palette[index % palette.length];
+        }
+
+        function getTypeLabel(type) {
+            if (type === 'ending') return 'Ending';
+            if (type === 'ost') return 'OST';
+            return 'Opening';
+        }
+
+        function getRatingClass(ratingText) {
+            var rating = parseFloat(String(ratingText).replace(',', '.')) || 0;
+            if (rating >= 9) return 'rating-excellent';
+            if (rating >= 8) return 'rating-good';
+            if (rating >= 6) return 'rating-medium';
+            if (rating >= 4) return 'rating-low';
+            if (rating >= 2) return 'rating-bad';
+            return 'rating-very-bad';
+        }
+
+        function createMusicItem(item, index) {
+            var colors = getAccent(index);
+            var musicItem = document.createElement('article');
+            musicItem.className = 'music-item ' + getRatingClass(item.rating);
+            musicItem.id = normalizeSlug(item.name);
+            musicItem.setAttribute('data-name', item.name.toLowerCase());
+            musicItem.setAttribute('data-type', item.type);
+            musicItem.setAttribute('data-artist', item.artist.toLowerCase());
+            musicItem.setAttribute('data-link', item.link.toLowerCase());
+            musicItem.setAttribute('data-rating', String(item.rating));
+            musicItem.style.setProperty('--accent', colors.accent);
+            musicItem.style.setProperty('--accent-soft', colors.soft);
+            musicItem.style.setProperty('--accent-shadow', colors.shadow);
+            musicItem.style.color = getContrastTextColor(colors.accent);
+
+            var info = document.createElement('div');
+            var top = document.createElement('div');
+            top.className = 'music-top';
+            top.innerHTML = '<span class="music-title">' + item.name + '</span>' +
+                '<span class="type-badge">' + getTypeLabel(item.type) + '</span>' +
+                '<span class="badge">' + item.rating + '</span>';
+
+            var artist = document.createElement('div');
+            artist.className = 'music-note';
+            artist.textContent = 'Artiste : ' + item.artist;
+
+            var link = document.createElement('a');
+            link.className = 'music-link';
+            link.href = item.link;
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            link.textContent = 'Voir le lien';
+
+            info.appendChild(top);
+            info.appendChild(artist);
+            info.appendChild(link);
+
+            musicItem.appendChild(info);
+            return musicItem;
+        }
+
+        function renderMusicList(items, element) {
+            var searchValue = document.getElementById('search-bar').value.trim().toLowerCase();
+            var sortBy = document.getElementById('sort-selector').value;
+            var sorted = items.slice();
+
+            if (sortBy === 'name') {
+                sorted.sort(function (a, b) {
+                    return a.name.localeCompare(b.name, 'fr');
+                });
+            } else if (sortBy === 'artist') {
+                sorted.sort(function (a, b) {
+                    return a.artist.localeCompare(b.artist, 'fr');
+                });
+            } else {
+                sorted.sort(function (a, b) {
+                    return parseFloat(b.rating.replace(',', '.')) - parseFloat(a.rating.replace(',', '.'));
+                });
+            }
+
+            element.innerHTML = '';
+
+            var filtered = sorted.filter(function (item) {
+                if (!searchValue) {
+                    return true;
+                }
+                return item.name.toLowerCase().includes(searchValue) ||
+                    item.type.toLowerCase().includes(searchValue) ||
+                    item.artist.toLowerCase().includes(searchValue) ||
+                    item.link.toLowerCase().includes(searchValue) ||
+                    item.rating.toLowerCase().includes(searchValue);
+            });
+
+            if (filtered.length) {
+                var section = document.createElement('section');
+                section.className = 'music-section';
+                var title = document.createElement('h2');
+                title.className = 'section-title';
+                title.textContent = 'Musiques';
+
+                var list = document.createElement('div');
+                list.className = 'music-list';
+                filtered.forEach(function (item, index) {
+                    list.appendChild(createMusicItem(item, index));
+                });
+
+                section.appendChild(title);
+                section.appendChild(list);
+                element.appendChild(section);
+            }
+
+            if (!element.children.length) {
+                var empty = document.createElement('div');
+                empty.className = 'panel empty-state';
+                empty.textContent = 'Aucune musique ne correspond à la recherche.';
+                element.appendChild(empty);
+            }
+        }
+
+        var musicListContainer = document.getElementById('musicList');
+        renderMusicList(musicList, musicListContainer);
+
+        document.getElementById('search-bar').addEventListener('input', function () {
+            renderMusicList(musicList, musicListContainer);
+        });
+
+        document.getElementById('sort-selector').addEventListener('change', function () {
+            renderMusicList(musicList, musicListContainer);
+        });
+    </script>
+</body>
+</html>

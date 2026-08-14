@@ -10,119 +10,287 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             margin: 0;
             padding: 0;
-            background-color: #111; 
+            background:
+                radial-gradient(circle at 15% 10%, rgba(255, 159, 28, 0.14), transparent 22%),
+                radial-gradient(circle at 85% 0%, rgba(24, 167, 255, 0.10), transparent 24%),
+                radial-gradient(circle at 50% 100%, rgba(184, 63, 119, 0.08), transparent 28%),
+                linear-gradient(180deg, #101010 0%, #0c0c0c 45%, #080808 100%);
             color: #f4f4f4; 
         }
 
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                linear-gradient(120deg, rgba(255, 255, 255, 0.02) 0%, transparent 30%),
+                linear-gradient(300deg, rgba(255, 159, 28, 0.06) 0%, transparent 22%);
+            pointer-events: none;
+        }
+
         .container {
-            width: 80%;
+            width: min(92%, 1180px);
             margin: 0 auto;
-            padding-top: 50px;
+            padding: 34px 0 60px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            padding: 18px 18px 10px;
+            margin-bottom: 18px;
+            border-radius: 28px;
+            background: linear-gradient(180deg, rgba(30, 30, 30, 0.78), rgba(16, 16, 16, 0.70));
+            border: 1px solid rgba(255, 165, 0, 0.18);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(8px);
         }
 
         h1 {
-            font-size: 48px; 
-            margin-bottom: 20px;
-            color: #ffa500;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); 
+            font-size: clamp(2.9rem, 5vw, 4.7rem); 
+            margin: 8px 0 10px;
+            color: transparent;
+            background: linear-gradient(180deg, #fff6df 0%, #ffd27e 40%, #ff9f1c 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            text-shadow: 0 8px 26px rgba(255, 159, 28, 0.18); 
             text-align: center;
-            margin-top: 50px; 
             font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif; 
+            position: relative;
+            letter-spacing: 0.02em;
+        }
+
+        h1::after {
+            content: '';
+            display: block;
+            width: min(200px, 34vw);
+            height: 4px;
+            margin: 14px auto 0;
+            border-radius: 999px;
+            background: linear-gradient(90deg, transparent, #ff9f1c, transparent);
+            box-shadow: 0 0 18px rgba(255, 159, 28, 0.26);
+        }
+
+        .subtitle {
+            margin: 0 auto 6px;
+            max-width: 760px;
+            font-size: 18px;
+            line-height: 1.6;
+            color: #d8d2c8;
+        }
+
+        .subtitle strong {
+            color: #ffcf7a;
         }
 
         .category {
-            margin-bottom: 30px;
-            background-color: #222; 
-            padding: 10px;
-            border-radius: 5px; 
-            box-shadow: 0 0 10px ; 
+            margin-bottom: 24px;
+            background: linear-gradient(180deg, rgba(28, 28, 28, 0.96), rgba(16, 16, 16, 0.98)); 
+            padding: 18px 18px 10px;
+            border-radius: 22px; 
+            border: 1px solid rgba(255, 165, 0, 0.18);
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.42); 
         }
 
         .category-title {
-            font-size: 24px;
-            color: #ffa500; 
+            font-size: 25px;
+            color: #ffe0ac; 
+            margin: 4px 0 14px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 165, 0, 0.18);
+            letter-spacing: 0.02em;
         }
 
         .anime-list {
             list-style-type: none;
             padding: 0;
+            margin: 0;
         }
 
         .anime-item {
             font-size: 20px;
-            margin-bottom: 10px;
-            display: flex;
+            margin-bottom: 12px;
+            display: grid;
+            grid-template-columns: 68px minmax(0, 1fr) auto;
+            gap: 14px;
             align-items: center;
-            border: 2px solid #b1aa9c;
-            border-radius: 5px; 
-            padding: 10px; 
-            transition: border-color 0.3s ease, box-shadow 0.3s ease; 
+            background: linear-gradient(90deg, var(--item-accent-soft, rgba(255, 165, 0, 0.12)) 0%, rgba(20, 20, 20, 0.98) 40%, rgba(15, 15, 15, 0.98) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-left: 8px solid var(--item-accent, rgba(255, 165, 0, 0.65));
+            border-radius: 16px; 
+            padding: 12px 14px; 
+            transition: transform 0.2s ease, border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease; 
+            box-shadow: 0 0 0 1px var(--item-accent-soft, rgba(255, 165, 0, 0.08)) inset;
         }
 
         .anime-item:hover {
-            border-color: #ff8200; 
-            box-shadow: 0 0 20px rgba(255, 165, 0, 0.8); 
+            transform: translateY(-2px);
+            border-color: var(--item-accent, rgba(255, 165, 0, 0.7)); 
+            box-shadow:
+                0 14px 24px rgba(0, 0, 0, 0.38),
+                0 0 0 1px var(--item-accent-soft, rgba(255, 165, 0, 0.08)) inset,
+                0 0 18px var(--item-accent-shadow, rgba(255, 165, 0, 0.18)); 
         }
 
         .anime-image {
-            width: 50px;
-            height: auto;
-            margin-right: 10px;
-            border-radius: 5px;
+            width: 68px;
+            height: 68px;
+            object-fit: cover;
+            margin-right: 0;
+            border-radius: 12px;
+            border: 1px solid var(--item-accent, rgba(255, 165, 0, 0.45));
+            box-shadow: 0 10px 18px rgba(0, 0, 0, 0.35), 0 0 0 1px var(--item-accent-soft, rgba(255, 165, 0, 0.08)) inset;
         }
 
         .anime-info {
-            font-size: 16px;
-            color: #00ff00;
-            margin-left: auto; 
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            font-size: 15px;
+            color: #dbe2ef;
+            margin-left: 0; 
+            line-height: 1.45;
+        }
+
+        .anime-type,
+        .top-ten-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 5px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .anime-type {
+            color: #ffdd87;
+            background: rgba(255, 191, 64, 0.12);
+            border: 1px solid rgba(255, 191, 64, 0.28);
+        }
+
+        .top-ten-badge {
+            color: #1f1300;
+            background: linear-gradient(135deg, #ffe7a3, #d4af37);
+            border: 1px solid rgba(255, 231, 163, 0.65);
+            box-shadow: 0 8px 16px rgba(212, 175, 55, 0.22);
         }
 
         a {
-            color: #00ff00; 
+            color: var(--item-accent, #ffd16a); 
             text-decoration: none;
             transition: color 0.3s ease;
         }
 
         a:hover {
             text-decoration: underline;
-            color: #ffa500;
+            color: #ffb347;
         }
 
         #sort-selector {
             margin-top: 30px;
             margin-bottom: 20px;
-            padding: 10px;
+            padding: 14px 16px;
             width: 100%;
             font-size: 18px; 
-            border-radius: 5px; 
-            background-color: #222; 
-            color: #ffa500; 
-            border: 2px solid #b1aa9c;    
-            box-shadow: 0 0 10px #b1aa9c; 
+            border-radius: 14px; 
+            background-color: #1f1f1f; 
+            color: #ffd16a; 
+            border: 1px solid rgba(255, 165, 0, 0.3);    
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28); 
             box-sizing: border-box;
         }
 
         #search-bar {
             margin-bottom: 40px;
-            padding: 10px;
+            padding: 14px 16px;
             width: 100%;
             font-size: 18px;
-            border-radius: 5px;
-            background-color: #222;
-            color: #ffa500;
-            border: 2px solid #b1aa9c;
-            box-shadow: 0 0 10px #b1aa9c;
+            border-radius: 14px;
+            background-color: #1f1f1f;
+            color: #ffd16a;
+            border: 1px solid rgba(255, 165, 0, 0.3);
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
             box-sizing: border-box; 
+        }
+
+        .anime-rating {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 68px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--item-rating-text, #111);
+            margin-right: 10px;
+            background: var(--item-accent, #ff9f1c);
+            box-shadow: 0 10px 18px var(--item-accent-shadow, rgba(255, 159, 28, 0.18));
+        }
+
+        .rating-excellent { border-left-color: var(--item-accent, #2dd4bf); }
+        .rating-good { border-left-color: var(--item-accent, #38bdf8); }
+        .rating-medium { border-left-color: var(--item-accent, #f59e0b); }
+        .rating-low { border-left-color: var(--item-accent, #ef4444); }
+        .rating-bad { border-left-color: var(--item-accent, #8b5cf6); }
+        .rating-very-bad { border-left-color: var(--item-accent, #7f1d1d); }
+
+        .anime-item.type-film {
+            border-left-style: double;
+        }
+
+        .anime-item.top-ten {
+            background: linear-gradient(90deg, rgba(255, 231, 163, 0.2) 0%, rgba(20, 20, 20, 0.98) 38%, rgba(15, 15, 15, 0.98) 100%);
+            border-color: rgba(255, 223, 126, 0.26);
+            box-shadow: 0 0 0 1px rgba(255, 223, 126, 0.18) inset, 0 16px 26px rgba(0, 0, 0, 0.38);
+        }
+
+        .anime-item.top-ten:hover {
+            box-shadow:
+                0 16px 26px rgba(0, 0, 0, 0.38),
+                0 0 0 1px rgba(255, 223, 126, 0.2) inset,
+                0 0 24px rgba(255, 223, 126, 0.22);
         }
 
         .bold {
             font-weight: bold; 
         }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 14px 14px 8px;
+                border-radius: 22px;
+            }
+
+            .anime-item {
+                grid-template-columns: 56px minmax(0, 1fr);
+            }
+
+            .anime-info {
+                grid-column: 1 / -1;
+            }
+
+            .anime-image {
+                width: 56px;
+                height: 56px;
+            }
+
+            .subtitle {
+                font-size: 16px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Liste des Animes</h1>
+        <div class="header">
+            <h1>Liste des Animes</h1>
+            <p class="subtitle">Recherche, tri et notes réunis dans une vue plus lisible pour parcourir rapidement les animes selon leur <strong>genre</strong>, leur <strong>ordre</strong> ou leur <strong>score</strong>.</p>
+        </div>
 
         <select id="sort-selector">
             <option value="name">Trier par nom</option>
@@ -364,6 +532,216 @@
 
         ];
 
+        function getRatingClass(ratingText) {
+            var rating = parseFloat(String(ratingText).replace(',', '.'));
+
+            if (rating >= 9) {
+                return 'rating-excellent';
+            }
+            if (rating >= 8) {
+                return 'rating-good';
+            }
+            if (rating >= 4) {
+                return 'rating-low';
+            }
+            if (rating >= 2) {
+                return 'rating-bad';
+            }
+            return 'rating-very-bad';
+        }
+
+        function hexToRgb(hex) {
+            var normalized = hex.replace('#', '');
+            return {
+                red: parseInt(normalized.slice(0, 2), 16),
+                green: parseInt(normalized.slice(2, 4), 16),
+                blue: parseInt(normalized.slice(4, 6), 16)
+            };
+        }
+
+        function hslToHex(hue, saturation, lightness) {
+            var s = saturation / 100;
+            var l = lightness / 100;
+            var chroma = (1 - Math.abs(2 * l - 1)) * s;
+            var segment = hue / 60;
+            var intermediate = chroma * (1 - Math.abs(segment % 2 - 1));
+            var red = 0;
+            var green = 0;
+            var blue = 0;
+
+            if (segment >= 0 && segment < 1) {
+                red = chroma;
+                green = intermediate;
+            } else if (segment < 2) {
+                red = intermediate;
+                green = chroma;
+            } else if (segment < 3) {
+                green = chroma;
+                blue = intermediate;
+            } else if (segment < 4) {
+                green = intermediate;
+                blue = chroma;
+            } else if (segment < 5) {
+                red = intermediate;
+                blue = chroma;
+            } else {
+                red = chroma;
+                blue = intermediate;
+            }
+
+            var match = l - chroma / 2;
+            var toHex = function (value) {
+                return Math.round((value + match) * 255).toString(16).padStart(2, '0');
+            };
+
+            return '#' + toHex(red) + toHex(green) + toHex(blue);
+        }
+
+        function getContrastTextColor(hex) {
+            var rgb = hexToRgb(hex);
+            var luminance = (0.2126 * rgb.red + 0.7152 * rgb.green + 0.0722 * rgb.blue) / 255;
+            return luminance >= 0.48 ? '#111111' : '#ffffff';
+        }
+
+        function getRatingTheme(ratingText) {
+            var rating = parseFloat(String(ratingText).replace(',', '.'));
+
+            if (isNaN(rating)) {
+                rating = 0;
+            }
+
+            if (rating < 1) {
+                return { accent: '#7f1d1d', soft: 'rgba(127, 29, 29, 0.18)', shadow: 'rgba(127, 29, 29, 0.30)' };
+            }
+
+            var hue;
+
+            if (rating < 4) {
+                hue = (rating - 1) * 6;
+            } else if (rating < 6) {
+                hue = 18 + (rating - 4) * 9;
+            } else if (rating < 8) {
+                hue = 36 + (rating - 6) * 12;
+            } else {
+                hue = 60 + (rating - 8) * 30;
+            }
+
+            hue = Math.max(0, Math.min(120, Math.round(hue)));
+            var accent = hslToHex(hue, 78, rating >= 8 ? 48 : 50);
+
+            return { accent: accent, soft: 'hsla(' + hue + ', 78%, 50%, 0.16)', shadow: 'hsla(' + hue + ', 78%, 50%, 0.28)' };
+        }
+
+        function getAnimeSlug(name) {
+            return String(name || '')
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-+|-+$/g, '');
+        }
+
+        function getAnimeType(anime) {
+            if (anime.type) {
+                return anime.type;
+            }
+
+            var filmSlugs = {
+                'after-the-rain': true,
+                'eve-no-jikan': true,
+                'fireworks': true,
+                'hal': true,
+                'mind-game': true,
+                'princesse-mononoke': true,
+                'wolf-children': true
+            };
+
+            return filmSlugs[getAnimeSlug(anime.name)] ? 'film' : 'anime';
+        }
+
+        function createAnimeItem(anime, options) {
+            var type = getAnimeType(anime);
+            var theme = getRatingTheme(anime.rating);
+            var topTen = options && options.topTen;
+            var listItem = document.createElement("li");
+            listItem.classList.add("anime-item");
+            listItem.classList.add(type === 'film' ? 'type-film' : 'type-anime');
+            listItem.classList.add(getRatingClass(anime.rating));
+            if (topTen) {
+                listItem.classList.add('top-ten');
+            }
+            listItem.setAttribute('data-name', anime.name.toLowerCase());
+            listItem.setAttribute('data-genre', anime.genre.toLowerCase());
+            listItem.setAttribute('data-rating', String(anime.rating));
+            listItem.setAttribute('data-type', type);
+            listItem.style.setProperty('--item-accent', theme.accent);
+            listItem.style.setProperty('--item-accent-soft', theme.soft);
+            listItem.style.setProperty('--item-accent-shadow', theme.shadow);
+            listItem.style.setProperty('--item-rating-text', getContrastTextColor(theme.accent));
+
+            var image = document.createElement("img");
+            image.classList.add("anime-image");
+            image.src = "anime_critiques/images_Animes/" + anime.image;
+            image.alt = "Image de " + anime.name;
+
+            var link = document.createElement("a");
+            link.innerHTML = "<strong>" + anime.name + "</strong>";
+            link.href = "anime_critiques/" + anime.name.toLowerCase().replace(/\s+/g, '-') + ".html";
+
+            var info = document.createElement("span");
+            info.classList.add("anime-info");
+
+            var typeBadge = document.createElement("span");
+            typeBadge.classList.add("anime-type");
+            typeBadge.textContent = type === 'film' ? 'Film' : 'Anime';
+
+            info.appendChild(typeBadge);
+
+            if (topTen) {
+                var premiumBadge = document.createElement("span");
+                premiumBadge.classList.add("top-ten-badge");
+                premiumBadge.textContent = "Top 10";
+                info.appendChild(premiumBadge);
+            }
+
+            var ratingBadge = document.createElement("span");
+            ratingBadge.classList.add("anime-rating");
+            ratingBadge.textContent = anime.rating;
+
+            var genreText = document.createElement("span");
+            genreText.classList.add("bold");
+            genreText.textContent = anime.genre;
+
+            info.appendChild(ratingBadge);
+            info.appendChild(genreText);
+
+            listItem.appendChild(image);
+            listItem.appendChild(link);
+            listItem.appendChild(info);
+
+            return listItem;
+        }
+
+        function applySearchFilter() {
+            var searchValue = document.getElementById('search-bar').value.trim().toLowerCase();
+            var categories = document.querySelectorAll('.category');
+
+            categories.forEach(function(category) {
+                var visibleCount = 0;
+                var items = category.querySelectorAll('.anime-item');
+
+                items.forEach(function(item) {
+                    var matches = !searchValue || item.getAttribute('data-name').includes(searchValue) || item.getAttribute('data-genre').includes(searchValue) || item.getAttribute('data-rating').includes(searchValue);
+                    item.style.display = matches ? '' : 'none';
+                    if (matches) {
+                        visibleCount += 1;
+                    }
+                });
+
+                category.style.display = visibleCount > 0 ? '' : 'none';
+            });
+        }
+
         function generateAnimeList(animeList, element) {
             var sortBy = document.getElementById('sort-selector').value;
 
@@ -386,22 +764,7 @@
                     var animeListForLetter = document.createElement("ul");
                     animeListForLetter.classList.add("anime-list");
                     letters[letter].forEach(function(anime) {
-                        var listItem = document.createElement("li");
-                        listItem.classList.add("anime-item");
-                        var link = document.createElement("a");
-                        link.innerHTML = "<strong>" + anime.name + "</strong>"; 
-                        link.href = "anime_critiques/" + anime.name.toLowerCase().replace(/\s+/g, '-') + ".html";
-                        var image = document.createElement("img");
-                        image.classList.add("anime-image");
-                        image.src = "anime_critiques/images_Animes/" + anime.image;
-                        image.alt = "Image de " + anime.name;
-                        var info = document.createElement("span");
-                        info.classList.add("anime-info");
-                        info.innerHTML = "Note : " + "<span class='bold'>" + anime.rating + "</span> | Genres : " + "<span class='bold'>" + anime.genre + "</span>";
-                        listItem.appendChild(image);
-                        listItem.appendChild(link);
-                        listItem.appendChild(info);
-                        animeListForLetter.appendChild(listItem);
+                        animeListForLetter.appendChild(createAnimeItem(anime));
                     });
                     categoryTitle.appendChild(animeListForLetter);
                     element.appendChild(categoryTitle);
@@ -427,22 +790,7 @@
                     var animeListForGenre = document.createElement("ul");
                     animeListForGenre.classList.add("anime-list");
                     categories[genre].forEach(function(anime) {
-                        var listItem = document.createElement("li");
-                        listItem.classList.add("anime-item");
-                        var link = document.createElement("a");
-                        link.innerHTML = "<strong>" + anime.name + "</strong>"; 
-                        link.href = "anime_critiques/" + anime.name.toLowerCase().replace(/\s+/g, '-') + ".html";
-                        var image = document.createElement("img");
-                        image.classList.add("anime-image");
-                        image.src = "anime_critiques/images_Animes/" + anime.image;
-                        image.alt = "Image de " + anime.name;
-                        var info = document.createElement("span");
-                        info.classList.add("anime-info");
-                        info.innerHTML = "Note : " + "<span class='bold'>" + anime.rating + "</span> | Genres : " + "<span class='bold'>" + anime.genre + "</span>";
-                        listItem.appendChild(image);
-                        listItem.appendChild(link);
-                        listItem.appendChild(info);
-                        animeListForGenre.appendChild(listItem);
+                        animeListForGenre.appendChild(createAnimeItem(anime));
                     });
                     categoryTitle.appendChild(animeListForGenre);
                     element.appendChild(categoryTitle);
@@ -460,6 +808,7 @@
                     '1.99-1': [],
                     '0.99-0': []
                 };
+                var ratingRank = 0;
 
                 animeList.forEach(function(anime) {
                     var rating = parseFloat(anime.rating.replace(',', '.'));
@@ -499,27 +848,15 @@
                     var animeListForRating = document.createElement("ul");
                     animeListForRating.classList.add("anime-list");
                     sortedAnimes.forEach(function(anime) {
-                        var listItem = document.createElement("li");
-                        listItem.classList.add("anime-item");
-                        var link = document.createElement("a");
-                        link.innerHTML = "<strong>" + anime.name + "</strong>"; 
-                        link.href = "anime_critiques/" + anime.name.toLowerCase().replace(/\s+/g, '-') + ".html";
-                        var image = document.createElement("img");
-                        image.classList.add("anime-image");
-                        image.src = "anime_critiques/images_Animes/" + anime.image;
-                        image.alt = "Image de " + anime.name;
-                        var info = document.createElement("span");
-                        info.classList.add("anime-info");
-                        info.innerHTML = "Note : " + "<span class='bold'>" + anime.rating + "</span> | Genres : " + "<span class='bold'>" + anime.genre + "</span>";
-                        listItem.appendChild(image);
-                        listItem.appendChild(link);
-                        listItem.appendChild(info);
-                        animeListForRating.appendChild(listItem);
+                        animeListForRating.appendChild(createAnimeItem(anime, { topTen: ratingRank < 10 }));
+                        ratingRank += 1;
                     });
                     categoryTitle.appendChild(animeListForRating);
                     element.appendChild(categoryTitle);
                 });
             }
+
+            applySearchFilter();
         }
 
         generateAnimeList(animeList, document.getElementById("animeList"));
@@ -528,16 +865,7 @@
             generateAnimeList(animeList, animeListDiv);
         });
         document.getElementById('search-bar').addEventListener('input', function() {
-            var searchValue = this.value.trim().toLowerCase();
-            var categoryTitles = document.querySelectorAll('.category-title');
-            categoryTitles.forEach(function(title) {
-                var genre = title.getAttribute('data-genre').toLowerCase();
-                if (genre.includes(searchValue)) {
-                    title.parentElement.style.display = 'block';
-                } else {
-                    title.parentElement.style.display = 'none';
-                }
-            });
+            applySearchFilter();
         });
     </script>
 </body>
