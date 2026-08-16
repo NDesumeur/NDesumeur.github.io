@@ -128,11 +128,15 @@
         .autocomplete-item {
             cursor: pointer;
             color: #f4f4f4;
-            display: flex;
+            display: grid;
+            grid-template-columns: 120px minmax(0, 1fr);
             align-items: center;
-            justify-content: center;
+            gap: 16px;
             border-bottom: 1px solid #423c3c;
             transition: box-shadow 0.3s, transform 0.3s;
+            padding: 12px 18px 12px 14px;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .autocomplete-item:hover {
@@ -166,12 +170,21 @@
         }
 
         .autocomplete-item img {
-            background-color: cyan;
-
+            width: 100px;
+            height: 66px;
+            object-fit: contain;
+            flex: 0 0 100px;
+            border-radius: 8px;
+            background-color: #111;
+            padding: 0;
+            margin-left: 0;
+        }
         .anime-info {
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: flex-start;
+            min-width: 0;
+            width: 100%;
         }
 
         .anime-title {
@@ -179,7 +192,6 @@
             align-items: center;
             font-size: 24px;
             color: #ffa500;
-            padding-left: 10px;
             font-weight: bold;
         }
 
@@ -188,7 +200,6 @@
             color: #00ff00;
             display: flex;
             align-items: center;
-            padding-left: 10px;
             font-weight: bold;
             text-align: center;
         }
@@ -469,8 +480,28 @@
         "image": "PRINCESSE MONONOKE.jpg",
         "rating": "9",
         "genre": "Action, Drame, Surnaturel"
-    }
-    
+    },
+    {
+    "name": "Sonny Boy",
+    "image": "SONNY BOY.jpg",
+    "rating": "8.6",
+            "genre": "Drame, Isekai, Mystère, Psychologique, Sci-fi, Surnaturel",
+            "type": "anime"
+},
+{
+    "name": "100 meters",
+    "image": "100 METERS.jpg",
+    "rating": "8",
+            "genre": "Action, Drame, Sports",
+            "type": "film"
+},
+{
+    "name": "A Silent Voice",
+    "image": "A SILENT VOICE.jpg",
+    "rating": "8.5",
+            "genre": "Drame, Psychologique, Romance, Slice of Life",
+            "type": "film"
+}
     
 
 
